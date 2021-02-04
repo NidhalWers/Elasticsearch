@@ -1,5 +1,7 @@
 package main.java.org.snp.dao.model;
 
+import java.util.Objects;
+
 public class Column {
     private String name;
     private String type;
@@ -10,6 +12,22 @@ public class Column {
         this.type = type;
     }
 
+    @Override
+    public String toString() {
+        return "Column{" +
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Column column = (Column) o;
+        return Objects.equals(name, column.name) &&
+                Objects.equals(type, column.type);
+    }
 
     public static Builder builder(){return new Builder();}
 

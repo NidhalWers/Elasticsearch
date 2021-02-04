@@ -9,13 +9,20 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 
+//TODO
+// this class will include all our endpoints
+
 @Path("/elasticsearch")
 public class Elasticsearch {
 
-    @POST
+    //TODO
+    // this method is used as an example at the moment, to understand endpoints with quarkus, as well as tests.
+    // We will change to POST later
+
+    @GET
     @Path("/createtable/")
     @Produces(MediaType.APPLICATION_JSON)
-    public Table createTable(@QueryParam("name") String name, @QueryParam("columns") String columns){
+    public String createTable(@QueryParam("name") String name, @QueryParam("columns") String columns){
         ArrayList<Column> columnArrayListmns = FormatUtils.getListColumns(columns);
         Table table = Table
                 .builder()
@@ -23,6 +30,6 @@ public class Elasticsearch {
                 .columns(columnArrayListmns)
                 .build();
 
-        return table; //todo adapt the thing that we return
+        return table.toString(); //todo adapt the thing that we return
     }
 }
