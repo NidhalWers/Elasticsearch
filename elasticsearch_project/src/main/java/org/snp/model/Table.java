@@ -1,4 +1,4 @@
-package main.java.org.snp.dao.model;
+package main.java.org.snp.model;
 
 import java.util.ArrayList;
 import java.util.Objects;

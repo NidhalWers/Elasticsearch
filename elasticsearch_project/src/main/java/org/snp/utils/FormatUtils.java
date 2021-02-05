@@ -1,6 +1,6 @@
 package main.java.org.snp.utils;
 
-import main.java.org.snp.dao.model.Column;
+import main.java.org.snp.model.Column;
 
 import java.util.ArrayList;
 

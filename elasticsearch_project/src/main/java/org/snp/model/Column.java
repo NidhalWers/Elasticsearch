@@ -1,15 +1,14 @@
-package main.java.org.snp.dao.model;
+package main.java.org.snp.model;
 
 import java.util.Objects;
 
 public class Column {
-    private String name;
-    private String type;
-    //todo use an enum for the type, and convert the string to his enum value
+    private final String name;
+    private final String type;
 
     private Column(String name, String type) {
         this.name = name;
-        this.type = type;
+        this.type= type;
     }
 
     @Override
@@ -25,8 +24,7 @@ public class Column {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Column column = (Column) o;
-        return Objects.equals(name, column.name) &&
-                Objects.equals(type, column.type);
+        return Objects.equals(name, column.name);
     }
 
     public static Builder builder(){return new Builder();}

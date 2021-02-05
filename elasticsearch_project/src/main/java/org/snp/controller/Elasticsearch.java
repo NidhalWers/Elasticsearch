@@ -1,7 +1,7 @@
 package main.java.org.snp.controller;
 
-import main.java.org.snp.dao.model.Column;
-import main.java.org.snp.dao.model.Table;
+import main.java.org.snp.model.Column;
+import main.java.org.snp.model.Table;
 import main.java.org.snp.utils.FormatUtils;
 
 import javax.ws.rs.*;
