@@ -1,8 +1,8 @@
-package test.java.org.snp.unit;
+package org.snp.unit;
 
 import io.quarkus.test.junit.QuarkusTest;
-import main.java.org.snp.model.Column;
-import main.java.org.snp.model.Table;
+import org.snp.model.Column;
+import org.snp.model.Table;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;

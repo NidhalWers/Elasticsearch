@@ -1,4 +1,4 @@
-package main.java.org.snp.model;
+package org.snp.model;
 
 
 public enum Type {

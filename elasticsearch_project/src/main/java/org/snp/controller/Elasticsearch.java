@@ -1,8 +1,8 @@
-package main.java.org.snp.controller;
+package org.snp.controller;
 
-import main.java.org.snp.model.Column;
-import main.java.org.snp.model.Table;
-import main.java.org.snp.utils.FormatUtils;
+import org.snp.model.Column;
+import org.snp.model.Table;
+import org.snp.utils.FormatUtils;
 
 import javax.ws.rs.*;
 import javax.ws.rs.Path;
