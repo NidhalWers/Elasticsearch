@@ -1,11 +1,13 @@
 package org.snp.indexage.entities;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class Table {
     private String name;
     private ArrayList<Column> columns;
+    private ArrayList<Index> indexes = new ArrayList<>();
 
     private Table(String name, ArrayList<Column> columns) {
         this.name = name;
