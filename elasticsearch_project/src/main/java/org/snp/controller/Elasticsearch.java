@@ -1,7 +1,7 @@
 package org.snp.controller;
 
-import org.snp.model.Column;
-import org.snp.model.Table;
+import org.snp.indexage.Column;
+import org.snp.indexage.Table;
 import org.snp.utils.FormatUtils;
 
 import javax.ws.rs.*;
@@ -31,5 +31,11 @@ public class Elasticsearch {
                 .build();
 
         return table.toString(); //todo adapt the thing that we return
+    }
+
+    @POST
+    @Path("/create/")
+    public Table create(Table table){
+        return table;
     }
 }

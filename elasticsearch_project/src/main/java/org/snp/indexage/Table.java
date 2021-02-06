@@ -1,4 +1,4 @@
-package org.snp.model;
+package org.snp.indexage;
 
 import java.util.ArrayList;
 import java.util.Objects;
