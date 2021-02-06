@@ -1,25 +1,33 @@
 package org.snp.model.credentials;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.quarkus.runtime.annotations.RegisterForReflection;
+
 import java.util.ArrayList;
 
+@RegisterForReflection
 public class TableCredentials {
+
+    @JsonProperty("name")
     private String name;
-    private ArrayList<ColumnCredentials> columnCredentialsArrayList;
+
+    @JsonProperty("columns")
+    private ArrayList<ColumnCredentials> columns;
 
     public TableCredentials(){
 
     }
 
-    public TableCredentials(String name, ArrayList<ColumnCredentials> columnCredentialsArrayList) {
+    public TableCredentials(String name, ArrayList<ColumnCredentials> columns) {
         this.name = name;
-        this.columnCredentialsArrayList = columnCredentialsArrayList;
+        this.columns = columns;
     }
 
     public String getName() {
         return name;
     }
 
-    public ArrayList<ColumnCredentials> getColumnCredentialsArrayList() {
-        return columnCredentialsArrayList;
+    public ArrayList<ColumnCredentials> getColumns() {
+        return columns;
     }
 }

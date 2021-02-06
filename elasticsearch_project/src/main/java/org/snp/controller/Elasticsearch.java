@@ -17,6 +17,8 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 
 @Path("/elasticsearch")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class Elasticsearch {
 
     @POST
@@ -39,14 +41,17 @@ public class Elasticsearch {
 
     @POST
     @Path("/createTable/")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
     public String createTable(TableCredentials tableCredentials) {
         Message message =  tableService.create(tableCredentials);
         if(message.hasAttachment()){
             return ((MessageAttachment)message).getAttachment().toString();
         }
         return "can not create this table";
+    }
+    @POST
+    @Path("/test/")
+    public Object test(Object object) {
+        return object;
     }
 
 
