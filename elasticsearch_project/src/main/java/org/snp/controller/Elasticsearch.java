@@ -2,6 +2,8 @@ package org.snp.controller;
 
 import org.snp.indexage.entities.Column;
 import org.snp.indexage.entities.Table;
+import org.snp.model.communication.Message;
+import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.IndexCredentials;
 import org.snp.model.credentials.TableCredentials;
 import org.snp.service.TableService;
@@ -38,6 +40,10 @@ public class Elasticsearch {
     @POST
     @Path("/createTable/")
     public Table createTable(TableCredentials tableCredentials) {
+        Message message =  tableService.create(tableCredentials);
+        if(message.hasAttachment()){
+            return (Table)((MessageAttachment)message).getAttachment();
+        }
         return null;
     }
 
