@@ -24,7 +24,7 @@ public class TableService {
         if(table != null) //already exists
             return new Message(403);
 
-        ArrayList<Column> columns = columnService.getListColumns(tableCredentials.getColumnCredentialsArrayList());
+        ArrayList<Column> columns = columnService.getListColumns(tableCredentials.getColumns());
 
         table = Table
             .builder()
