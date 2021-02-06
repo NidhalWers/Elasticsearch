@@ -9,10 +9,10 @@ import java.util.ArrayList;
 public class TableCredentials {
 
     @JsonProperty("name")
-    private String name;
+    public String name;
 
     @JsonProperty("columns")
-    private ArrayList<ColumnCredentials> columns;
+    public ArrayList<ColumnCredentials> columns;
 
     public TableCredentials(){
 

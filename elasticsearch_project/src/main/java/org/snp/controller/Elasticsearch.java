@@ -37,7 +37,7 @@ public class Elasticsearch {
 
 
     @Inject
-    TableService tableService;
+    private TableService tableService;
 
     @POST
     @Path("/createTable/")
@@ -47,11 +47,6 @@ public class Elasticsearch {
             return ((MessageAttachment)message).getAttachment().toString();
         }
         return "can not create this table";
-    }
-    @POST
-    @Path("/test/")
-    public Object test(Object object) {
-        return object;
     }
 
 

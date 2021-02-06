@@ -1,8 +1,8 @@
 package org.snp.model.credentials;
 
 public class ColumnCredentials {
-    private String name;
-    private String type;
+    public String name;
+    public String type;
 
     public ColumnCredentials(){
 
