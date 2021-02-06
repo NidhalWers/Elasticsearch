@@ -32,6 +32,7 @@ public class Elasticsearch {
         return "table "+tableCredentials.name+" already exists";
     }
 
+    //todo see how to send an other code than 200
 
     @Inject
     private IndexService indexService;

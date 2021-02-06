@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 @ApplicationScoped
 public class TableService {
-    private static TableDao dao = new TableDao();
+    @Inject  private static TableDao dao;
 
     @Inject private ColumnService columnService;
 

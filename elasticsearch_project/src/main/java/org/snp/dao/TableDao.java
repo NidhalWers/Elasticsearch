@@ -2,10 +2,12 @@ package org.snp.dao;
 
 import org.snp.indexage.entities.Table;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
 
+@ApplicationScoped
 public class TableDao {
-    private ArrayList<Table> tables=new ArrayList<>();
+    private static ArrayList<Table> tables=new ArrayList<>();
 
     public void insert(Table table){
         tables.add(table);
