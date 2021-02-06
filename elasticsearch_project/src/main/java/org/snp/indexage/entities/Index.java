@@ -5,9 +5,7 @@ import java.util.*;
 public class Index {
     private Map<String, ArrayList<String>> index = new TreeMap<>();
     private List<Column> columns = new ArrayList<>();
-    public Index(){
 
-    }
     public void insert(String value, String ...keys ){
         String key = "";
         for(String k : keys ){

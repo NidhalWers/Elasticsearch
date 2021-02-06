@@ -18,20 +18,28 @@ public class Table {
         this.name = name;
     }
 
-    public void addColumn(Column column){
-        columns.add(column);
-    }
-
-    public void removeColumn(Column column){
-        columns.remove(column);
-    }
-
     public String getName() {
         return name;
     }
 
+    public void addColumn(Column column){
+        columns.add(column);
+    }
+    public void removeColumn(Column column){
+        columns.remove(column);
+    }
     public ArrayList<Column> getColumns() {
         return columns;
+    }
+
+    public void addIndex(Index index){
+        indexes.add(index);
+    }
+    public void removeIndex(Index index){
+        indexes.remove(index);
+    }
+    public ArrayList<Index> getIndexes() {
+        return indexes;
     }
 
     @Override

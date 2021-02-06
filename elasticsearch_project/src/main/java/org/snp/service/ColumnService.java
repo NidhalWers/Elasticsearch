@@ -15,8 +15,8 @@ public class ColumnService {
         for(ColumnCredentials credentials : columnCredentials){
             columns.add(Column
                         .builder()
-                        .name(credentials.getName())
-                        .type(credentials.getType())
+                        .name(credentials.name)
+                        .type(credentials.type)
                         .build()
             );
         }
