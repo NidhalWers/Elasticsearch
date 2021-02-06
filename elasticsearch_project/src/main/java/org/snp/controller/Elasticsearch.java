@@ -1,41 +1,24 @@
 package org.snp.controller;
 
-import org.snp.indexage.Column;
-import org.snp.indexage.Table;
-import org.snp.utils.FormatUtils;
+import org.snp.model.IndexCredentials;
 
 import javax.ws.rs.*;
 import javax.ws.rs.Path;
-import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
-
-//TODO
-// this class will include all our endpoints
+import javax.ws.rs.core.Response;
 
 @Path("/elasticsearch")
 public class Elasticsearch {
 
-    //TODO
-    // this method is used as an example at the moment, to understand endpoints with quarkus, as well as tests.
-    // We will change to POST later
 
     @POST
     @Path("/createtable/")
-    @Produces(MediaType.APPLICATION_JSON)
-    public String createTable(@QueryParam("name") String name, @QueryParam("columns") String columns){
-        ArrayList<Column> columnArrayListmns = FormatUtils.getListColumns(columns);
-        Table table = Table
-                .builder()
-                .name(name)
-                .columns(columnArrayListmns)
-                .build();
-
-        return table.toString(); //todo adapt the thing that we return
+    public Object createTable(Object obj ){
+        return obj;
     }
 
     @POST
-    @Path("/create/")
-    public Table create(Table table){
-        return table;
+    @Path("/index")
+    public Response addIndex(IndexCredentials indexModel){
+        return null;
     }
 }

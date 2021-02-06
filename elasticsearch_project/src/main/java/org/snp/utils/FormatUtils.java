@@ -1,6 +1,6 @@
 package org.snp.utils;
 
-import org.snp.indexage.Column;
+import org.snp.indexage.entities.Column;
 
 import java.util.ArrayList;
 

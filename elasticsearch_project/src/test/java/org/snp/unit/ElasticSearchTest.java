@@ -1,8 +1,8 @@
 package org.snp.unit;
 
 import io.quarkus.test.junit.QuarkusTest;
-import org.snp.indexage.Column;
-import org.snp.indexage.Table;
+import org.snp.indexage.entities.Column;
+import org.snp.indexage.entities.Table;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
