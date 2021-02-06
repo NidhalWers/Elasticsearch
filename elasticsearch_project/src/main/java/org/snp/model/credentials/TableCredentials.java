@@ -14,4 +14,12 @@ public class TableCredentials {
         this.name = name;
         this.columnCredentialsArrayList = columnCredentialsArrayList;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public ArrayList<ColumnCredentials> getColumnCredentialsArrayList() {
+        return columnCredentialsArrayList;
+    }
 }
