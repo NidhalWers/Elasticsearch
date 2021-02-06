@@ -19,7 +19,7 @@ public class Elasticsearch {
     // this method is used as an example at the moment, to understand endpoints with quarkus, as well as tests.
     // We will change to POST later
 
-    @GET
+    @POST
     @Path("/createtable/")
     @Produces(MediaType.APPLICATION_JSON)
     public String createTable(@QueryParam("name") String name, @QueryParam("columns") String columns){
