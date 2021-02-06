@@ -41,12 +41,12 @@ public class Elasticsearch {
 
     @POST
     @Path("/createTable/")
-    public String createTable(TableCredentials tableCredentials) {
+    public Table createTable(TableCredentials tableCredentials) {
         Message message =  tableService.create(tableCredentials);
         if(message.hasAttachment()){
-            return ((MessageAttachment)message).getAttachment().toString();
+            return (Table)((MessageAttachment)message).getAttachment();
         }
-        return "can not create this table";
+        return null;
     }
 
 
