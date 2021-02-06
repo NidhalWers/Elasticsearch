@@ -12,6 +12,10 @@ public class TableDao {
     }
 
     public Table find(String key){
+        for(Table table : tables){
+            if( table.getName().equals(key))
+                return table;
+        }
         return null;
     }
 }

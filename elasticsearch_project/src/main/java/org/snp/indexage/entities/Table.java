@@ -24,6 +24,14 @@ public class Table {
         columns.remove(column);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public ArrayList<Column> getColumns() {
+        return columns;
+    }
+
     @Override
     public String toString() {
         return "Table{" +
