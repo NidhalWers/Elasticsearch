@@ -4,8 +4,10 @@ import org.snp.indexage.entities.Column;
 import org.snp.indexage.entities.Table;
 import org.snp.model.credentials.IndexCredentials;
 import org.snp.model.credentials.TableCredentials;
+import org.snp.service.TableService;
 import org.snp.utils.FormatUtils;
 
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
@@ -14,10 +16,7 @@ import java.util.ArrayList;
 
 @Path("/elasticsearch")
 public class Elasticsearch {
-    private Object IndexCredentials;
 
-    //TODO
-    //
     @POST
     @Path("/createtablewithparam/")
     @Produces(MediaType.APPLICATION_JSON)
@@ -33,7 +32,8 @@ public class Elasticsearch {
     }
 
 
-
+    @Inject
+    TableService tableService;
 
     @POST
     @Path("/createTable/")
@@ -41,17 +41,24 @@ public class Elasticsearch {
         return null;
     }
 
+
+
     @POST
     @Path("/addIndex/")
     public Response addIndex(IndexCredentials indexCredentials){
         return null;
     }
 
+
+
+
     @POST
     @Path("/loadData/")
     public Response loadData(){
         return null;
     }
+
+
 
 
     @GET
