@@ -30,7 +30,7 @@ public class Elasticsearch {
                 .columns(columnArrayListmns)
                 .build();
 
-        return table.toString(); //todo adapt the thing that we return
+        return table.toString();
     }
 
 
@@ -39,12 +39,14 @@ public class Elasticsearch {
 
     @POST
     @Path("/createTable/")
-    public Table createTable(TableCredentials tableCredentials) {
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String createTable(TableCredentials tableCredentials) {
         Message message =  tableService.create(tableCredentials);
         if(message.hasAttachment()){
-            return (Table)((MessageAttachment)message).getAttachment();
+            return ((MessageAttachment)message).getAttachment().toString();
         }
-        return null;
+        return "can not create this table";
     }
 
 

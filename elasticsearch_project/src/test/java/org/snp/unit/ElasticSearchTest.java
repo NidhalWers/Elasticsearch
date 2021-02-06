@@ -32,7 +32,7 @@ public class ElasticSearchTest {
                 .build());
 
         given()
-            .when().post("/elasticsearch/createtable?name=test&columns=column1,string;column2,double;column3,int")
+            .when().post("/elasticsearch/createtablewithparam?name=test&columns=column1,string;column2,double;column3,int")
             .then()
             .statusCode(200)
             .body(is(table.toString()));
