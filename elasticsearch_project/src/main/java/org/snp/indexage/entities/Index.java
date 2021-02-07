@@ -1,5 +1,7 @@
 package org.snp.indexage.entities;
 
+import org.snp.utils.StringUtils;
+
 import java.util.*;
 
 public class Index {
@@ -7,10 +9,7 @@ public class Index {
     private List<Column> columns = new ArrayList<>();
 
     public void insert(String value, String ...keys ){
-        String key = "";
-        for(String k : keys ){
-            key+=k;
-        }
+        String key = StringUtils.getKeyFromTab(keys);
         if (index.get(key)==null){
             index.put(key,new ArrayList<String>());
             index.get(key).add(value);
