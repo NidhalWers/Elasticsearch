@@ -10,16 +10,13 @@ import java.util.TreeMap;
 public class IndexCredentials {
     @JsonProperty("tableName")
     public String tableName;
-    @JsonProperty("index")
-    public Map<String, ArrayList<String>> index = new TreeMap<>();
     @JsonProperty("columns")
-    public List<ColumnCredentials> columns = new ArrayList<>();
+    public ArrayList<ColumnCredentials> columns;
 
     public IndexCredentials(){}
 
-    public IndexCredentials(String tableName, Map<String, ArrayList<String>> index, List<ColumnCredentials> columns) {
+    public IndexCredentials(String tableName, ArrayList<ColumnCredentials> columns) {
         this.tableName=tableName;
-        this.index = index;
         this.columns = columns;
     }
 

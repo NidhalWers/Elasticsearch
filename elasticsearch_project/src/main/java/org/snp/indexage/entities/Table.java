@@ -1,13 +1,11 @@
 package org.snp.indexage.entities;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
+import java.util.*;
 
 public class Table {
     private String name;
     private ArrayList<Column> columns;
-    private ArrayList<Index> indexes = new ArrayList<>();
+    private Map<String, Index> indexes = new TreeMap<>();
 
     private Table(String name, ArrayList<Column> columns) {
         this.name = name;
@@ -32,14 +30,19 @@ public class Table {
         return columns;
     }
 
-    public void addIndex(Index index){
-        indexes.add(index);
+    public boolean addIndex(String key, Index index){
+        if(! indexes.containsKey(key)) {
+            indexes.put(key, index);
+            return true;
+        }
+        return false;
     }
-    public void removeIndex(Index index){
+    public void removeIndex(Index index){ //todo
         indexes.remove(index);
     }
-    public ArrayList<Index> getIndexes() {
-        return indexes;
+
+    public ArrayList<Index> getAllIndex(){
+        return (ArrayList)(indexes.values());
     }
 
     @Override
