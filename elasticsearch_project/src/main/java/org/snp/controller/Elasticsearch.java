@@ -6,6 +6,8 @@ import org.snp.model.credentials.IndexCredentials;
 import org.snp.model.credentials.TableCredentials;
 import org.snp.service.IndexService;
 import org.snp.service.TableService;
+import org.snp.utils.exception.AlreadyExistException;
+import org.snp.utils.exception.NotFoundException;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -29,7 +31,7 @@ public class Elasticsearch {
         if(message.hasAttachment())
             return ((MessageAttachment)message).getAttachment().toString();
         else
-            throw new WebApplicationException("table "+tableCredentials.name+" already exists", 403);
+            throw new AlreadyExistException("table "+tableCredentials.name+" already exists");
     }
 
 
@@ -43,7 +45,7 @@ public class Elasticsearch {
         if(message.hasAttachment())
             return ((MessageAttachment)message).getAttachment().toString();
         else
-            throw new WebApplicationException("table "+indexCredentials.tableName+" does not exist", 404);
+            throw new NotFoundException("table "+indexCredentials.tableName+" does not exist");
     }
 
 
