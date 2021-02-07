@@ -49,7 +49,8 @@ public class Table {
     public String toString() {
         return "Table{" +
                 "name='" + name + "\n" +
-                stringOfColumns() +
+                stringOfColumns() + "\n" +
+                (indexes.keySet().size() > 0 ? "\tindexes :\n"+indexes.keySet() : "" ) +
                 '}';
     }
 
@@ -74,6 +75,12 @@ public class Table {
     public int hashCode() {
         return Objects.hash(name, columns);
     }
+
+
+
+
+
+
 
     public static Builder builder(){
         return new Builder();

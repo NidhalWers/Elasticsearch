@@ -3,9 +3,11 @@ package org.snp.unit;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.*;
 import org.snp.indexage.entities.Column;
+import org.snp.indexage.entities.Index;
 import org.snp.indexage.entities.Table;
 
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.Is.is;
@@ -74,7 +76,7 @@ public class ElasticsearchTest {
                 .when()
                 .post("/elasticsearch/createTable")
                 .then()
-                .statusCode(403)
+                .statusCode(409)
                 ;
     }
 
@@ -83,6 +85,7 @@ public class ElasticsearchTest {
     @Test
     @Order(3)
     public void testAddIndexExistingTable(){
+        table.addIndex("column1column2", Index.builder().build());
         given()
                 .body("{\n" +
                         "    \"tableName\" : \""+table.getName()+"\",\n" +

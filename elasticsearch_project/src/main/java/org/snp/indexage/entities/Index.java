@@ -4,6 +4,7 @@ import java.util.*;
 
 public class Index {
     private List<Column> columns;
+    //Map of value, position list
     private Map<String, ArrayList<String>> index = new TreeMap<>();
 
     private Index(List<Column> columns) {
@@ -26,6 +27,10 @@ public class Index {
     public ArrayList<String> find(String key){
         return index.get(key);
     }
+
+
+
+
 
     public static Builder builder(){return new Builder();}
 
