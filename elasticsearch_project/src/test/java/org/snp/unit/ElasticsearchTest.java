@@ -74,8 +74,8 @@ public class ElasticsearchTest {
                 .when()
                 .post("/elasticsearch/createTable")
                 .then()
-                .statusCode(200)
-                .body(is("table "+table.getName()+" already exists"));
+                .statusCode(403)
+                ;
     }
 
 
@@ -114,8 +114,8 @@ public class ElasticsearchTest {
                 .when()
                 .post("/elasticsearch/addIndex")
                 .then()
-                .statusCode(200)
-                .body(is("table bad test not found"));
+                .statusCode(404)
+                ;
     }
 
 

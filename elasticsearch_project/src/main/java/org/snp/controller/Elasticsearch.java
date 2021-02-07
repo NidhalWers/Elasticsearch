@@ -28,11 +28,10 @@ public class Elasticsearch {
         Message message =  tableService.create(tableCredentials);
         if(message.hasAttachment())
             return ((MessageAttachment)message).getAttachment().toString();
-
-        return "table "+tableCredentials.name+" already exists";
+        else
+            throw new WebApplicationException("table "+tableCredentials.name+" already exists", 403);
     }
 
-    //todo see how to send an other code than 200
 
     @Inject
     private IndexService indexService;
@@ -42,9 +41,9 @@ public class Elasticsearch {
     public String addIndex(IndexCredentials indexCredentials){
         Message message = indexService.create(indexCredentials);
         if(message.hasAttachment())
-                return ((MessageAttachment)message).getAttachment().toString();
-
-        return "table "+indexCredentials.tableName+" not found";
+            return ((MessageAttachment)message).getAttachment().toString();
+        else
+            throw new WebApplicationException("table "+indexCredentials.tableName+" does not exist", 404);
     }
 
 
