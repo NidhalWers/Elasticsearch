@@ -54,7 +54,7 @@ public class ElasticsearchTest {
                     "}")
             .header("Content-Type", MediaType.APPLICATION_JSON)
             .when()
-            .post("/elasticsearch/createTable")
+            .post("/elasticsearch/table/create")
             .then()
             .statusCode(200)
             .body(is(table.toString()));
@@ -74,7 +74,7 @@ public class ElasticsearchTest {
                         "}")
                 .header("Content-Type", MediaType.APPLICATION_JSON)
                 .when()
-                .post("/elasticsearch/createTable")
+                .post("/elasticsearch/table/create")
                 .then()
                 .statusCode(409)
                 ;
@@ -96,7 +96,7 @@ public class ElasticsearchTest {
                         "}")
                 .header("Content-Type", MediaType.APPLICATION_JSON)
                 .when()
-                .post("/elasticsearch/addIndex")
+                .post("/elasticsearch/index/add")
                 .then()
                 .statusCode(200)
                 .body(is(table.toString()));
@@ -115,7 +115,7 @@ public class ElasticsearchTest {
                         "}")
                 .header("Content-Type", MediaType.APPLICATION_JSON)
                 .when()
-                .post("/elasticsearch/addIndex")
+                .post("/elasticsearch/index/add")
                 .then()
                 .statusCode(404)
                 ;
