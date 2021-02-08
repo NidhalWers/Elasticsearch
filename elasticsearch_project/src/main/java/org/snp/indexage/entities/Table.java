@@ -45,6 +45,17 @@ public class Table {
         return (ArrayList)(indexes.values());
     }
 
+    //TODO
+    // prendre une ligne avec ces colonnes, et diminuer la Hashmap data avec seulement les colonnes de l'index
+    // example :
+    //      data = { (nom, teyeb) , (prenom, nidhal), (age, 21) }
+    //    pour l'index ayant la colonne 'nom' :
+    //      on transmet dans le insertLine seulement une hashmap contenant { (nom, teyeb) }
+    //   si index a prenom, nom :
+    //      on transmet dans le insertLine une hashmap : { (prenom, nidhal), (nom, teyeb) }
+    // etc etc
+    // dans notre cas actuel on transmet toute la ligne
+    
     public void insertRowIntoIndexes(HashMap<String,String> data, String reference)throws Exception{
         Set<String> keys = indexes.keySet();
         for(String key : keys){

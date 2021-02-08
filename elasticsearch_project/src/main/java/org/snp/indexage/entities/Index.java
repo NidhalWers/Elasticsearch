@@ -1,10 +1,6 @@
 package org.snp.indexage.entities;
 
-import com.google.common.base.Strings;
-import io.netty.util.internal.StringUtil;
-import org.apache.commons.codec.binary.StringUtils;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Index {
