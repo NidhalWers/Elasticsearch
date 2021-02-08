@@ -45,6 +45,13 @@ public class Table {
         return (ArrayList)(indexes.values());
     }
 
+    public void insertRowIntoIndexes(HashMap<String,String> data, String reference)throws Exception{
+        Set<String> keys = indexes.keySet();
+        for(String key : keys){
+            indexes.get(key).insertLine(data,reference);
+        }
+    }
+
     @Override
     public String toString() {
         return "Table{" +

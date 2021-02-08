@@ -14,32 +14,24 @@ import java.util.ArrayList;
 
 @ApplicationScoped
 public class TableService {
-    @Inject  private static TableDao dao;
-
-    @Inject private ColumnService columnService;
-
+    private static TableDao dao = new TableDao();
+    @Inject
+    ColumnService columnService;
     public Message create(TableCredentials tableCredentials){
-        Table table = dao.find(tableCredentials.name);
+        Table table = dao.find(tableCredentials.getName());
         if(table != null) //already exists
             return new Message(403);
 
-        ArrayList<Column> columns = columnService.getListColumns(tableCredentials.columns);
+        ArrayList<Column> columns = columnService.getListColumns(tableCredentials.getColumns());
 
         table = Table
             .builder()
-            .name(tableCredentials.name)
+            .name(tableCredentials.getName())
             .columns(columns)
             .build();
         dao.insert(table);
         return new MessageAttachment<Table>(200, table);
-    }
 
-    public Message get(String key){
-        Table table = dao.find(key);
-        if(table == null)
-            return new Message(404);
-
-        return new MessageAttachment<Table>(200, table);
     }
 
 }

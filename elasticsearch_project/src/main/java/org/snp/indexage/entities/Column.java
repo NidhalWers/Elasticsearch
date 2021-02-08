@@ -5,6 +5,7 @@ import java.util.Objects;
 public class Column {
     private final String name;
     private final String type;
+//    private final String tableName;
 
     private Column(String name, String type) {
         this.name = name;
