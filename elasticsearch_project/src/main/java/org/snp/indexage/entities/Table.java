@@ -54,8 +54,8 @@ public class Table {
         indexes.remove(index);
     }
 
-    public ArrayList<Index> getAllIndex(){
-        return (ArrayList)(indexes.values());
+    public Map<String, Index> getIndexes() {
+        return indexes;
     }
 
     public void insertRowIntoIndexes(HashMap<String,String> data, String reference)throws Exception{
@@ -63,6 +63,16 @@ public class Table {
         for(String key : keys){
             indexes.get(key).insertLine(data,reference);
         }
+    }
+
+    public ArrayList<String> executeQuery(HashMap<String,String> query ){
+        ArrayList<String> keys = new ArrayList<>();
+        for(String key : query.keySet()){
+            keys.add(key);
+        }
+        Collections.sort(keys);
+        String indexKey = String.join(",",keys);
+        return indexes.get(indexKey).find(query);
     }
 
     @Override
@@ -96,17 +106,6 @@ public class Table {
         return Objects.hash(name, columns);
     }
 
-    public ArrayList<String> executeQuery(HashMap<String,String> query ){
-        ArrayList<String> keys = new ArrayList<>();
-        for(String key : query.keySet()){
-            keys.add(key);
-        }
-        Collections.sort(keys);
-        String indexKey = String.join(",",keys);
-        ArrayList<String> values= indexes.get(indexKey).find(query);
-        Message response=null;
-        return values;
-    }
 
     public static Builder builder(){
         return new Builder();
