@@ -44,7 +44,6 @@ public class Table {
         String indexKey = String.join(",", keys);
         if(indexes.get(indexKey)!=null){
             return false;
-
         }else {
             indexes.put(indexKey,newIndex);
         }
