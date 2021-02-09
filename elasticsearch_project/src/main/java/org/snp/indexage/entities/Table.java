@@ -96,7 +96,7 @@ public class Table {
         return Objects.hash(name, columns);
     }
 
-    public Message executeQuery(HashMap<String,String> query ){
+    public ArrayList<String> executeQuery(HashMap<String,String> query ){
         ArrayList<String> keys = new ArrayList<>();
         for(String key : query.keySet()){
             keys.add(key);
@@ -105,12 +105,7 @@ public class Table {
         String indexKey = String.join(",",keys);
         ArrayList<String> values= indexes.get(indexKey).find(query);
         Message response=null;
-        if (values==null){
-            response= new Message(404);
-        }else {
-            response=new MessageAttachment<ArrayList<String>>(200,values);
-        }
-        return response;
+        return values;
     }
 
     public static Builder builder(){
