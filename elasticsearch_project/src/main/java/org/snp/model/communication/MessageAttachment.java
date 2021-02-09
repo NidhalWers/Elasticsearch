@@ -2,9 +2,6 @@ package org.snp.model.communication;
 
 import java.io.Serializable;
 
-/**
- * @author Olivier Pitton <olivier@indexima.com> on 16/12/2020
- */
 
 public class MessageAttachment<T> extends Message {
 

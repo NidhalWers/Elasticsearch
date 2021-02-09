@@ -33,8 +33,14 @@ public class Index {
         return true;
     }
 
-    public ArrayList<String> find(String key){
-        return index.get(key);
+    public ArrayList<String> find(HashMap<String,String> query){
+        List<String> indexValueList = new ArrayList<>();
+        for(String key : query.keySet()){
+            indexValueList.add(query.get(key));
+        }
+        Collections.sort(indexValueList);
+        String indexValue = String.join(",",indexValueList);
+        return this.index.get(indexValue);
     }
 
     public boolean containsColumn(String colName){

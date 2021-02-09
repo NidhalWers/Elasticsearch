@@ -1,5 +1,9 @@
 package org.snp.indexage.entities;
 
+import org.snp.model.communication.Message;
+import org.snp.model.communication.MessageAttachment;
+
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Table {
@@ -92,11 +96,22 @@ public class Table {
         return Objects.hash(name, columns);
     }
 
-
-
-
-
-
+    public Message executeQuery(HashMap<String,String> query ){
+        ArrayList<String> keys = new ArrayList<>();
+        for(String key : query.keySet()){
+            keys.add(key);
+        }
+        Collections.sort(keys);
+        String indexKey = String.join(",",keys);
+        ArrayList<String> values= indexes.get(indexKey).find(query);
+        Message response=null;
+        if (values==null){
+            response= new Message(404);
+        }else {
+            response=new MessageAttachment<ArrayList<String>>(200,values);
+        }
+        return response;
+    }
 
     public static Builder builder(){
         return new Builder();
