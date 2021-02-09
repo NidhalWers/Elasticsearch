@@ -37,7 +37,7 @@ public class IndexService {
         Index index = Index.builder()
                     .columns(columns)
                     .build();
-        table.addIndex(StringUtils.getKeyFromTab(columnsName),index);
+        table.createIndex(columns);
 
         return new MessageAttachment<Table>(200,table);
     }

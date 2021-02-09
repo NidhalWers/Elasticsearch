@@ -12,10 +12,14 @@ public class Index {
         this.columns = columns;
     }
 
-    public void insertLine(HashMap<String,String> data, String reference ) throws Exception{
+    public boolean insertLine(HashMap<String,String> data, String reference ) throws Exception{
         ArrayList<String> extractedColKey = new ArrayList();
         for(Column column : columns){
-            extractedColKey.add(data.get(column.getName()));
+            String value =data.get(column.getName());
+            if(value == null){
+                return false;
+            }
+            extractedColKey.add(value);
         }
         Collections.sort(extractedColKey);
         String key = String.join(",",extractedColKey);
@@ -26,13 +30,21 @@ public class Index {
         }else{
             index.get(key).add(reference);
         }
+        return true;
     }
 
     public ArrayList<String> find(String key){
         return index.get(key);
     }
 
-
+    public boolean containsColumn(String colName){
+        for(Column col : columns){
+            if(col.getName()==colName){
+                return true;
+            }
+        }
+        return false;
+    }
     public static Builder builder(){return new Builder();}
 
     public static class Builder{

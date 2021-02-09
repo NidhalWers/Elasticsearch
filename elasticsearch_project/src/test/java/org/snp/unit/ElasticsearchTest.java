@@ -85,7 +85,7 @@ public class ElasticsearchTest {
     @Test
     @Order(3)
     public void testAddIndexExistingTable(){
-        table.addIndex("column1column2", Index.builder().build());
+/*        table.createIndex("column1column2", Index.builder().build());
         given()
                 .body("{\n" +
                         "    \"tableName\" : \""+table.getName()+"\",\n" +
@@ -100,8 +100,8 @@ public class ElasticsearchTest {
                 .then()
                 .statusCode(200)
                 .body(is(table.toString()));
+*/
     }
-
     @Test
     @Order(4)
     public void testAddIndexNonExistingTable(){

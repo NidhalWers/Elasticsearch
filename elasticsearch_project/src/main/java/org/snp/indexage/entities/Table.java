@@ -30,12 +30,21 @@ public class Table {
         return columns;
     }
 
-    public boolean addIndex(String key, Index index){
-        if(! indexes.containsKey(key)) {
-            indexes.put(key, index);
-            return true;
+    public boolean createIndex(List<Column> cols){
+        Index newIndex = Index.builder().columns(cols).build();
+        List<String> keys = new ArrayList<>();
+        for(Column col : cols){
+            keys.add(col.getName());
         }
-        return false;
+        Collections.sort(keys);
+        String indexKey = String.join(",", keys);
+        if(indexes.get(indexKey)!=null){
+            return false;
+
+        }else {
+            indexes.put(indexKey,newIndex);
+        }
+        return true;
     }
     public void removeIndex(Index index){ //todo
         indexes.remove(index);
@@ -45,17 +54,6 @@ public class Table {
         return (ArrayList)(indexes.values());
     }
 
-    //TODO
-    // prendre une ligne avec ces colonnes, et diminuer la Hashmap data avec seulement les colonnes de l'index
-    // example :
-    //      data = { (nom, teyeb) , (prenom, nidhal), (age, 21) }
-    //    pour l'index ayant la colonne 'nom' :
-    //      on transmet dans le insertLine seulement une hashmap contenant { (nom, teyeb) }
-    //   si index a prenom, nom :
-    //      on transmet dans le insertLine une hashmap : { (prenom, nidhal), (nom, teyeb) }
-    // etc etc
-    // dans notre cas actuel on transmet toute la ligne
-    
     public void insertRowIntoIndexes(HashMap<String,String> data, String reference)throws Exception{
         Set<String> keys = indexes.keySet();
         for(String key : keys){
