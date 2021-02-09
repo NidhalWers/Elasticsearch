@@ -9,6 +9,8 @@ import org.snp.indexage.entities.Table;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import java.util.ArrayList;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.Is.is;
 
@@ -54,7 +56,7 @@ public class ElasticsearchTest {
                     "}")
             .header("Content-Type", MediaType.APPLICATION_JSON)
             .when()
-            .post("/elasticsearch/table/create")
+            .post("/table/")
             .then()
             .statusCode(200)
             .body(is(table.toString()));
@@ -74,7 +76,7 @@ public class ElasticsearchTest {
                         "}")
                 .header("Content-Type", MediaType.APPLICATION_JSON)
                 .when()
-                .post("/elasticsearch/table/create")
+                .post("/table/")
                 .then()
                 .statusCode(409)
                 ;
@@ -85,7 +87,19 @@ public class ElasticsearchTest {
     @Test
     @Order(3)
     public void testAddIndexExistingTable(){
-/*        table.createIndex("column1column2", Index.builder().build());
+        ArrayList<Column> columns = new ArrayList<>();
+        columns.add(Column.builder()
+                .name("column1")
+                .type("string")
+                .build());
+
+        columns.add(Column.builder()
+                .name("column2")
+                .type("string")
+                .build());
+
+        table.createIndex(columns);
+
         given()
                 .body("{\n" +
                         "    \"tableName\" : \""+table.getName()+"\",\n" +
@@ -96,11 +110,11 @@ public class ElasticsearchTest {
                         "}")
                 .header("Content-Type", MediaType.APPLICATION_JSON)
                 .when()
-                .post("/elasticsearch/index/add")
+                .post("/index/add")
                 .then()
                 .statusCode(200)
                 .body(is(table.toString()));
-*/
+
     }
     @Test
     @Order(4)
@@ -115,7 +129,7 @@ public class ElasticsearchTest {
                         "}")
                 .header("Content-Type", MediaType.APPLICATION_JSON)
                 .when()
-                .post("/elasticsearch/index/add")
+                .post("/index/add")
                 .then()
                 .statusCode(404)
                 ;
