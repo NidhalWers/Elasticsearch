@@ -7,6 +7,7 @@ import java.lang.reflect.Array;
 import java.util.*;
 
 public class Table {
+
     private String name;
     private ArrayList<Column> columns;
     private Map<String, Index> indexes = new TreeMap<>();
@@ -27,9 +28,11 @@ public class Table {
     public void addColumn(Column column){
         columns.add(column);
     }
+
     public void removeColumn(Column column){
         columns.remove(column);
     }
+
     public ArrayList<Column> getColumns() {
         return columns;
     }

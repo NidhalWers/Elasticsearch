@@ -36,7 +36,7 @@ public class TableService {
 
     }
 
-    public Message addLign(DataCredentials dataCredentials){
+    public Message addLine(DataCredentials dataCredentials){
         Table table = dao.find(dataCredentials.tableName);
         if(table == null)
             return new Message(404);
@@ -57,7 +57,7 @@ public class TableService {
 
         ArrayList<String> values = table.executeQuery(dataCredentials.data);
         if(values == null)
-            return new Message(500);
+            return new Message(404);
 
         return new MessageAttachment<ArrayList>(200, values);
     }
