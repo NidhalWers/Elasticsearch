@@ -9,11 +9,9 @@ import java.util.*;
 public class Index {
     private Table table;
     private List<Column> columns;
-    //Map of value, position list
-    private Map<String, ArrayList<String>> index = new TreeMap<>();
 
     private Index(Table table, List<Column> columns) {
-        this.columns = columns;
+        this.table=table; this.columns = columns;
     }
 
     public void insertLine(HashMap<String,String> data, String reference ) throws Exception{
@@ -36,10 +34,6 @@ public class Index {
                     .get(columnKey.getName())
                         .insertLine(key, reference);
         }
-    }
-
-    public Map<String, ArrayList<String>> getIndex() {
-        return index;
     }
 
     public List<String> find(HashMap<String,String> query){

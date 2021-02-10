@@ -27,6 +27,14 @@ public class SubIndex {
     }
 
 
+    @Override
+    public String toString() {
+        return "SubIndex{" +
+                "column=" + column +
+                ", referenceMap=" + referenceMap +
+                '}';
+    }
+
     public static Builder builder(){return new Builder();}
 
     public static class Builder{

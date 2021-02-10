@@ -57,16 +57,28 @@ public class IndexageTest {
     }
 
     @Test
-    public void testInsertRowHappyPath() throws Exception {
-
-        Assertions.assertTrue(table.getIndexes().get("nom").getIndex().get("teyeb") != null);
+    public void testInsertRowIntoSubIndexHappyPath(){
+        Assertions.assertTrue(table.getSubIndexMap().get("nom").find("teyeb").contains("ligne1"));
     }
 
     @Test
-    public void testInsertRowSadPath() throws Exception {
-
-        Assertions.assertFalse(table.getIndexes().get("nom").getIndex().get("oruc") != null);
+    public void testInsertRowIntoSubIndexSadPath() {
+        Assertions.assertFalse(table.getSubIndexMap().get("nom").find("oruc") != null);
     }
+
+    @Test
+    public void testInsertRowIntoIndexHappyPath(){
+        HashMap<String,String> query = new HashMap<>();
+        query.put("nom","teyeb");
+        Assertions.assertTrue(table.getIndexes().get("nom").find(query).contains("ligne1"));
+    }
+
+    @Test
+    public void testInsertRowIntoIndexSadPath(){
+        Assertions.assertFalse(table.getSubIndexMap().get("nom").find("oruc") != null);
+    }
+
+
 
     @Test
     public void testExecuteQueryHappyPath(){

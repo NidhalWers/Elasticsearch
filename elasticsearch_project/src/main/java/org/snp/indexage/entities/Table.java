@@ -15,6 +15,7 @@ public class Table {
         this.name = name;
         this.columns = columns;
 
+
         for(Column column : columns){
             subIndexMap.put(column.getName(), SubIndex.builder()
                                                         .column(column)
@@ -32,10 +33,14 @@ public class Table {
 
     public void addColumn(Column column){
         columns.add(column);
+        subIndexMap.put(column.getName(), SubIndex.builder()
+                                                    .column(column)
+                                                    .build());
     }
 
     public void removeColumn(Column column){
         columns.remove(column);
+        //todo remove sub index
     }
 
     public ArrayList<Column> getColumns() {
@@ -96,6 +101,7 @@ public class Table {
                 "name='" + name + "\n" +
                 stringOfColumns() + "\n" +
                 (indexes.keySet().size() > 0 ? "\tindexes :\n"+indexes.keySet() : "" ) +
+                (subIndexMap.keySet().size() > 0 ? "\tsub indexes : \n"+subIndexMap.keySet(): "")+
                 '}';
     }
 
