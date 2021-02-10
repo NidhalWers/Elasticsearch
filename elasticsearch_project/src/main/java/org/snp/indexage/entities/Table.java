@@ -1,5 +1,7 @@
 package org.snp.indexage.entities;
 
+import org.snp.indexage.helpers.SubIndex;
+
 import java.util.*;
 
 public class Table {
@@ -7,10 +9,17 @@ public class Table {
     private String name;
     private ArrayList<Column> columns;
     private Map<String, Index> indexes = new TreeMap<>();
+    private Map<String, SubIndex> subIndexMap = new HashMap<>();
 
     private Table(String name, ArrayList<Column> columns) {
         this.name = name;
         this.columns = columns;
+
+        for(Column column : columns){
+            subIndexMap.put(column.getName(), SubIndex.builder()
+                                                        .column(column)
+                                                        .build());
+        }
     }
 
     private Table(String name) {
@@ -34,7 +43,10 @@ public class Table {
     }
 
     public boolean createIndex(List<Column> cols){
-        Index newIndex = Index.builder().columns(cols).build();
+        Index newIndex = Index.builder()
+                        .columns(cols)
+                        .table(this)
+                        .build();
         List<String> keys = new ArrayList<>();
         for(Column col : cols){
             keys.add(col.getName());
@@ -57,6 +69,10 @@ public class Table {
         return indexes;
     }
 
+    public Map<String, SubIndex> getSubIndexMap() {
+        return subIndexMap;
+    }
+
     public void insertRowIntoIndexes(HashMap<String,String> data, String reference)throws Exception{
         Set<String> keys = indexes.keySet();
         for(String key : keys){
@@ -64,7 +80,7 @@ public class Table {
         }
     }
 
-    public ArrayList<String> executeQuery(HashMap<String,String> query ){
+    public List<String> executeQuery(HashMap<String,String> query ){
         ArrayList<String> keys = new ArrayList<>();
         for(String key : query.keySet()){
             keys.add(key);

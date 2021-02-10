@@ -13,6 +13,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @ApplicationScoped
 public class TableService {
@@ -55,11 +56,11 @@ public class TableService {
         if(table == null)
             return new Message(404);
 
-        ArrayList<String> values = table.executeQuery(dataCredentials.data);
+        List<String> values = table.executeQuery(dataCredentials.data);
         if(values == null)
             return new Message(404);
 
-        return new MessageAttachment<ArrayList>(200, values);
+        return new MessageAttachment<List>(200, values);
     }
 
 }

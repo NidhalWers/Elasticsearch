@@ -12,6 +12,7 @@ import org.snp.indexage.entities.Table;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 @QuarkusTest
 public class IndexageTest {
@@ -27,8 +28,8 @@ public class IndexageTest {
                 .build();
 
         table.addColumn(Column.builder()
-                .name("nom")
                 .type("string")
+                .name("nom")
                 .build());
         table.addColumn(Column.builder()
                 .name("prenom")
@@ -72,7 +73,7 @@ public class IndexageTest {
         HashMap<String, String> query = new HashMap<>();
         query.put("nom", "teyeb");
 
-        ArrayList<String> values = table.executeQuery(query);
+        List<String> values = table.executeQuery(query);
         Assertions.assertTrue(values.contains("ligne1"));
     }
 
@@ -81,7 +82,7 @@ public class IndexageTest {
         HashMap<String, String> query = new HashMap<>();
         query.put("nom", "teyeb");
 
-        ArrayList<String> values = table.executeQuery(query);
+        List<String> values = table.executeQuery(query);
         Assertions.assertFalse(values.contains("ligne2"));
     }
 
