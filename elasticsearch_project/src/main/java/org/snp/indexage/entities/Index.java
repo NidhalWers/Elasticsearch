@@ -15,10 +15,7 @@ public class Index {
     public boolean insertLine(HashMap<String,String> data, String reference ) throws Exception{
         ArrayList<String> extractedColKey = new ArrayList();
         for(Column column : columns){
-            String value =data.get(column.getName());
-            if(value == null){
-                return false;
-            }
+            String value = data.get(column.getName()) != null ? data.get(column.getName()) : "NULL" ;
             extractedColKey.add(value);
         }
         Collections.sort(extractedColKey);
