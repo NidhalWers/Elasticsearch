@@ -1,9 +1,5 @@
 package org.snp.indexage.entities;
 
-import org.snp.model.communication.Message;
-import org.snp.model.communication.MessageAttachment;
-
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Table {
