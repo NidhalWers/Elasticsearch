@@ -22,13 +22,6 @@ public class Index {
         }
         Collections.sort(extractedColKey);
         String key = String.join(",",extractedColKey);
-        /*if(index.get(key)==null){
-            ArrayList newRow = new ArrayList<String>();
-            newRow.add(reference);
-            index.put(key,newRow);
-        }else{
-            index.get(key).add(reference);
-        }*/
         for(Column columnKey : columns){
             table.getSubIndexMap()
                     .get(columnKey.getName())
@@ -37,24 +30,14 @@ public class Index {
     }
 
     public List<String> find(HashMap<String,String> query){
-        List<String> indexValueList = new ArrayList<>();
-        /*for(String key : query.keySet()){
-            indexValueList.add(query.get(key));
-        }
-        Collections.sort(indexValueList);
-        String indexValue = String.join(",",indexValueList);
-        return this.index.get(indexValue);*/
-
         List<List> allResults = new ArrayList<>();
 
-        for(Map.Entry colum : query.entrySet()  ){
+        for(Map.Entry colum : query.entrySet()){
             allResults.add(table.getSubIndexMap()
                                     .get(colum.getKey())
                                         .find((String) colum.getValue()));
         }
-
         return ListUtils.intersection(allResults);
-
     }
 
     public boolean containsColumn(String colName){
