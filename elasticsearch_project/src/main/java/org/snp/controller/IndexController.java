@@ -14,7 +14,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path("/elasticsearch/index")
+@Path("/index")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class IndexController {
@@ -23,7 +23,7 @@ public class IndexController {
     private IndexService indexService;
 
     @POST
-    @Path("/add/")
+    @Path("/add")
     public String addIndex(IndexCredentials indexCredentials){
         Message message = indexService.create(indexCredentials);
         if(message.hasAttachment())

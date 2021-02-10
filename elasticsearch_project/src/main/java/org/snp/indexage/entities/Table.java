@@ -1,19 +1,26 @@
 package org.snp.indexage.entities;
 
-import org.snp.model.communication.Message;
-import org.snp.model.communication.MessageAttachment;
+import org.snp.indexage.helpers.SubIndex;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Table {
+
     private String name;
     private ArrayList<Column> columns;
     private Map<String, Index> indexes = new TreeMap<>();
+    private Map<String, SubIndex> subIndexMap = new HashMap<>();
 
     private Table(String name, ArrayList<Column> columns) {
         this.name = name;
         this.columns = columns;
+
+
+        for(Column column : columns){
+            subIndexMap.put(column.getName(), SubIndex.builder()
+                                                        .column(column)
+                                                        .build());
+        }
     }
 
     private Table(String name) {
@@ -26,16 +33,25 @@ public class Table {
 
     public void addColumn(Column column){
         columns.add(column);
+        subIndexMap.put(column.getName(), SubIndex.builder()
+                                                    .column(column)
+                                                    .build());
     }
+
     public void removeColumn(Column column){
         columns.remove(column);
+        //todo remove sub index
     }
+
     public ArrayList<Column> getColumns() {
         return columns;
     }
 
     public boolean createIndex(List<Column> cols){
-        Index newIndex = Index.builder().columns(cols).build();
+        Index newIndex = Index.builder()
+                        .columns(cols)
+                        .table(this)
+                        .build();
         List<String> keys = new ArrayList<>();
         for(Column col : cols){
             keys.add(col.getName());
@@ -53,8 +69,12 @@ public class Table {
         indexes.remove(index);
     }
 
-    public ArrayList<Index> getAllIndex(){
-        return (ArrayList)(indexes.values());
+    public Map<String, Index> getIndexes() {
+        return indexes;
+    }
+
+    public Map<String, SubIndex> getSubIndexMap() {
+        return subIndexMap;
     }
 
     public void insertRowIntoIndexes(HashMap<String,String> data, String reference)throws Exception{
@@ -64,12 +84,23 @@ public class Table {
         }
     }
 
+    public List<String> executeQuery(HashMap<String,String> query ){
+        ArrayList<String> keys = new ArrayList<>();
+        for(String key : query.keySet()){
+            keys.add(key);
+        }
+        Collections.sort(keys);
+        String indexKey = String.join(",",keys);
+        return indexes.get(indexKey).find(query);
+    }
+
     @Override
     public String toString() {
         return "Table{" +
                 "name='" + name + "\n" +
                 stringOfColumns() + "\n" +
                 (indexes.keySet().size() > 0 ? "\tindexes :\n"+indexes.keySet() : "" ) +
+                (subIndexMap.keySet().size() > 0 ? "\tsub indexes : \n"+subIndexMap.keySet(): "")+
                 '}';
     }
 
@@ -95,22 +126,6 @@ public class Table {
         return Objects.hash(name, columns);
     }
 
-    public Message executeQuery(HashMap<String,String> query ){
-        ArrayList<String> keys = new ArrayList<>();
-        for(String key : query.keySet()){
-            keys.add(key);
-        }
-        Collections.sort(keys);
-        String indexKey = String.join(",",keys);
-        ArrayList<String> values= indexes.get(indexKey).find(query);
-        Message response=null;
-        if (values==null){
-            response= new Message(404);
-        }else {
-            response=new MessageAttachment<ArrayList<String>>(200,values);
-        }
-        return response;
-    }
 
     public static Builder builder(){
         return new Builder();
