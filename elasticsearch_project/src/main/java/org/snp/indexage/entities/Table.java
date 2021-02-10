@@ -48,14 +48,18 @@ public class Table {
     }
 
     public boolean createIndex(List<Column> cols){
-        Index newIndex = Index.builder()
-                        .columns(cols)
-                        .table(this)
-                        .build();
+        Map<String, SubIndex> map = new HashMap<>();
         List<String> keys = new ArrayList<>();
         for(Column col : cols){
             keys.add(col.getName());
+            map.put(col.getName(), subIndexMap.get(col.getName()));
         }
+
+        Index newIndex = Index.builder()
+                        .columns(cols)
+                        .subIndexes(map)
+                        .build();
+
         Collections.sort(keys);
         String indexKey = String.join(",", keys);
         if(indexes.get(indexKey)!=null){

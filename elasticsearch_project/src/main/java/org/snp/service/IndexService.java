@@ -34,7 +34,8 @@ public class IndexService {
 
         ArrayList<Column> columns = columnService.getListColumns(indexCredentials.columns);
 
-        table.createIndex(columns);
+        if(! table.createIndex(columns))
+            return new Message(403);
 
         return new MessageAttachment<Table>(200,table);
     }

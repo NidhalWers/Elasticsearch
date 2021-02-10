@@ -7,24 +7,20 @@ import org.snp.utils.ListUtils;
 import java.util.*;
 
 public class Index {
-    private Table table;
     private List<Column> columns;
+    private Map<String, SubIndex> subIndexMap;
 
-    private Index(Table table, List<Column> columns) {
-        this.table=table; this.columns = columns;
+    private Index(List<Column> columns, Map<String, SubIndex> subIndexMap) {
+        this.columns = columns;
+        this.subIndexMap=subIndexMap;
     }
 
-    public void insertLine(HashMap<String,String> data, String reference ) throws Exception{
-        ArrayList<String> extractedColKey = new ArrayList();
+    public void insertLine(HashMap<String,String> data, String reference ){
         for(Column column : columns){
             String value = data.get(column.getName()) != null ? data.get(column.getName()) : "NULL" ;
-            extractedColKey.add(value);
-        }
-        Collections.sort(extractedColKey);
-        for(Map.Entry column : data.entrySet()){
-            table.getSubIndexMap()
-                    .get(column.getKey())
-                        .insertLine((String) column.getValue(), reference);
+            subIndexMap
+                    .get(column.getName())
+                        .insertLine(value, reference);
         }
     }
 
@@ -32,9 +28,9 @@ public class Index {
         List<List> allResults = new ArrayList<>();
 
         for(Map.Entry colum : query.entrySet()){
-            allResults.add(table.getSubIndexMap()
-                                    .get(colum.getKey())
-                                        .find((String) colum.getValue()));
+            allResults.add(subIndexMap
+                                .get(colum.getKey())
+                                    .find((String) colum.getValue()));
         }
         return ListUtils.intersection(allResults);
     }
@@ -47,11 +43,20 @@ public class Index {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "Index{" +
+                "columns=" + columns +
+                ", subIndexMap=" + subIndexMap +
+                '}';
+    }
+
     public static Builder builder(){return new Builder();}
 
     public static class Builder{
         private List<Column> columns;
-        private Table table;
+        private Map<String, SubIndex> subIndexMap;
 
         public Builder() {
         }
@@ -61,13 +66,14 @@ public class Index {
             return this;
         }
 
-        public Builder table(Table table){
-            this.table=table;
+
+        public Builder subIndexes(Map<String, SubIndex> subIndexMap){
+            this.subIndexMap = subIndexMap;
             return this;
         }
 
         public Index build(){
-            return new Index(this.table, this.columns);
+            return new Index(this.columns, this.subIndexMap);
         }
     }
 }

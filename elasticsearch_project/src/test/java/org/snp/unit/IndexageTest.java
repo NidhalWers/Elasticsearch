@@ -61,6 +61,22 @@ public class IndexageTest {
 
         table.createIndex(columns2);
 
+        ArrayList<Column> columns3 = new ArrayList<>();
+        columns3.add(Column.builder()
+                .name("nom")
+                .type("string")
+                .build());
+        columns3.add(Column.builder()
+                .name("prenom")
+                .type("string")
+                .build());
+        columns3.add(Column.builder()
+                .name("age")
+                .type("int")
+                .build());
+
+        table.createIndex(columns3);
+
 
         data.put("nom", "teyeb");
         data.put("prenom", "nidhal");
@@ -89,11 +105,21 @@ public class IndexageTest {
     }
 
     @Test
-    public void testInsertRowIntoIndexMultipleColumnHappyPath(){
+    public void testInsertRowIntoIndexTwoColumnHappyPath(){
         HashMap<String,String> query = new HashMap<>();
         query.put("nom","teyeb");
         query.put("prenom","nidhal");
         Assertions.assertTrue(table.getIndexes().get("nom,prenom").find(query).contains("ligne1"));
+
+    }
+
+    @Test
+    public void testInsertRowIntoIndexMultipleColumnHappyPath(){
+        HashMap<String,String> query = new HashMap<>();
+        query.put("nom","teyeb");
+        query.put("prenom","nidhal");
+        query.put("age", "21");
+        Assertions.assertTrue(table.getIndexes().get("age,nom,prenom").find(query).contains("ligne1"));
 
     }
 
