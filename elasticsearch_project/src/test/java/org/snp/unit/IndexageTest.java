@@ -40,6 +40,7 @@ public class IndexageTest {
                 .type("int")
                 .build());
 
+        //index on nom
         ArrayList<Column> columns = new ArrayList<>();
         columns.add(Column.builder()
                 .name("nom")
@@ -47,6 +48,19 @@ public class IndexageTest {
                 .build());
 
         table.createIndex(columns);
+        //index on nom & prenom
+        ArrayList<Column> columns2 = new ArrayList<>();
+        columns2.add(Column.builder()
+                .name("nom")
+                .type("string")
+                .build());
+        columns2.add(Column.builder()
+                .name("prenom")
+                .type("string")
+                .build());
+
+        table.createIndex(columns2);
+
 
         data.put("nom", "teyeb");
         data.put("prenom", "nidhal");
@@ -67,10 +81,20 @@ public class IndexageTest {
     }
 
     @Test
-    public void testInsertRowIntoIndexHappyPath(){
+    public void testInsertRowIntoIndexOneColumnHappyPath(){
         HashMap<String,String> query = new HashMap<>();
         query.put("nom","teyeb");
         Assertions.assertTrue(table.getIndexes().get("nom").find(query).contains("ligne1"));
+
+    }
+
+    @Test
+    public void testInsertRowIntoIndexMultipleColumnHappyPath(){
+        HashMap<String,String> query = new HashMap<>();
+        query.put("nom","teyeb");
+        query.put("prenom","nidhal");
+        Assertions.assertTrue(table.getIndexes().get("nom,prenom").find(query).contains("ligne1"));
+
     }
 
     @Test
@@ -80,10 +104,22 @@ public class IndexageTest {
 
 
 
+
+
     @Test
-    public void testExecuteQueryHappyPath(){
+    public void testExecuteQueryOneColumnHappyPath(){
         HashMap<String, String> query = new HashMap<>();
         query.put("nom", "teyeb");
+
+        List<String> values = table.executeQuery(query);
+        Assertions.assertTrue(values.contains("ligne1"));
+    }
+
+    @Test
+    public void testExecuteQueryMultipleColumnHappyPath(){
+        HashMap<String, String> query = new HashMap<>();
+        query.put("nom", "teyeb");
+        query.put("prenom", "nidhal");
 
         List<String> values = table.executeQuery(query);
         Assertions.assertTrue(values.contains("ligne1"));

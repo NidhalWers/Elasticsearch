@@ -21,11 +21,10 @@ public class Index {
             extractedColKey.add(value);
         }
         Collections.sort(extractedColKey);
-        String key = String.join(",",extractedColKey);
-        for(Column columnKey : columns){
+        for(Map.Entry column : data.entrySet()){
             table.getSubIndexMap()
-                    .get(columnKey.getName())
-                        .insertLine(key, reference);
+                    .get(column.getKey())
+                        .insertLine((String) column.getValue(), reference);
         }
     }
 
