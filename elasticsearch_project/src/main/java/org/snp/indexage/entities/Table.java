@@ -15,12 +15,6 @@ public class Table {
         this.name = name;
         this.columns = columns;
 
-
-        for(Column column : columns){
-            subIndexMap.put(column.getName(), SubIndex.builder()
-                                                        .column(column)
-                                                        .build());
-        }
     }
 
     private Table(String name) {
@@ -33,9 +27,6 @@ public class Table {
 
     public void addColumn(Column column){
         columns.add(column);
-        subIndexMap.put(column.getName(), SubIndex.builder()
-                                                    .column(column)
-                                                    .build());
     }
 
     public void removeColumn(Column column){
@@ -52,7 +43,14 @@ public class Table {
         List<String> keys = new ArrayList<>();
         for(Column col : cols){
             keys.add(col.getName());
-            map.put(col.getName(), subIndexMap.get(col.getName()));
+            SubIndex subIndex = subIndexMap.get(col.getName());
+            if(subIndex == null) {
+                subIndex = SubIndex.builder()
+                                    .column(col)
+                                    .build();
+                subIndexMap.put(col.getName(), subIndex);
+            }
+            map.put(col.getName(), subIndex);
         }
 
         Index newIndex = Index.builder()
