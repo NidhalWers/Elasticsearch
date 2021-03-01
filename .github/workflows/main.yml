@@ -17,4 +17,4 @@ jobs:
           java-package: jdk
       
       - name: Run tests
-        run: mvn clean --file elasticsearch_project/*.pom test
+        run: mvn clean test
