@@ -7,60 +7,32 @@ import org.snp.utils.ListUtils;
 import java.util.*;
 
 public class Index {
-    private Table table;
     private List<Column> columns;
-    //Map of value, position list
-    private Map<String, ArrayList<String>> index = new TreeMap<>();
+    private Map<String, SubIndex> subIndexMap;
 
-    private Index(Table table, List<Column> columns) {
+    private Index(List<Column> columns, Map<String, SubIndex> subIndexMap) {
         this.columns = columns;
+        this.subIndexMap=subIndexMap;
     }
 
-    public void insertLine(HashMap<String,String> data, String reference ) throws Exception{
-        ArrayList<String> extractedColKey = new ArrayList();
+    public void insertLine(HashMap<String,String> data, String reference ){
         for(Column column : columns){
             String value = data.get(column.getName()) != null ? data.get(column.getName()) : "NULL" ;
-            extractedColKey.add(value);
+            subIndexMap
+                    .get(column.getName())
+                        .insertLine(value, reference);
         }
-        Collections.sort(extractedColKey);
-        String key = String.join(",",extractedColKey);
-        /*if(index.get(key)==null){
-            ArrayList newRow = new ArrayList<String>();
-            newRow.add(reference);
-            index.put(key,newRow);
-        }else{
-            index.get(key).add(reference);
-        }*/
-        for(Column columnKey : columns){
-            table.getSubIndexMap()
-                    .get(columnKey.getName())
-                        .insertLine(key, reference);
-        }
-    }
-
-    public Map<String, ArrayList<String>> getIndex() {
-        return index;
     }
 
     public List<String> find(HashMap<String,String> query){
-        List<String> indexValueList = new ArrayList<>();
-        /*for(String key : query.keySet()){
-            indexValueList.add(query.get(key));
-        }
-        Collections.sort(indexValueList);
-        String indexValue = String.join(",",indexValueList);
-        return this.index.get(indexValue);*/
-
         List<List> allResults = new ArrayList<>();
 
-        for(Map.Entry colum : query.entrySet()  ){
-            allResults.add(table.getSubIndexMap()
-                                    .get(colum.getKey())
-                                        .find((String) colum.getValue()));
+        for(Map.Entry colum : query.entrySet()){
+            allResults.add(subIndexMap
+                                .get(colum.getKey())
+                                    .find((String) colum.getValue()));
         }
-
         return ListUtils.intersection(allResults);
-
     }
 
     public boolean containsColumn(String colName){
@@ -71,11 +43,20 @@ public class Index {
         }
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "Index{" +
+                "columns=" + columns +
+                ", subIndexMap=" + subIndexMap +
+                '}';
+    }
+
     public static Builder builder(){return new Builder();}
 
     public static class Builder{
         private List<Column> columns;
-        private Table table;
+        private Map<String, SubIndex> subIndexMap;
 
         public Builder() {
         }
@@ -85,13 +66,14 @@ public class Index {
             return this;
         }
 
-        public Builder table(Table table){
-            this.table=table;
+
+        public Builder subIndexes(Map<String, SubIndex> subIndexMap){
+            this.subIndexMap = subIndexMap;
             return this;
         }
 
         public Index build(){
-            return new Index(this.table, this.columns);
+            return new Index(this.columns, this.subIndexMap);
         }
     }
 }

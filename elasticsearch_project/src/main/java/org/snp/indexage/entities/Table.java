@@ -15,6 +15,7 @@ public class Table {
         this.name = name;
         this.columns = columns;
 
+
         for(Column column : columns){
             subIndexMap.put(column.getName(), SubIndex.builder()
                                                         .column(column)
@@ -32,10 +33,14 @@ public class Table {
 
     public void addColumn(Column column){
         columns.add(column);
+        subIndexMap.put(column.getName(), SubIndex.builder()
+                                                    .column(column)
+                                                    .build());
     }
 
     public void removeColumn(Column column){
         columns.remove(column);
+        //todo remove sub index
     }
 
     public ArrayList<Column> getColumns() {
@@ -43,19 +48,22 @@ public class Table {
     }
 
     public boolean createIndex(List<Column> cols){
-        Index newIndex = Index.builder()
-                        .columns(cols)
-                        .table(this)
-                        .build();
+        Map<String, SubIndex> map = new HashMap<>();
         List<String> keys = new ArrayList<>();
         for(Column col : cols){
             keys.add(col.getName());
+            map.put(col.getName(), subIndexMap.get(col.getName()));
         }
+
+        Index newIndex = Index.builder()
+                        .columns(cols)
+                        .subIndexes(map)
+                        .build();
+
         Collections.sort(keys);
         String indexKey = String.join(",", keys);
         if(indexes.get(indexKey)!=null){
             return false;
-
         }else {
             indexes.put(indexKey,newIndex);
         }
@@ -96,6 +104,7 @@ public class Table {
                 "name='" + name + "\n" +
                 stringOfColumns() + "\n" +
                 (indexes.keySet().size() > 0 ? "\tindexes :\n"+indexes.keySet() : "" ) +
+                (subIndexMap.keySet().size() > 0 ? "\tsub indexes : \n"+subIndexMap.keySet(): "")+
                 '}';
     }
 
