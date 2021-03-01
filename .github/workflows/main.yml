@@ -15,6 +15,6 @@ jobs:
         with:
           java-version: '11'
           java-package: jdk
-          
+      
       - name: Run tests
-        run: mvn clean test
+        run: mvn clean --file *.pom test
