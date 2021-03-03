@@ -28,7 +28,7 @@ public class ColumnTest {
                 .name("nom")
                 .build();
 
-        Assertions.assertEquals("prenom", column.getName());
+        Assertions.assertNotEquals("prenom", column.getName());
     }
 
     /**
@@ -50,7 +50,7 @@ public class ColumnTest {
                 .type("String")
                 .build();
 
-        Assertions.assertEquals("Double", column.getType());
+        Assertions.assertNotEquals("Double", column.getType());
     }
 
     /**
@@ -64,10 +64,7 @@ public class ColumnTest {
                 .name("nom")
                 .build();
 
-        String test = "Column{" +
-                "name=" + "nom" + '\'' +
-                ", type=" + "String" + '\'' +
-                '}';
+        String test = "Column{name='nom', type='String'}";
         Assertions.assertEquals(column.toString(), test);
     }
 

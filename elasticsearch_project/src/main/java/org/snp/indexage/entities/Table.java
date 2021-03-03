@@ -4,14 +4,16 @@ import org.snp.indexage.helpers.SubIndex;
 
 import java.util.*;
 
+
+
 public class Table {
 
     private String name;
-    private ArrayList<Column> columns;
+    private List<Column> columns;
     private Map<String, Index> indexes = new TreeMap<>();
     private Map<String, SubIndex> subIndexMap = new HashMap<>();
 
-    private Table(String name, ArrayList<Column> columns) {
+    private Table(String name, List<Column> columns) {
         this.name = name;
         this.columns = columns;
 
@@ -32,9 +34,10 @@ public class Table {
     public void removeColumn(Column column){
         columns.remove(column);
         //todo remove sub index
+        //todo remove with a name
     }
 
-    public ArrayList<Column> getColumns() {
+    public List<Column> getColumns() {
         return columns;
     }
 
@@ -70,6 +73,7 @@ public class Table {
     public void removeIndex(Index index){ //todo
         indexes.remove(index);
     }
+    //todo remove index with a list of column's name
 
     public Map<String, Index> getIndexes() {
         return indexes;
@@ -129,13 +133,18 @@ public class Table {
     }
 
 
+    /**
+     * Builder
+     *
+     */
+
     public static Builder builder(){
         return new Builder();
     }
 
     public static class Builder{
         private String name;
-        private ArrayList<Column> columns = new ArrayList<>();
+        private List<Column> columns = new ArrayList<>();
 
         public Builder(){
 
@@ -146,7 +155,7 @@ public class Table {
             return this;
         }
 
-        public Builder columns(ArrayList<Column> columns){
+        public Builder columns(List<Column> columns){
             this.columns=columns;
             return this;
         }

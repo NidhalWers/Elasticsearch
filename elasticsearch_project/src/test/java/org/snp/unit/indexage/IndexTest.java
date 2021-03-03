@@ -1,24 +1,13 @@
 package org.snp.unit.indexage;
 
+
 import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.junit.mockito.InjectSpy;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
-import io.quarkus.test.junit.mockito.InjectMock;
-import org.snp.TestFactory;
-import org.snp.indexage.entities.Column;
+import org.snp.utils.TestFactory;
 import org.snp.indexage.entities.Index;
-import org.snp.indexage.helpers.SubIndex;
-import org.yaml.snakeyaml.util.ArrayUtils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static org.mockito.ArgumentMatchers.any;
 
 @QuarkusTest
 public class IndexTest {
@@ -28,9 +17,6 @@ public class IndexTest {
      * method to test insertLine(HashMap<String,String> data, String reference )
      */
 
-    @InjectSpy
-    SubIndex subIndex;
-
 
 
     @Test
@@ -38,10 +24,10 @@ public class IndexTest {
 
         Index index = TestFactory.createIndexNom();
 
-        List<String> list = new ArrayList<>();
+        /*List<String> list = new ArrayList<>();
         list.add("ligne1");
         Mockito.when(subIndex.find(any())).thenReturn(list);
-
+        */
 
         HashMap<String, String> data = new HashMap<>();
         data.put("nom", "teyeb");
@@ -63,9 +49,12 @@ public class IndexTest {
 
        Index index = TestFactory.createIndexNom();
 
+       /*
         List<String> list = new ArrayList<>();
         list.add("ligne1");
         Mockito.when(subIndex.find(any())).thenReturn(list);
+        */
+
 
         HashMap<String, String> data = new HashMap<>();
         data.put("nom", "oruc");

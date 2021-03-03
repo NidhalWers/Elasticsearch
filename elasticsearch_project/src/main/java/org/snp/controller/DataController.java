@@ -26,6 +26,10 @@ public class DataController {
             throw  new NotFoundException("table "+dataCredentials.tableName+" does not exists");
     }
 
+    /*
+    coordonnée : longitude /lati
+    Pair : deux coordonnées
+    * */
 
 
 
