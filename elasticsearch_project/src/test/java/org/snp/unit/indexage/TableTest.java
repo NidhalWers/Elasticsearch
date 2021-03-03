@@ -1,200 +1,328 @@
 package org.snp.unit.indexage;
 
 import io.quarkus.test.junit.QuarkusTest;
-import io.quarkus.test.junit.mockito.InjectSpy;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.snp.TestFactory;
 import org.snp.indexage.entities.Column;
+import org.snp.utils.TestFactory;
 import org.snp.indexage.entities.Table;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 
-import org.snp.indexage.helpers.SubIndex;
+import org.snp.utils.TestUtils;
 
 
 @QuarkusTest
 public class TableTest {
 
+    /**
+     * method to test : getName()
+     */
+    @Test
+    public void testGetNameHappyPath(){
+        Table table = Table
+                .builder()
+                .name("test")
+                .build();
 
-        /**
-         * method to test : insertRowIntoIndexes(HashMap<String,String> data, String reference)
-         */
+        Assertions.assertEquals("test", table.getName());
+    }
+    @Test
+    public void testGetNameSadPath(){
+        Table table = Table
+                .builder()
+                .name("test")
+                .build();
+        Assertions.assertNotEquals("", table.getName());
+    }
 
-        /*
-        @InjectSpy
-        SubIndex subIndex;
+    /**
+     * method to test : addColumn(Column column)
+     */
+    @Test
+    public void testAddColumnHappyPath(){
+        Table table = Table
+                .builder()
+                .name("test")
+                .build();
+        Column column = Column.builder()
+                .type("string")
+                .name("nom")
+                .build();
+        table.addColumn(column);
 
-        @Test
-        public void testInsertRowIntoIndexesHappyPath(){
+        Assertions.assertTrue(table.getColumns().contains(column));
+    }
+    @Test
+    public void testAddColumnSadPath(){
+        Table table = Table
+                .builder()
+                .name("test")
+                .build();
+        Column column = Column.builder()
+                .type("string")
+                .name("nom")
+                .build();
+        table.addColumn(column);
 
-            Table table= null;
-            try {
-                table = TestFactory.createTable();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        Assertions.assertFalse(table.getColumns().contains(Column.builder()
+                                                                .name("prenom")
+                                                                .build()
+                                                            ));
+    }
+    /**
+     * method to test : removeColumn(Column column)
+     *///todo test remove of the subindex & index with this column
+    @Test
+    public void testRemoveColumnHappyPath(){
+        Table table = Table
+                .builder()
+                .name("test")
+                .build();
+        Column column = Column.builder()
+                .type("string")
+                .name("nom")
+                .build();
+        table.addColumn(column);
 
-            HashMap<String, String> data = new HashMap<>();
+        table.removeColumn(column);
 
-            data.put("nom", "teyeb");
-            data.put("prenom", "nidhal");
-            data.put("age", "21");
+        Assertions.assertFalse(table.getColumns().contains(column));
+    }
 
+    /**
+     * method to test : getColumns()
+     */
+    @Test
+    public void testGetColumns(){
+        List<Column> columns = TestFactory.createListColumn(List.of("nom","prenom","age"));
 
-            try {
-                table.insertRowIntoIndexes(data,"ligne1");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        Table table = Table
+                .builder()
+                .name("test")
+                .columns(columns)
+                .build();
 
-            Assertions.assertTrue(table.getSubIndexMap().get("nom").find("teyeb").contains("ligne1"));
-        }
+        Assertions.assertEquals(columns, table.getColumns());
+    }
 
-        @Test
-        public void testInsertRowIntoSubIndexSadPath() {
+    /**
+     * method to test : createIndex(List<Column> cols)
+     */
+    @Test
+    public void testCreateIndexOneColumn(){
+        List<Column> columns = TestFactory.createListColumn(List.of("nom","prenom","age"));
 
-            Table table= null;
-            try {
-                table = TestFactory.createTable();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        Table table = Table
+                .builder()
+                .name("test")
+                .columns(columns)
+                .build();
 
-            HashMap<String, String> data = new HashMap<>();
+        table.createIndex(TestFactory
+                            .createListColumn(
+                                    List.of("nom")
+                            )
+        );
 
-            data.put("nom", "teyeb");
-            data.put("prenom", "nidhal");
-            data.put("age", "21");
+        Assertions.assertTrue(table.getIndexes().get("nom")!=null);
+    }
 
+    @Test
+    public void testCreateIndexTwoColumn(){
+        List<Column> columns = TestFactory.createListColumn(List.of("nom","prenom","age"));
 
-            try {
-                table.insertRowIntoIndexes(data,"ligne1");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        Table table = Table
+                .builder()
+                .name("test")
+                .columns(columns)
+                .build();
 
-            Assertions.assertFalse(table.getSubIndexMap().get("nom").find("oruc") != null);
-        }
+        table.createIndex(TestFactory
+                .createListColumn(
+                        List.of("nom","prenom")
+                )
+        );
 
-        @Test
-        public void testInsertRowIntoIndexOneColumnHappyPath(){
-            Table table= null;
-            try {
-                table = TestFactory.createTable();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        Assertions.assertTrue(table.getIndexes().get("nom,prenom")!=null);
+    }
 
-            HashMap<String,String> query = new HashMap<>();
-            query.put("nom","teyeb");
-            Assertions.assertTrue(table.getIndexes().get("nom").find(query).contains("ligne1"));
+    @Test
+    public void testCreateIndexSadPath(){
+        List<Column> columns = TestFactory.createListColumn(List.of("nom","prenom","age"));
 
-        }
+        Table table = Table
+                .builder()
+                .name("test")
+                .columns(columns)
+                .build();
 
-        @Test
-        public void testInsertRowIntoIndexTwoColumnHappyPath(){
-            Table table= null;
-            try {
-                table = TestFactory.createTable();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+       Assertions.assertTrue(table.getIndexes().get("nom")==null);
+    }
 
-            HashMap<String,String> query = new HashMap<>();
-            query.put("nom","teyeb");
-            query.put("prenom","nidhal");
-            Assertions.assertTrue(table.getIndexes().get("nom,prenom").find(query).contains("ligne1"));
+    /**
+     * method to test : removeIndex(Index index)
+     */
+    @Test
+    public void testRemoveIndex(){
+        //todo remove with a list of column's name
+        Table table = TestFactory.createTable();
 
-        }
-
-        @Test
-        public void testInsertRowIntoIndexMultipleColumnHappyPath(){
-            Table table= null;
-            try {
-                table = TestFactory.createTable();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            HashMap<String,String> query = new HashMap<>();
-            query.put("nom","teyeb");
-            query.put("prenom","nidhal");
-            query.put("age", "21");
-            Assertions.assertTrue(table.getIndexes().get("age,nom,prenom").find(query).contains("ligne1"));
-
-        }
-
-        @Test
-        public void testInsertRowIntoIndexSadPath(){
-            Table table= null;
-            try {
-                table = TestFactory.createTable();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            Assertions.assertFalse(table.getSubIndexMap().get("nom").find("oruc") != null);
-        }
-
-
-
-
-
-        @Test
-        public void testExecuteQueryOneColumnHappyPath(){
-            Table table= null;
-            try {
-                table = TestFactory.createTable();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            HashMap<String, String> query = new HashMap<>();
-            query.put("nom", "teyeb");
-
-            List<String> values = table.executeQuery(query);
-            Assertions.assertTrue(values.contains("ligne1"));
-        }
-
-        @Test
-        public void testExecuteQueryMultipleColumnHappyPath(){
-            Table table= null;
-            try {
-                table = TestFactory.createTable();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            HashMap<String, String> query = new HashMap<>();
-            query.put("nom", "teyeb");
-            query.put("prenom", "nidhal");
-
-            List<String> values = table.executeQuery(query);
-            Assertions.assertTrue(values.contains("ligne1"));
-        }
-
-        @Test
-        public void testExecuteQuerySadPath(){
-            Table table= null;
-            try {
-                table = TestFactory.createTable();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            HashMap<String, String> query = new HashMap<>();
-            query.put("nom", "teyeb");
-
-            List<String> values = table.executeQuery(query);
-            Assertions.assertFalse(values.contains("ligne2"));
-        }
+    }
 
 
-         */
+    /**
+     * method to test : getIndexes()
+     */
+    @Test
+    public void testGetIndexes(){
+        Table table = TestFactory.createTable();
+
+        Assertions.assertTrue(table.getIndexes()!=null);
+    }
+
+    /**
+     * method to test : getSubIndexMap()
+     */
+    @Test
+    public void testGetSubIndexMap(){
+        Table table = TestFactory.createTable();
+        Assertions.assertTrue(table.getSubIndexMap()!=null);
+    }
+
+    /**
+     * method to test : insertRowIntoIndexes(HashMap<String,String> data, String reference)
+     */
+
+    @Test
+    public void testInsertRowIntoIndexesHappyPath(){
+        Table  table = TestFactory.createTable();
+        table = TestUtils.insertData(table);
+
+        Assertions.assertTrue(table.getSubIndexMap().get("nom").find("teyeb").contains("ligne1"));
+    }
+
+    @Test
+    public void testInsertRowIntoSubIndexSadPath() {
+        Table  table = TestFactory.createTable();
+        table = TestUtils.insertData(table);
+
+        Assertions.assertFalse(table.getSubIndexMap().get("nom").find("oruc") != null);
+    }
+
+    @Test
+    public void testInsertRowIntoIndexOneColumnHappyPath(){
+        Table  table = TestFactory.createTable();
+        table = TestUtils.insertData(table);
+
+        HashMap<String,String> query = new HashMap<>();
+        query.put("nom","teyeb");
+        Assertions.assertTrue(table.getIndexes().get("nom").find(query).contains("ligne1"));
+
+    }
+
+    @Test
+    public void testInsertRowIntoIndexTwoColumnHappyPath(){
+        Table  table = TestFactory.createTable();
+        table = TestUtils.insertData(table);
+
+        HashMap<String,String> query = new HashMap<>();
+        query.put("nom","teyeb");
+        query.put("prenom","nidhal");
+        Assertions.assertTrue(table.getIndexes().get("nom,prenom").find(query).contains("ligne1"));
+
+    }
+
+    @Test
+    public void testInsertRowIntoIndexMultipleColumnHappyPath(){
+        Table  table = TestFactory.createTable();
+        table = TestUtils.insertData(table);
+
+        HashMap<String,String> query = new HashMap<>();
+        query.put("nom","teyeb");
+        query.put("prenom","nidhal");
+        query.put("age", "21");
+        Assertions.assertTrue(table.getIndexes().get("age,nom,prenom").find(query).contains("ligne1"));
+
+    }
+
+    @Test
+    public void testInsertRowIntoIndexSadPath(){
+        Table  table = TestFactory.createTable();
+        table = TestUtils.insertData(table);
+
+        Assertions.assertFalse(table.getSubIndexMap().get("nom").find("oruc") != null);
+    }
+
+
+    /**
+     * method to test : executeQuery(HashMap<String,String> query )
+     */
+
+
+    @Test
+    public void testExecuteQueryOneColumnHappyPath(){
+        Table  table = TestFactory.createTable();
+        table = TestUtils.insertData(table);
+
+        HashMap<String, String> query = new HashMap<>();
+        query.put("nom", "teyeb");
+
+        List<String> values = table.executeQuery(query);
+        Assertions.assertTrue(values.contains("ligne1"));
+    }
+
+    @Test
+    public void testExecuteQueryMultipleColumnHappyPath(){
+        Table  table = TestFactory.createTable();
+        table = TestUtils.insertData(table);
+
+        HashMap<String, String> query = new HashMap<>();
+        query.put("nom", "teyeb");
+        query.put("prenom", "nidhal");
+
+        List<String> values = table.executeQuery(query);
+        Assertions.assertTrue(values.contains("ligne1"));
+    }
+
+    @Test
+    public void testExecuteQuerySadPath(){
+        Table  table = TestFactory.createTable();
+        table = TestUtils.insertData(table);
+
+        HashMap<String, String> query = new HashMap<>();
+        query.put("nom", "teyeb");
+
+        List<String> values = table.executeQuery(query);
+        Assertions.assertFalse(values.contains("ligne2"));
+    }
+
+    /**
+     * method to test : equals(Object o)
+     */
+    @Test
+    public void testEqualsHappyPath(){
+        Table table1 = TestFactory.createTable();
+        Table table2 = TestFactory.createTable();
+
+        Assertions.assertEquals(table1,table2);
+    }
+
+    @Test
+    public void testEqualsSadPath(){
+        Table table1 = TestFactory.createTable();
+        Table table2 = Table.builder()
+                            .columns(TestFactory.createListColumn( List.of("nom", "prenom", "age") ))
+                            .name("no test")
+                            .build();
+
+        Assertions.assertNotEquals(table1,table2);
+    }
+
+
+
 
 
 }

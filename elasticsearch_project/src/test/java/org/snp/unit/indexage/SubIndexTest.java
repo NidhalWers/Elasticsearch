@@ -79,7 +79,7 @@ public class SubIndexTest {
 
         subIndex.insertLine("teyeb", "ligne1");
 
-        Assertions.assertFalse(subIndex.find("oruc").contains("ligne1"));
+        Assertions.assertFalse(subIndex.find("oruc")!=null);
     }
 
 
@@ -111,7 +111,7 @@ public class SubIndexTest {
                 .build();
 
 
-        Assertions.assertFalse(subIndex.find("oruc").contains("ligne1"));
+        Assertions.assertFalse(subIndex.find("oruc")!=null);
     }
 
 
