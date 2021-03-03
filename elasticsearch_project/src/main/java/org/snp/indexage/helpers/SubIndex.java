@@ -22,6 +22,10 @@ public class SubIndex {
             referenceMap.get(key).add(reference);
     }
 
+    public Column getColumn() {
+        return column;
+    }
+
     public List<String> find(String key){
         return referenceMap.get(key);
     }
