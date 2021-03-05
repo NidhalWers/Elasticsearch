@@ -37,30 +37,6 @@ public class TableService {
 
     }
 
-    public Message addLine(DataCredentials dataCredentials){
-        Table table = dao.find(dataCredentials.tableName);
-        if(table == null)
-            return new Message(404);
 
-        try {
-            table.insertRowIntoIndexes(dataCredentials.data, null);
-            return new MessageAttachment<Table>(200, table);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Message(500);
-        }
-    }
-
-    public Message query(DataCredentials dataCredentials){
-        Table table = dao.find(dataCredentials.tableName);
-        if(table == null)
-            return new Message(404);
-
-        List<String> values = table.executeQuery(dataCredentials.data);
-        if(values == null)
-            return new Message(404);
-
-        return new MessageAttachment<List>(200, values);
-    }
 
 }

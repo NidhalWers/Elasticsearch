@@ -261,7 +261,7 @@ public class TableTest {
      * method to test : executeQuery(HashMap<String,String> query )
      */
 
-
+/*
     @Test
     public void testExecuteQueryOneColumnHappyPath(){
         Table  table = TestFactory.createTable();
@@ -298,7 +298,7 @@ public class TableTest {
         List<String> values = table.executeQuery(query);
         Assertions.assertFalse(values.contains("ligne2"));
     }
-
+*/
     /**
      * method to test : equals(Object o)
      */
