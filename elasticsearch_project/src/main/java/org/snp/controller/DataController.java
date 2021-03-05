@@ -3,7 +3,7 @@ package org.snp.controller;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.DataCredentials;
-import org.snp.service.DataService;
+import org.snp.service.data.DataService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;

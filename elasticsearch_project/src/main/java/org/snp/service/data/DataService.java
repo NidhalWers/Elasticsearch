@@ -1,4 +1,4 @@
-package org.snp.service;
+package org.snp.service.data;
 
 import org.snp.dao.DataDao;
 import org.snp.dao.TableDao;
