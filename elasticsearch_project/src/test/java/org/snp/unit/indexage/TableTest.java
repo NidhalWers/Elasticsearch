@@ -3,15 +3,17 @@ package org.snp.unit.indexage;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
 import org.snp.indexage.entities.Column;
+import org.snp.service.TableService;
 import org.snp.utils.TestFactory;
 import org.snp.indexage.entities.Table;
 
-import java.util.HashMap;
 import java.util.List;
 
 
-import org.snp.utils.TestUtils;
+
+import javax.inject.Inject;
 
 
 @QuarkusTest
@@ -111,6 +113,9 @@ public class TableTest {
     /**
      * method to test : createIndex(List<Column> cols)
      */
+    @Inject
+    TableService tableService;
+
     @Test
     public void testCreateIndexOneColumn(){
         List<Column> columns = TestFactory.createListColumn(List.of("nom","prenom","age"));
@@ -121,7 +126,7 @@ public class TableTest {
                 .columns(columns)
                 .build();
 
-        table.createIndex(TestFactory
+        tableService.addIndex(table, TestFactory
                             .createListColumn(
                                     List.of("nom")
                             )
@@ -140,7 +145,7 @@ public class TableTest {
                 .columns(columns)
                 .build();
 
-        table.createIndex(TestFactory
+        tableService.addIndex(table, TestFactory
                 .createListColumn(
                         List.of("nom","prenom")
                 )
@@ -192,113 +197,7 @@ public class TableTest {
         Assertions.assertTrue(table.getSubIndexMap()!=null);
     }
 
-    /**
-     * method to test : insertRowIntoIndexes(HashMap<String,String> data, String reference)
-     */
 
-    @Test
-    public void testInsertRowIntoIndexesHappyPath(){
-        Table  table = TestFactory.createTable();
-        table = TestUtils.insertData(table);
-
-        Assertions.assertTrue(table.getSubIndexMap().get("nom").find("teyeb").contains("ligne1"));
-    }
-
-    @Test
-    public void testInsertRowIntoSubIndexSadPath() {
-        Table  table = TestFactory.createTable();
-        table = TestUtils.insertData(table);
-
-        Assertions.assertFalse(table.getSubIndexMap().get("nom").find("oruc") != null);
-    }
-
-    @Test
-    public void testInsertRowIntoIndexOneColumnHappyPath(){
-        Table  table = TestFactory.createTable();
-        table = TestUtils.insertData(table);
-
-        HashMap<String,String> query = new HashMap<>();
-        query.put("nom","teyeb");
-        Assertions.assertTrue(table.getIndexes().get("nom").find(query).contains("ligne1"));
-
-    }
-
-    @Test
-    public void testInsertRowIntoIndexTwoColumnHappyPath(){
-        Table  table = TestFactory.createTable();
-        table = TestUtils.insertData(table);
-
-        HashMap<String,String> query = new HashMap<>();
-        query.put("nom","teyeb");
-        query.put("prenom","nidhal");
-        Assertions.assertTrue(table.getIndexes().get("nom,prenom").find(query).contains("ligne1"));
-
-    }
-
-    @Test
-    public void testInsertRowIntoIndexMultipleColumnHappyPath(){
-        Table  table = TestFactory.createTable();
-        table = TestUtils.insertData(table);
-
-        HashMap<String,String> query = new HashMap<>();
-        query.put("nom","teyeb");
-        query.put("prenom","nidhal");
-        query.put("age", "21");
-        Assertions.assertTrue(table.getIndexes().get("age,nom,prenom").find(query).contains("ligne1"));
-
-    }
-
-    @Test
-    public void testInsertRowIntoIndexSadPath(){
-        Table  table = TestFactory.createTable();
-        table = TestUtils.insertData(table);
-
-        Assertions.assertFalse(table.getSubIndexMap().get("nom").find("oruc") != null);
-    }
-
-
-    /**
-     * method to test : executeQuery(HashMap<String,String> query )
-     */
-
-/*
-    @Test
-    public void testExecuteQueryOneColumnHappyPath(){
-        Table  table = TestFactory.createTable();
-        table = TestUtils.insertData(table);
-
-        HashMap<String, String> query = new HashMap<>();
-        query.put("nom", "teyeb");
-
-        List<String> values = table.executeQuery(query);
-        Assertions.assertTrue(values.contains("ligne1"));
-    }
-
-    @Test
-    public void testExecuteQueryMultipleColumnHappyPath(){
-        Table  table = TestFactory.createTable();
-        table = TestUtils.insertData(table);
-
-        HashMap<String, String> query = new HashMap<>();
-        query.put("nom", "teyeb");
-        query.put("prenom", "nidhal");
-
-        List<String> values = table.executeQuery(query);
-        Assertions.assertTrue(values.contains("ligne1"));
-    }
-
-    @Test
-    public void testExecuteQuerySadPath(){
-        Table  table = TestFactory.createTable();
-        table = TestUtils.insertData(table);
-
-        HashMap<String, String> query = new HashMap<>();
-        query.put("nom", "teyeb");
-
-        List<String> values = table.executeQuery(query);
-        Assertions.assertFalse(values.contains("ligne2"));
-    }
-*/
     /**
      * method to test : equals(Object o)
      */

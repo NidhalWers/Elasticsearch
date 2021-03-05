@@ -18,7 +18,7 @@ public class TestUtils {
 
 
         try {
-            dataDao.insertRowIntoIndexes(table, data,"ligne1");
+            dataDao.insert(table, data,"ligne1");
         } catch (Exception e) {
             e.printStackTrace();
         }

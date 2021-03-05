@@ -7,12 +7,15 @@ import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.DataCredentials;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.util.List;
 
+@ApplicationScoped
 public class DataService {
 
-    private static TableDao tableDao = new TableDao();
-    private static DataDao dataDAO = new DataDao();
+    @Inject private TableDao tableDao = new TableDao();
+    @Inject private DataDao dataDAO = new DataDao();
 
     public Message load(DataCredentials dataCredentials){
         Table table = tableDao.find(dataCredentials.tableName);
@@ -20,7 +23,7 @@ public class DataService {
             return new Message(404);
 
         try {
-            dataDAO.insertRowIntoIndexes(table, dataCredentials.data, null); //todo reference
+            dataDAO.insert(table, dataCredentials.data, null); //todo reference
             return new MessageAttachment<Table>(200, table);
         } catch (Exception e) {
             e.printStackTrace();
@@ -33,7 +36,7 @@ public class DataService {
         if(table == null)
             return new Message(404);
 
-        List<String> values = dataDAO.executeQuery(table, dataCredentials.data);
+        List<String> values = dataDAO.find(table, dataCredentials.data);
         if(values == null)
             return new Message(404);
 

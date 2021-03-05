@@ -2,13 +2,11 @@ package org.snp.service;
 
 import org.snp.dao.TableDao;
 import org.snp.indexage.entities.Column;
-import org.snp.indexage.entities.Index;
 import org.snp.indexage.entities.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.ColumnCredentials;
 import org.snp.model.credentials.IndexCredentials;
-import org.snp.utils.StringUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -19,6 +17,7 @@ public class IndexService {
 
     @Inject private TableDao tableDao;
     @Inject private ColumnService columnService;
+    @Inject private TableService tableService;
 
     public Message create(IndexCredentials indexCredentials){
         Table table = tableDao.find(indexCredentials.tableName);
@@ -34,7 +33,7 @@ public class IndexService {
 
         ArrayList<Column> columns = columnService.getListColumns(indexCredentials.columns);
 
-        if(! table.createIndex(columns))
+        if(! tableService.addIndex(table, columns))
             return new Message(403);
 
         return new MessageAttachment<Table>(200,table);
