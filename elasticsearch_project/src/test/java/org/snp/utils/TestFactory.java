@@ -4,7 +4,9 @@ import org.snp.indexage.entities.Column;
 import org.snp.indexage.entities.Index;
 import org.snp.indexage.entities.Table;
 import org.snp.indexage.helpers.SubIndex;
+import org.snp.service.TableService;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +39,8 @@ public class TestFactory {
         return index;
     }
 
+    static TableService tableService = new TableService();
+
     public static Table createTable(){
         Table table = Table
                 .builder()
@@ -44,57 +48,16 @@ public class TestFactory {
                 .columns( createListColumn(List.of("nom","prenom","age")) )
                 .build();
 
-        /*
-        table.addColumn(Column.builder()
-                .type("string")
-                .name("nom")
-                .build());
-        table.addColumn(Column.builder()
-                .name("prenom")
-                .type("string")
-                .build());
-        table.addColumn(Column.builder()
-                .name("age")
-                .type("int")
-                .build());
-         */
-
         //index on nom
-        List<Column> columns = createListColumn(List.of("nom"));/*new ArrayList<>();
-        columns.add(Column.builder()
-                .name("nom")
-                .type("string")
-                .build());*/
+        List<Column> columns = createListColumn(List.of("nom"));
+        tableService.addIndex(table, columns);
 
-        table.createIndex(columns);
         //index on nom & prenom
-        List<Column> columns2 = createListColumn(List.of("nom","prenom"));/*new ArrayList<>();
-        columns2.add(Column.builder()
-                .name("nom")
-                .type("string")
-                .build());
-        columns2.add(Column.builder()
-                .name("prenom")
-                .type("string")
-                .build());*/
+        List<Column> columns2 = createListColumn(List.of("nom","prenom"));
+        tableService.addIndex(table, columns2);
 
-        table.createIndex(columns2);
-
-        List<Column> columns3 = createListColumn(List.of("nom","prenom","age"));/*new ArrayList<>();
-        columns3.add(Column.builder()
-                .name("nom")
-                .type("string")
-                .build());
-        columns3.add(Column.builder()
-                .name("prenom")
-                .type("string")
-                .build());
-        columns3.add(Column.builder()
-                .name("age")
-                .type("int")
-                .build());*/
-
-        table.createIndex(columns3);
+        List<Column> columns3 = createListColumn(List.of("nom","prenom","age"));
+        tableService.addIndex(table, columns3);
 
         return table;
 
@@ -120,6 +83,7 @@ public class TestFactory {
                     .type("int")
                     .build());
         }
+
         return columns;
     }
 }

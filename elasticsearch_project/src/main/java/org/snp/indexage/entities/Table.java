@@ -41,39 +41,7 @@ public class Table {
         return columns;
     }
 
-    public boolean createIndex(List<Column> cols){
-        Map<String, SubIndex> map = new HashMap<>();
-        List<String> keys = new ArrayList<>();
-        for(Column col : cols){
-            keys.add(col.getName());
-            SubIndex subIndex = subIndexMap.get(col.getName());
-            if(subIndex == null) {
-                subIndex = SubIndex.builder()
-                                    .column(col)
-                                    .build();
-                subIndexMap.put(col.getName(), subIndex);
-            }
-            map.put(col.getName(), subIndex);
-        }
 
-        Index newIndex = Index.builder()
-                        .columns(cols)
-                        .subIndexes(map)
-                        .build();
-
-        Collections.sort(keys);
-        String indexKey = String.join(",", keys);
-        if(indexes.get(indexKey)!=null){
-            return false;
-        }else {
-            indexes.put(indexKey,newIndex);
-        }
-        return true;
-    }
-    public void removeIndex(Index index){ //todo
-        indexes.remove(index);
-    }
-    //todo remove index with a list of column's name
 
     public Map<String, Index> getIndexes() {
         return indexes;

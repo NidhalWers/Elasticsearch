@@ -3,7 +3,9 @@ package org.snp.service;
 
 import org.snp.dao.TableDao;
 import org.snp.indexage.entities.Column;
+import org.snp.indexage.entities.Index;
 import org.snp.indexage.entities.Table;
+import org.snp.indexage.helpers.SubIndex;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.DataCredentials;
@@ -11,9 +13,7 @@ import org.snp.model.credentials.TableCredentials;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @ApplicationScoped
 public class TableService {
@@ -36,6 +36,41 @@ public class TableService {
         return new MessageAttachment<Table>(200, table);
 
     }
+
+    public boolean addIndex(Table table, List<Column> cols){
+        Map<String, Index> indexes = table.getIndexes();
+        Map<String, SubIndex> subIndexMap = table.getSubIndexMap();
+        Map<String, SubIndex> map = new HashMap<>();
+        List<String> keys = new ArrayList<>();
+        for(Column col : cols){
+            keys.add(col.getName());
+            SubIndex subIndex = subIndexMap.get(col.getName());
+            if(subIndex == null) {
+                subIndex = SubIndex.builder()
+                        .column(col)
+                        .build();
+                subIndexMap.put(col.getName(), subIndex);
+            }
+            map.put(col.getName(), subIndex);
+        }
+        Index newIndex = Index.builder()
+                .columns(cols)
+                .subIndexes(map)
+                .build();
+        Collections.sort(keys);
+        String indexKey = String.join(",", keys);
+        if(indexes.get(indexKey)!=null){
+            return false;
+        }else {
+            indexes.put(indexKey,newIndex);
+        }
+        return true;
+    }
+
+    public void removeIndex(Table table, Index index){ //todo
+        table.getIndexes().remove(index);
+    }
+    //todo remove index with a list of column's name
 
 
 
