@@ -1,10 +1,13 @@
 package org.snp.utils;
 
+import org.snp.dao.DataDao;
 import org.snp.indexage.entities.Table;
 
 import java.util.HashMap;
 
 public class TestUtils {
+
+    private static DataDao dataDao = new DataDao();
 
     public static Table insertData(Table table){
         HashMap<String, String> data = new HashMap<>();
@@ -15,7 +18,7 @@ public class TestUtils {
 
 
         try {
-            table.insertRowIntoIndexes(data,"ligne1");
+            dataDao.insertRowIntoIndexes(table, data,"ligne1");
         } catch (Exception e) {
             e.printStackTrace();
         }

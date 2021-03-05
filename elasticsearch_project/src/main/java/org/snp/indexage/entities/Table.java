@@ -83,22 +83,6 @@ public class Table {
         return subIndexMap;
     }
 
-    public void insertRowIntoIndexes(HashMap<String,String> data, String reference)throws Exception{
-        Set<String> keys = indexes.keySet();
-        for(String key : keys){
-            indexes.get(key).insertLine(data,reference);
-        }
-    }
-
-    public List<String> executeQuery(HashMap<String,String> query ){
-        ArrayList<String> keys = new ArrayList<>();
-        for(String key : query.keySet()){
-            keys.add(key);
-        }
-        Collections.sort(keys);
-        String indexKey = String.join(",",keys);
-        return indexes.get(indexKey).find(query);
-    }
 
     @Override
     public String toString() {
