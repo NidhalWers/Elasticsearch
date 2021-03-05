@@ -38,18 +38,16 @@ public class TableService {
     }
 
     public boolean addIndex(Table table, List<Column> cols){
-        Map<String, Index> indexes = table.getIndexes();
-        Map<String, SubIndex> subIndexMap = table.getSubIndexMap();
         Map<String, SubIndex> map = new HashMap<>();
         List<String> keys = new ArrayList<>();
         for(Column col : cols){
             keys.add(col.getName());
-            SubIndex subIndex = subIndexMap.get(col.getName());
+            SubIndex subIndex = table.getSubIndexMap().get(col.getName());
             if(subIndex == null) {
                 subIndex = SubIndex.builder()
                         .column(col)
                         .build();
-                subIndexMap.put(col.getName(), subIndex);
+                table.getSubIndexMap().put(col.getName(), subIndex);
             }
             map.put(col.getName(), subIndex);
         }
@@ -59,10 +57,10 @@ public class TableService {
                 .build();
         Collections.sort(keys);
         String indexKey = String.join(",", keys);
-        if(indexes.get(indexKey)!=null){
+        if(table.getIndexes().get(indexKey)!=null){
             return false;
         }else {
-            indexes.put(indexKey,newIndex);
+            table.getIndexes().put(indexKey,newIndex);
         }
         return true;
     }
