@@ -1,13 +1,13 @@
-package org.snp.unit;
+package org.snp.integration;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.*;
 import org.snp.indexage.entities.Column;
-import org.snp.indexage.entities.Index;
 import org.snp.indexage.entities.Table;
+import org.snp.service.TableService;
 
+import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import java.util.ArrayList;
 
@@ -82,7 +82,8 @@ public class ElasticsearchTest {
                 ;
     }
 
-
+    @Inject
+    TableService tableService;
 
     @Test
     @Order(3)
@@ -98,7 +99,7 @@ public class ElasticsearchTest {
                 .type("string")
                 .build());
 
-        table.createIndex(columns);
+        tableService.addIndex(table, columns);
 
         given()
                 .body("{\n" +

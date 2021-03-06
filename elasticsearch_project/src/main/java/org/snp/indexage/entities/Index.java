@@ -76,4 +76,8 @@ public class Index {
             return new Index(this.columns, this.subIndexMap);
         }
     }
+
+    public List<Column> getColumns() {
+        return columns;
+    }
 }

@@ -3,7 +3,9 @@ package org.snp.service;
 
 import org.snp.dao.TableDao;
 import org.snp.indexage.entities.Column;
+import org.snp.indexage.entities.Index;
 import org.snp.indexage.entities.Table;
+import org.snp.indexage.helpers.SubIndex;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.DataCredentials;
@@ -11,9 +13,7 @@ import org.snp.model.credentials.TableCredentials;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @ApplicationScoped
 public class TableService {
@@ -37,30 +37,39 @@ public class TableService {
 
     }
 
-    public Message addLine(DataCredentials dataCredentials){
-        Table table = dao.find(dataCredentials.tableName);
-        if(table == null)
-            return new Message(404);
-
-        try {
-            table.insertRowIntoIndexes(dataCredentials.data, null);
-            return new MessageAttachment<Table>(200, table);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Message(500);
+    public boolean addIndex(Table table, List<Column> cols){
+        Map<String, SubIndex> map = new HashMap<>();
+        List<String> keys = new ArrayList<>();
+        for(Column col : cols){
+            keys.add(col.getName());
+            SubIndex subIndex = table.getSubIndexMap().get(col.getName());
+            if(subIndex == null) {
+                subIndex = SubIndex.builder()
+                        .column(col)
+                        .build();
+                table.getSubIndexMap().put(col.getName(), subIndex);
+            }
+            map.put(col.getName(), subIndex);
         }
+        Index newIndex = Index.builder()
+                .columns(cols)
+                .subIndexes(map)
+                .build();
+        Collections.sort(keys);
+        String indexKey = String.join(",", keys);
+        if(table.getIndexes().get(indexKey)!=null){
+            return false;
+        }else {
+            table.getIndexes().put(indexKey,newIndex);
+        }
+        return true;
     }
 
-    public Message query(DataCredentials dataCredentials){
-        Table table = dao.find(dataCredentials.tableName);
-        if(table == null)
-            return new Message(404);
-
-        List<String> values = table.executeQuery(dataCredentials.data);
-        if(values == null)
-            return new Message(404);
-
-        return new MessageAttachment<List>(200, values);
+    public void removeIndex(Table table, Index index){ //todo
+        table.getIndexes().remove(index);
     }
+    //todo remove index with a list of column's name
+
+
 
 }

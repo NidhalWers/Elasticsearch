@@ -7,7 +7,7 @@ import java.util.*;
 public class SubIndex {
     private Column column;
 
-    private Map<String, List<String>> referenceMap = new TreeMap<>();
+    private Map<String, List<String>> referenceMap = new LinkedHashMap<>();
 
     private SubIndex(Column column) {
         this.column = column;
@@ -20,6 +20,10 @@ public class SubIndex {
             referenceMap.put(key, refList);
         }else
             referenceMap.get(key).add(reference);
+    }
+
+    public Column getColumn() {
+        return column;
     }
 
     public List<String> find(String key){

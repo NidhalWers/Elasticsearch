@@ -4,23 +4,19 @@ import org.snp.indexage.helpers.SubIndex;
 
 import java.util.*;
 
+
+
 public class Table {
 
     private String name;
-    private ArrayList<Column> columns;
+    private List<Column> columns;
     private Map<String, Index> indexes = new TreeMap<>();
     private Map<String, SubIndex> subIndexMap = new HashMap<>();
 
-    private Table(String name, ArrayList<Column> columns) {
+    private Table(String name, List<Column> columns) {
         this.name = name;
         this.columns = columns;
 
-
-        for(Column column : columns){
-            subIndexMap.put(column.getName(), SubIndex.builder()
-                                                        .column(column)
-                                                        .build());
-        }
     }
 
     private Table(String name) {
@@ -33,45 +29,19 @@ public class Table {
 
     public void addColumn(Column column){
         columns.add(column);
-        subIndexMap.put(column.getName(), SubIndex.builder()
-                                                    .column(column)
-                                                    .build());
     }
 
     public void removeColumn(Column column){
         columns.remove(column);
         //todo remove sub index
+        //todo remove with a name
     }
 
-    public ArrayList<Column> getColumns() {
+    public List<Column> getColumns() {
         return columns;
     }
 
-    public boolean createIndex(List<Column> cols){
-        Map<String, SubIndex> map = new HashMap<>();
-        List<String> keys = new ArrayList<>();
-        for(Column col : cols){
-            keys.add(col.getName());
-            map.put(col.getName(), subIndexMap.get(col.getName()));
-        }
 
-        Index newIndex = Index.builder()
-                        .columns(cols)
-                        .subIndexes(map)
-                        .build();
-
-        Collections.sort(keys);
-        String indexKey = String.join(",", keys);
-        if(indexes.get(indexKey)!=null){
-            return false;
-        }else {
-            indexes.put(indexKey,newIndex);
-        }
-        return true;
-    }
-    public void removeIndex(Index index){ //todo
-        indexes.remove(index);
-    }
 
     public Map<String, Index> getIndexes() {
         return indexes;
@@ -81,22 +51,6 @@ public class Table {
         return subIndexMap;
     }
 
-    public void insertRowIntoIndexes(HashMap<String,String> data, String reference)throws Exception{
-        Set<String> keys = indexes.keySet();
-        for(String key : keys){
-            indexes.get(key).insertLine(data,reference);
-        }
-    }
-
-    public List<String> executeQuery(HashMap<String,String> query ){
-        ArrayList<String> keys = new ArrayList<>();
-        for(String key : query.keySet()){
-            keys.add(key);
-        }
-        Collections.sort(keys);
-        String indexKey = String.join(",",keys);
-        return indexes.get(indexKey).find(query);
-    }
 
     @Override
     public String toString() {
@@ -131,13 +85,18 @@ public class Table {
     }
 
 
+    /**
+     * Builder
+     *
+     */
+
     public static Builder builder(){
         return new Builder();
     }
 
     public static class Builder{
         private String name;
-        private ArrayList<Column> columns = new ArrayList<>();
+        private List<Column> columns = new ArrayList<>();
 
         public Builder(){
 
@@ -148,7 +107,7 @@ public class Table {
             return this;
         }
 
-        public Builder columns(ArrayList<Column> columns){
+        public Builder columns(List<Column> columns){
             this.columns=columns;
             return this;
         }
