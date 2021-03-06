@@ -84,6 +84,14 @@ public class Table {
         return Objects.hash(name, columns);
     }
 
+    public boolean containsColumn(String columnName){
+        for(Column column : columns){
+            if( column.getName().equals(columnName) )
+                return true;
+        }
+        return false;
+    }
+
 
     /**
      * Builder

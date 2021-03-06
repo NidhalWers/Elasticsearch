@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class IndexCredentials {
-    @JsonProperty("tableName")
     public String tableName;
     @JsonProperty("columns")
     public ArrayList<ColumnCredentials> columns;
