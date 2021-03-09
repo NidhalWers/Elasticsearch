@@ -8,7 +8,6 @@ import java.util.*;
 
 @ApplicationScoped
 public class DataDao {
-
     public void insert(Table table, HashMap<String, String> data, String reference){
         Set<String> keys = table.getIndexes().keySet();
         for(String key : keys){
@@ -41,5 +40,4 @@ public class DataDao {
 
         //todo
     }
-
 }

@@ -1,7 +1,5 @@
 package org.snp.indexage.entities;
 
-import org.snp.indexage.helpers.SubIndex;
-
 import java.util.*;
 
 
@@ -40,8 +38,6 @@ public class Table {
     public List<Column> getColumns() {
         return columns;
     }
-
-
 
     public Map<String, Index> getIndexes() {
         return indexes;
@@ -92,6 +88,11 @@ public class Table {
         return false;
     }
 
+
+    /**
+     * Builder
+     *
+     */
 
     /**
      * Builder

@@ -1,7 +1,6 @@
 package org.snp.indexage.entities;
 
 
-import org.snp.indexage.helpers.SubIndex;
 import org.snp.utils.ListUtils;
 
 import java.util.*;
