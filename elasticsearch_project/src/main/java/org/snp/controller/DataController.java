@@ -17,16 +17,19 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 @Path("/data")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.TEXT_PLAIN)
 public class DataController {
 
     @Inject private DataService dataService;
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.TEXT_PLAIN)
+    @POST
     //link to csv : https://dzone.com/articles/how-to-read-a-big-csv-file-with-java-8-and-stream
     public String loadData(@MultipartForm MultipartBody data){
         try{
             //save file here
-            this.dataService.parseCSVAndInsert(data.tableName,data.file);
+            this.dataService.parseCSVAndInsert(data.tableName,data.file,data.fileName);
         }catch (IOException e){
             throw new InternalServerErrorException("IOException");
         }
@@ -38,9 +41,9 @@ public class DataController {
     Pair : deux coordonnées
     * */
 
-    @GET
-    @Path("/get")
-
+    //TODO: NULL pointer exception if dataCredentials null
+    @POST
+    @Path("/query")
     public List<String> get(DataCredentials dataCredentials){
         Message message = dataService.query(dataCredentials);
         if(message.getCode() == 200)
@@ -57,6 +60,5 @@ public class DataController {
     @Path("/join")
     public List<String> join(JoinCredentials joinCredentials){
         return null;
-
     }
 }

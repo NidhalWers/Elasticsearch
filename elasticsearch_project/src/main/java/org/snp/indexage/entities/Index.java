@@ -25,11 +25,13 @@ public class Index {
 
     public List<String> find(HashMap<String,String> query){
         List<List> allResults = new ArrayList<>();
-
         for(Map.Entry colum : query.entrySet()){
-            allResults.add(subIndexMap
-                                .get(colum.getKey())
-                                    .find((String) colum.getValue()));
+            List subIndexMapList = subIndexMap
+                    .get(colum.getKey())
+                    .find((String) colum.getValue());
+            if(subIndexMapList!=null){
+                allResults.add(subIndexMapList);
+            }
         }
         return ListUtils.intersection(allResults);
     }
