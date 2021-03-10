@@ -20,24 +20,6 @@ public class DataService {
     private TableDao tableDao = new TableDao();
     private DataDao dataDAO = new DataDao();
 
-    public Message load(DataCredentials dataCredentials){
-        Table table = tableDao.find(dataCredentials.tableName);
-        if(table == null)
-            return new MessageAttachment<>(404, "table "+dataCredentials.tableName+" does not exists");
-
-        for(Map.Entry m : dataCredentials.queryParams.entrySet()){
-            String columnName = (String) m.getKey();
-            if(! table.containsColumn(columnName))
-                return new MessageAttachment<>(404, "column "+columnName+" does not exists in "+dataCredentials.tableName);
-        }
-        try {
-            dataDAO.insert(table, dataCredentials.queryParams, null); //todo reference
-            return new MessageAttachment<Table>(200, table);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new Message(500);
-        }
-    }
 
     public Message query(DataCredentials dataCredentials){
         Table table = tableDao.find(dataCredentials.tableName);
@@ -57,7 +39,7 @@ public class DataService {
         return new MessageAttachment<List>(200, values);
     }
 
-    public boolean parseCSVAndInsert(String tableName, InputStream csvFile, String fileName) throws IOException {
+    public Message parseCSVAndInsert(String tableName, InputStream csvFile, String fileName) throws IOException {
         InputStreamReader inputStreamReader = new InputStreamReader(csvFile);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         String line;
@@ -66,7 +48,7 @@ public class DataService {
         Table table = tableDao.find(tableName);
         int position=0;
         if(table==null){
-            return false;
+            return new MessageAttachment<>(404, "table "+tableName+" does not exists");
         }
         HashMap<String, String> lineToInsert;
         try {
@@ -85,12 +67,12 @@ public class DataService {
             }
         } catch (Exception e) {
             System.err.println(e);
-            return false;
+            return new Message(500);
         } finally {
             bufferedReader.close();
             inputStreamReader.close();
         }
-        return true;
+        return new MessageAttachment<Table>(200, table);
     }
 
 

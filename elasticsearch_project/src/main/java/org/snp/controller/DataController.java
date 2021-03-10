@@ -1,6 +1,7 @@
 package org.snp.controller;
 
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
+import org.snp.indexage.entities.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.DataCredentials;
@@ -27,14 +28,21 @@ public class DataController {
     @Produces(MediaType.TEXT_PLAIN)
     @POST
     //link to csv : https://dzone.com/articles/how-to-read-a-big-csv-file-with-java-8-and-stream
-    public String loadData(@MultipartForm MultipartBody data){
+    public Table loadData(@MultipartForm MultipartBody data){
         try{
             //save file here
-            this.dataService.parseCSVAndInsert(data.tableName,data.file,data.fileName);
+            Message message = dataService.parseCSVAndInsert(data.tableName,data.file,data.fileName);
+            if(message.getCode()==200)
+                return (Table) ((MessageAttachment)message).getAttachment();
+            else{
+                if(message.getCode() == 404)
+                    throw new NotFoundException((String) ((MessageAttachment)message).getAttachment());
+                else
+                    throw new InternalServerErrorException();
+            }
         }catch (IOException e){
             throw new InternalServerErrorException("IOException");
         }
-        return "Ok";
     }
 
 
