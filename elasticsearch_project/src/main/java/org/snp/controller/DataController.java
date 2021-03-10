@@ -38,10 +38,12 @@ public class DataController {
     }
 
 
-    //TODO: NULL pointer exception if dataCredentials null
     @POST
     @Path("/query")
     public List<String> get(DataCredentials dataCredentials){
+        if(dataCredentials==null){
+            throw new BadRequestException("query should not be null");
+        }
         Message message = dataService.query(dataCredentials);
         if(message.getCode() == 200)
             return (List<String>) ((MessageAttachment)message).getAttachment();
