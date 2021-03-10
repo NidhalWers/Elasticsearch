@@ -38,13 +38,6 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy-multipart</artifactId>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-multipart-provider -->
-
-    <dependency>
-      <groupId>com.opencsv</groupId>
-      <artifactId>opencsv</artifactId>
-      <version>5.0</version>
-    </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-jsonp</artifactId>

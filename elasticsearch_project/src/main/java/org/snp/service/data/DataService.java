@@ -61,7 +61,7 @@ public class DataService {
         InputStreamReader inputStreamReader = new InputStreamReader(csvFile);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         String line;
-        String[ ] values;
+        String[] values;
         List<Column> columns;
         Table table = tableDao.find(tableName);
         int position=0;
@@ -79,9 +79,9 @@ public class DataService {
                 for (int i = 0; i < values.length; i++) {
                     lineToInsert.put(columns.get(i).getName(), values[i]);
                 }
-                int  endPosition = position + line.getBytes().length;
-                dataDAO.insert(table, lineToInsert,fileName+","+position+","+endPosition);
-                position=endPosition;
+                int  lineLength = line.getBytes().length;
+                dataDAO.insert(table, lineToInsert,fileName+","+position+","+lineLength);
+                position+=lineLength;
             }
         } catch (Exception e) {
             System.err.println(e);

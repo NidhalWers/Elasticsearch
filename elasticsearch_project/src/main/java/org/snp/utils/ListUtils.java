@@ -15,7 +15,6 @@ public class ListUtils {
             }else{
                 newList.retainAll(aList);
             }
-
         }
         return newList;
     }
