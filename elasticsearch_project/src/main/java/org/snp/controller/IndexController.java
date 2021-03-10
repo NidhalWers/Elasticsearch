@@ -9,10 +9,7 @@ import org.snp.service.IndexService;
 import org.snp.utils.exception.NotFoundException;
 
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Path("/index")
@@ -26,6 +23,9 @@ public class IndexController {
     @POST
     @Path("/add")
     public Table addIndex(IndexCredentials indexCredentials){
+        if(indexCredentials==null){
+            throw new BadRequestException("body should not be null");
+        }
         Message message = indexService.create(indexCredentials);
         if(message.hasAttachment())
             return (Table) ((MessageAttachment)message).getAttachment();
