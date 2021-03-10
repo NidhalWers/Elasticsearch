@@ -1,7 +1,6 @@
 package org.snp.indexage.entities;
 
 
-import org.snp.indexage.helpers.SubIndex;
 import org.snp.utils.ListUtils;
 
 import java.util.*;
@@ -26,11 +25,13 @@ public class Index {
 
     public List<String> find(HashMap<String,String> query){
         List<List> allResults = new ArrayList<>();
-
         for(Map.Entry colum : query.entrySet()){
-            allResults.add(subIndexMap
-                                .get(colum.getKey())
-                                    .find((String) colum.getValue()));
+            List subIndexMapList = subIndexMap
+                    .get(colum.getKey())
+                    .find((String) colum.getValue());
+            if(subIndexMapList!=null){
+                allResults.add(subIndexMapList);
+            }
         }
         return ListUtils.intersection(allResults);
     }
@@ -51,6 +52,11 @@ public class Index {
                 ", subIndexMap=" + subIndexMap +
                 '}';
     }
+
+    /**
+     * Builder
+     *
+     */
 
     public static Builder builder(){return new Builder();}
 

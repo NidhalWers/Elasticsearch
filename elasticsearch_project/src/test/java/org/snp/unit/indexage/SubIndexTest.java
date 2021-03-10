@@ -4,10 +4,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.snp.indexage.entities.Column;
-import org.snp.indexage.helpers.SubIndex;
-
-import java.util.ArrayList;
-import java.util.HashMap;
+import org.snp.indexage.entities.SubIndex;
 
 @QuarkusTest
 public class SubIndexTest {

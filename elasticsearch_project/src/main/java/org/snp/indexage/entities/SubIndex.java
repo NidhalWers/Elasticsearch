@@ -1,6 +1,4 @@
-package org.snp.indexage.helpers;
-
-import org.snp.indexage.entities.Column;
+package org.snp.indexage.entities;
 
 import java.util.*;
 

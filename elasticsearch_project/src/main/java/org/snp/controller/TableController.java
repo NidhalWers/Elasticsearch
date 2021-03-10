@@ -1,5 +1,6 @@
 package org.snp.controller;
 
+import org.snp.indexage.entities.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.TableCredentials;
@@ -21,13 +22,13 @@ public class TableController {
 
     @POST
     @Path("/")
-    public String createTable(TableCredentials tableCredentials) {
+    public Table createTable(TableCredentials tableCredentials) {
         if(tableCredentials.getName()==null ||tableCredentials.getColumns()==null){
             throw new BadRequestException("name or columns should not be null");
         }
         Message message =  tableService.create(tableCredentials);
         if(message.hasAttachment())
-            return ((MessageAttachment)message).getAttachment().toString();
+            return (Table) ((MessageAttachment)message).getAttachment();
         else
             throw new AlreadyExistException("table "+tableCredentials.name+" already exists");
     }

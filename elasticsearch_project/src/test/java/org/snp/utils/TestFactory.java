@@ -3,10 +3,9 @@ package org.snp.utils;
 import org.snp.indexage.entities.Column;
 import org.snp.indexage.entities.Index;
 import org.snp.indexage.entities.Table;
-import org.snp.indexage.helpers.SubIndex;
+import org.snp.indexage.entities.SubIndex;
 import org.snp.service.TableService;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
