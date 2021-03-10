@@ -5,6 +5,7 @@ import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.DataCredentials;
 import org.snp.model.credentials.JoinCredentials;
+import org.snp.service.data.DataFunctionService;
 import org.snp.service.data.DataService;
 import org.snp.model.multipart.MultipartBody;
 
@@ -36,10 +37,6 @@ public class DataController {
         return "Ok";
     }
 
-    /*
-    coordonnée : longitude /lati
-    Pair : deux coordonnées
-    * */
 
     //TODO: NULL pointer exception if dataCredentials null
     @POST
@@ -55,6 +52,9 @@ public class DataController {
                 throw new InternalServerErrorException();
         }
     }
+
+    @Inject private
+    DataFunctionService dataFunctionService;
 
     @GET
     @Path("/join")
