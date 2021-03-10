@@ -4,6 +4,7 @@ import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.DataCredentials;
 import org.snp.model.credentials.JoinCredentials;
+import org.snp.service.data.DataFunctionService;
 import org.snp.service.data.DataService;
 
 import javax.inject.Inject;
@@ -28,13 +29,8 @@ public class DataController {
             throw  new NotFoundException("table "+dataCredentials.tableName+" does not exists");
     }
 
-    /*
-    coordonnée : longitude /lati
-    Pair : deux coordonnées
-    * */
 
-
-    @GET
+    @POST
     @Path("/get")
     public List<String> get(DataCredentials dataCredentials){
         Message message = dataService.query(dataCredentials);
@@ -47,6 +43,9 @@ public class DataController {
                 throw new InternalServerErrorException();
         }
     }
+
+    @Inject private
+    DataFunctionService dataFunctionService;
 
     @GET
     @Path("/join")

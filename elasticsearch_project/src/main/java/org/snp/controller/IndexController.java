@@ -1,6 +1,7 @@
 package org.snp.controller;
 
 
+import org.snp.indexage.entities.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.IndexCredentials;
@@ -24,10 +25,10 @@ public class IndexController {
 
     @POST
     @Path("/add")
-    public String addIndex(IndexCredentials indexCredentials){
+    public Table addIndex(IndexCredentials indexCredentials){
         Message message = indexService.create(indexCredentials);
         if(message.hasAttachment())
-            return ((MessageAttachment)message).getAttachment().toString();
+            return (Table) ((MessageAttachment)message).getAttachment();
         else
             throw new NotFoundException("table "+indexCredentials.tableName+" does not exist");
     }
