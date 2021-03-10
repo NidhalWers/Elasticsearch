@@ -46,20 +46,22 @@ public class ElasticsearchTest {
 
 
         given()
-            .body("{\n" +
-                    "    \"columns\" : [\n" +
-                    "        {\"name\" : \"column1\", \"type\" : \"string\"},\n" +
-                    "        {\"name\" : \"column2\", \"type\" : \"double\"},\n" +
-                    "        {\"name\" : \"column3\", \"type\" : \"int\"}\n" +
-                    "    ],\n" +
-                    "    \"name\" : \"test\"\n" +
-                    "}")
-            .header("Content-Type", MediaType.APPLICATION_JSON)
-            .when()
-            .post("/table/")
-            .then()
-            .statusCode(200)
-            .body(is(table.toString()));
+                .body("{\n" +
+                        "    \"columns\" : [\n" +
+                        "        {\"name\" : \"column1\", \"type\" : \"string\"},\n" +
+                        "        {\"name\" : \"column2\", \"type\" : \"double\"},\n" +
+                        "        {\"name\" : \"column3\", \"type\" : \"int\"}\n" +
+                        "    ],\n" +
+                        "    \"name\" : \"test\"\n" +
+                        "}")
+                .header("Content-Type", MediaType.APPLICATION_JSON)
+                .when()
+                .post("/table/")
+                .then()
+                .statusCode(200)
+                .body(is("{\"columns\":[{\"name\":\"column1\",\"type\":\"string\"},{\"name\":\"column2\",\"type\":\"double\"},{\"name\":\"column3\",\"type\":\"int\"}],\"indexes\":{},\"name\":\"test\",\"subIndexMap\":{}}"));
+                //todo better body test
+                //  https://github.com/quarkusio/quarkus-quickstarts/blob/master/rest-json-quickstart/src/test/java/org/acme/rest/json/FruitResourceTest.java
     }
 
     @Test
@@ -79,7 +81,7 @@ public class ElasticsearchTest {
                 .post("/table/")
                 .then()
                 .statusCode(409)
-                ;
+        ;
     }
 
     @Inject
@@ -114,8 +116,8 @@ public class ElasticsearchTest {
                 .post("/index/add")
                 .then()
                 .statusCode(200)
-                .body(is(table.toString()));
-
+                .body(is("{\"columns\":[{\"name\":\"column1\",\"type\":\"string\"},{\"name\":\"column2\",\"type\":\"double\"},{\"name\":\"column3\",\"type\":\"int\"}],\"indexes\":{\"column1,column2\":{\"columns\":[{\"name\":\"column1\"},{\"name\":\"column2\"}]}},\"name\":\"test\",\"subIndexMap\":{\"column1\":{\"column\":{\"name\":\"column1\"}},\"column2\":{\"column\":{\"name\":\"column2\"}}}}"));
+                //todo better body test
     }
     @Test
     @Order(4)
@@ -133,7 +135,7 @@ public class ElasticsearchTest {
                 .post("/index/add")
                 .then()
                 .statusCode(404)
-                ;
+        ;
     }
 
 
