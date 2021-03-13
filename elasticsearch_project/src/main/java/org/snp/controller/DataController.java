@@ -9,6 +9,7 @@ import org.snp.model.credentials.JoinCredentials;
 import org.snp.service.data.DataFunctionService;
 import org.snp.service.data.DataService;
 import org.snp.model.multipart.MultipartBody;
+import org.snp.service.data.FileService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -21,7 +22,8 @@ import java.util.List;
 @Produces(MediaType.TEXT_PLAIN)
 public class DataController {
 
-    @Inject private DataService dataService;
+    @Inject DataService dataService;
+    @Inject FileService fileService;
 
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
@@ -31,7 +33,7 @@ public class DataController {
     public Table loadData(@MultipartForm MultipartBody data){
         try{
             //save file here
-            Message message = dataService.parseCSVAndInsert(data.tableName,data.file,data.fileName);
+            Message message = fileService.parseCSVAndInsert(data.tableName,data.file,data.fileName);
             if(message.getCode()==200)
                 return (Table) ((MessageAttachment)message).getAttachment();
             else{

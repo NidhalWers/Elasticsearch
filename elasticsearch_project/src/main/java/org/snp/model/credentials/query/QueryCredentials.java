@@ -1,6 +1,7 @@
 package org.snp.model.credentials.query;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.snp.model.credentials.ColumnCredentials;
 
 import java.util.ArrayList;
 
@@ -13,11 +14,10 @@ public class QueryCredentials {
     //@JsonProperty("query_params")
     public ArrayList<AttributeCredentials> queryParams;
 
+    public ArrayList<ColumnCredentials> columnsSelected;
+
     public QueryCredentials() {
     }
 
-    public QueryCredentials(String tableName, ArrayList<AttributeCredentials> queryParams) {
-        this.tableName = tableName;
-        this.queryParams = queryParams;
-    }
+
 }
