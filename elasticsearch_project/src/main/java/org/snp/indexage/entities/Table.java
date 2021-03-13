@@ -88,6 +88,14 @@ public class Table {
         return false;
     }
 
+    public int positionOfColumn(String columnName){
+        for(int i =0; i<columns.size(); i++){
+            if(columns.get(i).getName().equals(columnName))
+                return i;
+        }
+        return -1;
+    }
+
 
     /**
      * Builder
