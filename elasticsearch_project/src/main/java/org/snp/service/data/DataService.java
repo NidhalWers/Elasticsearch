@@ -66,7 +66,7 @@ public class DataService {
         try {
             columns =table.getColumns();
             line = bufferedReader.readLine();
-            position+=line.getBytes().length;
+            position+=line.getBytes().length+1;
             while ((line = bufferedReader.readLine())!= null) {
                 values = line.split(",");
                 lineToInsert = new HashMap<>();
