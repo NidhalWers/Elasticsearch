@@ -4,7 +4,7 @@ import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.snp.indexage.entities.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
-import org.snp.model.credentials.query.QueryCredentials;
+import org.snp.model.credentials.QueryCredentials;
 import org.snp.model.credentials.JoinCredentials;
 import org.snp.service.data.DataFunctionService;
 import org.snp.service.data.DataService;
