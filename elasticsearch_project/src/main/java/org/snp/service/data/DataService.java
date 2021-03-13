@@ -66,7 +66,7 @@ public class DataService {
         try {
             columns =table.getColumns();
             line = bufferedReader.readLine();
-            position+=line.getBytes().length;
+            position+=line.getBytes().length+1;
             while ((line = bufferedReader.readLine())!= null) {
                 values = line.split(",");
                 lineToInsert = new HashMap<>();
@@ -74,7 +74,7 @@ public class DataService {
                     lineToInsert.put(columns.get(i).getName(), values[i]);
                 }
                 int  lineLength = line.getBytes().length;
-                dataDAO.insert(table, lineToInsert,fileName+","+position+","+lineLength);
+                dataDAO.insert(table, lineToInsert,fileName+","+(position+1)+","+lineLength);
                 position+=lineLength+1;
             }
         } catch (Exception e) {

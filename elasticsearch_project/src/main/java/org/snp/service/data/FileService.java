@@ -11,7 +11,7 @@ public class FileService {
     public String getAllDataAtPos(String fileName, int pos, int size){
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile(fileName, "r");
-            randomAccessFile.seek(23);
+            randomAccessFile.seek(63);
             /*String v =""+randomAccessFile.readUTF();
             v=v;*/
             String value= randomAccessFile.readLine();
