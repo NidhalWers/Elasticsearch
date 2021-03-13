@@ -4,9 +4,9 @@ import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.snp.indexage.entities.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
-import org.snp.model.credentials.query.QueryCredentials;
+import org.snp.model.credentials.QueryCredentials;
 import org.snp.model.credentials.JoinCredentials;
-import org.snp.service.data.DataFunctionService;
+import org.snp.service.data.FunctionService;
 import org.snp.service.data.DataService;
 import org.snp.model.multipart.MultipartBody;
 import org.snp.service.data.FileService;
@@ -66,11 +66,22 @@ public class DataController {
     }
 
     @Inject private
-    DataFunctionService dataFunctionService;
+    FunctionService functionService;
 
-    @GET
+    @POST
     @Path("/join")
     public List<String> join(JoinCredentials joinCredentials){
-        return null;
+        if(joinCredentials == null)
+            throw new BadRequestException("query should not be null");
+
+        Message message = functionService.join(joinCredentials);
+        if(message.getCode() == 200)
+            return (List<String>) ((MessageAttachment)message).getAttachment();
+        else{
+            if(message.getCode() == 404)
+                throw new NotFoundException((String) ((MessageAttachment)message).getAttachment());
+            else
+                throw new InternalServerErrorException();
+        }
     }
 }

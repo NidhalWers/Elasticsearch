@@ -28,6 +28,9 @@ public class SubIndex {
         return referenceMap.get(key);
     }
 
+    public Map<String, List<String>> getReferenceMap() {
+        return referenceMap;
+    }
 
     @Override
     public String toString() {

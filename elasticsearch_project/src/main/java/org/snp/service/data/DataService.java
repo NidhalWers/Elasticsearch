@@ -6,8 +6,7 @@ import org.snp.indexage.entities.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.ColumnCredentials;
-import org.snp.model.credentials.query.AttributeCredentials;
-import org.snp.model.credentials.query.QueryCredentials;
+import org.snp.model.credentials.QueryCredentials;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -29,22 +28,29 @@ public class DataService {
         if(table == null)
             return new MessageAttachment<>(404, "table "+ queryCredentials.tableName+" does not exists");
 
+        List<String> references;
         /**
          * column query verification
          */
-        HashMap<String, String> queryMap = new HashMap<>();
-        for(AttributeCredentials attributeCredentials : queryCredentials.queryParams){
-            String columnName = attributeCredentials.name;
-            if(! table.containsColumn(columnName))
-                return new MessageAttachment<>(404, "column "+columnName+" does not exists in "+ queryCredentials.tableName);
-            queryMap.put(attributeCredentials.name, attributeCredentials.value);
+        if(queryCredentials.queryParams!=null) {
+            HashMap<String, String> queryMap = new HashMap<>();
+            for (QueryCredentials.AttributeCredentials attributeCredentials : queryCredentials.queryParams) {
+                String columnName = attributeCredentials.name;
+                if (!table.containsColumn(columnName))
+                    return new MessageAttachment<>(404, "column " + columnName + " does not exists in " + queryCredentials.tableName);
+                queryMap.put(attributeCredentials.name, attributeCredentials.value);
+            }
+
+
+            references = dataDAO.find(table, queryMap);
+            if (references == null || references.isEmpty())
+                return new MessageAttachment<>(404, "data not found");
+        }else{
+            references = dataDAO.findAll(table);
         }
-
-
-        List<String> references = dataDAO.find(table, queryMap);
-        if(references == null || references.isEmpty())
-            return new MessageAttachment<>(404, "data not found");
-
+        /**
+         * all the row
+         */
         List<String> values = new ArrayList<>();
         for(String ref : references){
             String[] refSplited = ref.split(",");

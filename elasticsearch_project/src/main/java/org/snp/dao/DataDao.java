@@ -1,6 +1,7 @@
 package org.snp.dao;
 
 import org.snp.indexage.entities.Index;
+import org.snp.indexage.entities.SubIndex;
 import org.snp.indexage.entities.Table;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -23,6 +24,20 @@ public class DataDao {
         Collections.sort(keys);
         String indexKey = String.join(",",keys);
         return table.getIndexes().get(indexKey).find(query);
+    }
+
+    public List<String> findAll(Table table){
+        ArrayList<String> allResults = new ArrayList<>();
+        for(SubIndex subIndex : table.getSubIndexMap().values()){
+            for(List<String> references : subIndex.getReferenceMap().values()){
+                for(String ref : references){
+                    if(! allResults.contains(ref))
+                        allResults.add(ref);
+                }
+            }
+        }
+
+        return allResults;
     }
 
     public void delete(Table table, HashMap<String, String> data, String reference){
