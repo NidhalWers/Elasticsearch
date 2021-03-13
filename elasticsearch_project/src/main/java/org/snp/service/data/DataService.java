@@ -74,7 +74,7 @@ public class DataService {
                     lineToInsert.put(columns.get(i).getName(), values[i]);
                 }
                 int  lineLength = line.getBytes().length;
-                dataDAO.insert(table, lineToInsert,fileName+","+(position+1)+","+lineLength);
+                dataDAO.insert(table, lineToInsert,fileName+","+position+","+lineLength);
                 position+=lineLength+1;
             }
         } catch (Exception e) {
