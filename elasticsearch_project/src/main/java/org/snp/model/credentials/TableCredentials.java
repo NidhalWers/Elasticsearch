@@ -1,5 +1,7 @@
 package org.snp.model.credentials;
 
+
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
