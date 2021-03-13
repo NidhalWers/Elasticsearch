@@ -48,7 +48,9 @@ public class DataService {
         }else{
             references = dataDAO.findAll(table);
         }
-
+        /**
+         * all the row
+         */
         List<String> values = new ArrayList<>();
         for(String ref : references){
             String[] refSplited = ref.split(",");

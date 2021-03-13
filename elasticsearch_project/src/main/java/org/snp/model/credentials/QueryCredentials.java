@@ -18,6 +18,18 @@ public class QueryCredentials {
     public QueryCredentials() {
     }
 
+    public QueryCredentials(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public QueryCredentials setQueryParams(){
+        queryParams = new ArrayList<>();
+        return this;
+    }
+    public QueryCredentials addAttribute(String name, String value){
+        queryParams.add( new AttributeCredentials(name, value) );
+        return this;
+    }
 
     public static class AttributeCredentials {
 
@@ -28,5 +40,9 @@ public class QueryCredentials {
 
         public AttributeCredentials(){}
 
+        public AttributeCredentials(String name, String value) {
+            this.name = name;
+            this.value = value;
+        }
     }
 }

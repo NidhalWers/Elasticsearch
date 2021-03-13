@@ -6,7 +6,7 @@ import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.QueryCredentials;
 import org.snp.model.credentials.JoinCredentials;
-import org.snp.service.data.DataFunctionService;
+import org.snp.service.data.FunctionService;
 import org.snp.service.data.DataService;
 import org.snp.model.multipart.MultipartBody;
 import org.snp.service.data.FileService;
@@ -66,7 +66,7 @@ public class DataController {
     }
 
     @Inject private
-    DataFunctionService dataFunctionService;
+    FunctionService functionService;
 
     @GET
     @Path("/join")
