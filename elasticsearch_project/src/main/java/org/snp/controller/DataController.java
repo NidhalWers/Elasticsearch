@@ -68,9 +68,20 @@ public class DataController {
     @Inject private
     FunctionService functionService;
 
-    @GET
+    @POST
     @Path("/join")
     public List<String> join(JoinCredentials joinCredentials){
-        return null;
+        if(joinCredentials == null)
+            throw new BadRequestException("query should not be null");
+
+        Message message = functionService.join(joinCredentials);
+        if(message.getCode() == 200)
+            return (List<String>) ((MessageAttachment)message).getAttachment();
+        else{
+            if(message.getCode() == 404)
+                throw new NotFoundException((String) ((MessageAttachment)message).getAttachment());
+            else
+                throw new InternalServerErrorException();
+        }
     }
 }

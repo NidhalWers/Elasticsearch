@@ -49,7 +49,7 @@ public class FunctionService {
                 /**
                  * find in table 2
                  */
-                QueryCredentials queryCredentials = new QueryCredentials()
+                QueryCredentials queryCredentials = new QueryCredentials(joinCredentials.tables.get(1).tableName)
                                                     .setQueryParams()
                                                     .addAttribute(joinCredentials.tables.get(1).columnName, columnValueTable1);
 
