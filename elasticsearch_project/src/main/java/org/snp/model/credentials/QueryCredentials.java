@@ -30,6 +30,14 @@ public class QueryCredentials {
         queryParams.add( new AttributeCredentials(name, value) );
         return this;
     }
+    public QueryCredentials setColumnSelected(){
+        columnsSelected = new ArrayList<>();
+        return this;
+    }
+    public QueryCredentials addColumn(String name){
+        columnsSelected.add(new ColumnCredentials(name));
+        return this;
+    }
 
     public static class AttributeCredentials {
 

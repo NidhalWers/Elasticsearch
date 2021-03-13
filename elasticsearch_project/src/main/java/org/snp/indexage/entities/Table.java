@@ -96,6 +96,14 @@ public class Table {
         return -1;
     }
 
+    public Column getColumnFromName(String name){
+        for(Column column : columns){
+            if( column.getName().equals(name) )
+                return column;
+        }
+        return null;
+    }
+
 
     /**
      * Builder

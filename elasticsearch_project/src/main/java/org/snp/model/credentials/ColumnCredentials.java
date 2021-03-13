@@ -16,4 +16,8 @@ public class ColumnCredentials {
         this.name = name;
         this.type = type;
     }
+
+    public ColumnCredentials(String name) {
+        this.name = name;
+    }
 }

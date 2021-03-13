@@ -11,12 +11,19 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class FunctionService {
 
     private TableDao tableDao = new TableDao();
     @Inject DataService dataService;
+
+    /**
+     * join
+     * @param joinCredentials
+     * @return
+     */
 
     public Message join(JoinCredentials joinCredentials){
         /**
@@ -75,33 +82,204 @@ public class FunctionService {
         return valueSplitted[ columnPosition ];
     }
 
-    public double sum(Table table, String columnName){
+    /**
+     * sum
+     * @param tableName
+     * @param columnName
+     * @return
+     */
 
-        return 0;
+    public Message sum(String tableName, String columnName){
+        Table table = tableDao.find(tableName);
+        if(table == null)
+            return new MessageAttachment<>(404, "table "+ tableName+" does not exists");
+        if(! table.getColumnFromName(columnName).getType().equals("double") && table.getColumnFromName(columnName).getType().equals("int") )
+            return new MessageAttachment<>(404, "column's type does not correspond to int or double");
+
+
+        QueryCredentials queryCredentials = new QueryCredentials(tableName)
+                                            .setColumnSelected()
+                                            .addColumn(columnName);
+
+        Message message = dataService.query(queryCredentials);
+        if(message.getCode() == 200){
+            List<String> string_value = (List<String>) ((MessageAttachment)message).getAttachment();
+            double value = 0;
+            for(String s : string_value){
+                value+= Double.valueOf(s);
+            }
+
+            return new MessageAttachment<>(200, value );
+        }else{
+            return message;
+        }
+
     }
 
-    public double avg(Table table, String columnName){
+    /**
+     * avg
+     * @param tableName
+     * @param columnName
+     * @return
+     */
 
-        return 0;
+    public Message avg(String tableName, String columnName){
+        Table table = tableDao.find(tableName);
+        if(table == null)
+            return new MessageAttachment<>(404, "table "+ tableName+" does not exists");
+        if(! table.getColumnFromName(columnName).getType().equals("double") && table.getColumnFromName(columnName).getType().equals("int") )
+            return new MessageAttachment<>(404, "column's type does not correspond to int or double");
+
+
+        QueryCredentials queryCredentials = new QueryCredentials(tableName)
+                .setColumnSelected()
+                .addColumn(columnName);
+
+        Message message = dataService.query(queryCredentials);
+        if(message.getCode() == 200){
+            List<String> string_value = (List<String>) ((MessageAttachment)message).getAttachment();
+            double value = 0;
+            for(String s : string_value){
+                value+= Double.valueOf(s);
+            }
+            value=value/string_value.size();
+
+            return new MessageAttachment<>(200, value );
+        }else{
+            return message;
+        }
     }
 
-    public double min(Table table, String columnName){
+    /**
+     * min
+     * @param tableName
+     * @param columnName
+     * @return
+     */
 
-        return 0;
+    public Message min(String tableName, String columnName){
+        Table table = tableDao.find(tableName);
+        if(table == null)
+            return new MessageAttachment<>(404, "table "+ tableName+" does not exists");
+        if(! table.getColumnFromName(columnName).getType().equals("double") && table.getColumnFromName(columnName).getType().equals("int") )
+            return new MessageAttachment<>(404, "column's type does not correspond to int or double");
+
+
+        QueryCredentials queryCredentials = new QueryCredentials(tableName)
+                .setColumnSelected()
+                .addColumn(columnName);
+
+        Message message = dataService.query(queryCredentials);
+        if(message.getCode() == 200){
+            List<String> string_value = (List<String>) ((MessageAttachment)message).getAttachment();
+            double value = 0;
+            boolean first = true;
+            for(String s : string_value){
+                if(first) {
+                    value = Double.valueOf(s);
+                    first = false;
+                }else{
+                    if(value > Double.valueOf(s))
+                        value = Double.valueOf(s);
+                }
+            }
+
+            return new MessageAttachment<>(200, value );
+        }else{
+            return message;
+        }
     }
 
-    public String max(Table table, String columnName){
+    /**
+     * max
+     * @param tableName
+     * @param columnName
+     * @return
+     */
 
-        return null;
+    public Message max(String tableName, String columnName){
+        Table table = tableDao.find(tableName);
+        if(table == null)
+            return new MessageAttachment<>(404, "table "+ tableName+" does not exists");
+        if(! table.getColumnFromName(columnName).getType().equals("double") && table.getColumnFromName(columnName).getType().equals("int") )
+            return new MessageAttachment<>(404, "column's type does not correspond to int or double");
+
+
+        QueryCredentials queryCredentials = new QueryCredentials(tableName)
+                .setColumnSelected()
+                .addColumn(columnName);
+
+        Message message = dataService.query(queryCredentials);
+        if(message.getCode() == 200){
+            List<String> string_value = (List<String>) ((MessageAttachment)message).getAttachment();
+            double value = 0;
+            boolean first = true;
+            for(String s : string_value){
+                if(first) {
+                    value = Double.valueOf(s);
+                    first = false;
+                }else{
+                    if(value < Double.valueOf(s))
+                        value = Double.valueOf(s);
+                }
+            }
+
+            return new MessageAttachment<>(200, value );
+        }else{
+            return message;
+        }
     }
 
-    public int count(Table table, String columnName){
+    /**
+     * count
+     * @param tableName
+     * @param columnName
+     * @return
+     */
 
-        return 0;
+    public Message count(String tableName, String columnName){
+        Table table = tableDao.find(tableName);
+        if(table == null)
+            return new MessageAttachment<>(404, "table "+ tableName+" does not exists");
+
+
+        QueryCredentials queryCredentials = new QueryCredentials(tableName)
+                .setColumnSelected()
+                .addColumn(columnName);
+
+        Message message = dataService.query(queryCredentials);
+        if(message.getCode() == 200){
+            List<String> string_value = (List<String>) ((MessageAttachment)message).getAttachment();
+            double value = string_value.size();
+
+            return new MessageAttachment<>(200, value );
+        }else{
+            return message;
+        }
     }
 
-    public int count(Table table){
+    /**
+     * count
+     * @param tableName
+     * @return
+     */
 
-        return 0;
+    public Message count(String tableName){
+        Table table = tableDao.find(tableName);
+        if(table == null)
+            return new MessageAttachment<>(404, "table "+ tableName+" does not exists");
+
+
+        QueryCredentials queryCredentials = new QueryCredentials(tableName);
+
+        Message message = dataService.query(queryCredentials);
+        if(message.getCode() == 200){
+            List<String> string_value = (List<String>) ((MessageAttachment)message).getAttachment();
+            double value = string_value.size();
+
+            return new MessageAttachment<>(200, value );
+        }else{
+            return message;
+        }
     }
 }
