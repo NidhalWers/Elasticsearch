@@ -51,42 +51,7 @@ public class DataService {
         return new MessageAttachment<List>(200, values);
     }
 
-    public Message parseCSVAndInsert(String tableName, InputStream csvFile, String fileName) throws IOException {
-        InputStreamReader inputStreamReader = new InputStreamReader(csvFile);
-        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-        String line;
-        String[] values;
-        List<Column> columns;
-        Table table = tableDao.find(tableName);
-        int position=0;
-        if(table==null){
-            return new MessageAttachment<>(404, "table "+tableName+" does not exists");
-        }
-        HashMap<String, String> lineToInsert;
-        try {
-            columns =table.getColumns();
-            line = bufferedReader.readLine();
-            position+=line.getBytes().length+1;
-            while ((line = bufferedReader.readLine())!= null) {
-                values = line.split(",");
-                lineToInsert = new HashMap<>();
-                for (int i = 0; i < values.length; i++) {
-                    lineToInsert.put(columns.get(i).getName(), values[i]);
-                }
-                int  lineLength = line.getBytes().length;
-                dataDAO.insert(table, lineToInsert,fileName+","+position+","+lineLength);
-                position+=lineLength+1;
-            }
-        } catch (Exception e) {
-            System.err.println(e);
-            return new Message(500);
-        } finally {
-            bufferedReader.close();
-            inputStreamReader.close();
-        }
 
-        return new MessageAttachment<Table>(200, table);
-    }
 
 
 
