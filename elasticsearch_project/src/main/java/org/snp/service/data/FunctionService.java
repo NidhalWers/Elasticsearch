@@ -21,7 +21,7 @@ public class FunctionService {
     /**
      * join
      * @param joinCredentials
-     * @return
+     * @return List<String> if code 200
      */
 
     public Message join(JoinCredentials joinCredentials){
@@ -85,15 +85,15 @@ public class FunctionService {
      * sum
      * @param tableName
      * @param columnName
-     * @return
+     * @return double if code 200
      */
 
     public Message sum(String tableName, String columnName){
         Table table = tableDao.find(tableName);
         if(table == null)
             return new MessageAttachment<>(404, "table "+ tableName+" does not exists");
-        if(! table.getColumnFromName(columnName).getType().equals("double") && table.getColumnFromName(columnName).getType().equals("int") )
-            return new MessageAttachment<>(404, "column's type does not correspond to int or double");
+        if(! table.getColumnFromName(columnName).getType().equals("double") && ! table.getColumnFromName(columnName).getType().equals("int") )
+            return new MessageAttachment<>(400, "column's type does not correspond to int or double");
 
 
         QueryCredentials queryCredentials = new QueryCredentials(tableName)
@@ -119,15 +119,15 @@ public class FunctionService {
      * avg
      * @param tableName
      * @param columnName
-     * @return
+     * @return double if code 200
      */
 
     public Message avg(String tableName, String columnName){
         Table table = tableDao.find(tableName);
         if(table == null)
             return new MessageAttachment<>(404, "table "+ tableName+" does not exists");
-        if(! table.getColumnFromName(columnName).getType().equals("double") && table.getColumnFromName(columnName).getType().equals("int") )
-            return new MessageAttachment<>(404, "column's type does not correspond to int or double");
+        if(! table.getColumnFromName(columnName).getType().equals("double") && ! table.getColumnFromName(columnName).getType().equals("int") )
+            return new MessageAttachment<>(400, "column's type does not correspond to int or double");
 
 
         QueryCredentials queryCredentials = new QueryCredentials(tableName)
@@ -141,7 +141,7 @@ public class FunctionService {
             for(String s : string_value){
                 value+= Double.valueOf(s);
             }
-            value=value/string_value.size();
+            value=value/Double.valueOf(string_value.size());
 
             return new MessageAttachment<>(200, value );
         }else{
@@ -153,15 +153,15 @@ public class FunctionService {
      * min
      * @param tableName
      * @param columnName
-     * @return
+     * @return double if code 20à
      */
 
     public Message min(String tableName, String columnName){
         Table table = tableDao.find(tableName);
         if(table == null)
             return new MessageAttachment<>(404, "table "+ tableName+" does not exists");
-        if(! table.getColumnFromName(columnName).getType().equals("double") && table.getColumnFromName(columnName).getType().equals("int") )
-            return new MessageAttachment<>(404, "column's type does not correspond to int or double");
+        if(! table.getColumnFromName(columnName).getType().equals("double") && ! table.getColumnFromName(columnName).getType().equals("int") )
+            return new MessageAttachment<>(400, "column's type does not correspond to int or double");
 
 
         QueryCredentials queryCredentials = new QueryCredentials(tableName)
@@ -193,15 +193,15 @@ public class FunctionService {
      * max
      * @param tableName
      * @param columnName
-     * @return
+     * @return double if code 200
      */
 
     public Message max(String tableName, String columnName){
         Table table = tableDao.find(tableName);
         if(table == null)
             return new MessageAttachment<>(404, "table "+ tableName+" does not exists");
-        if(! table.getColumnFromName(columnName).getType().equals("double") && table.getColumnFromName(columnName).getType().equals("int") )
-            return new MessageAttachment<>(404, "column's type does not correspond to int or double");
+        if(! table.getColumnFromName(columnName).getType().equals("double") && ! table.getColumnFromName(columnName).getType().equals("int") )
+            return new MessageAttachment<>(400, "column's type does not correspond to int or double");
 
 
         QueryCredentials queryCredentials = new QueryCredentials(tableName)
@@ -233,7 +233,7 @@ public class FunctionService {
      * count
      * @param tableName
      * @param columnName
-     * @return
+     * @return int if code 200
      */
 
     public Message count(String tableName, String columnName){
@@ -260,7 +260,7 @@ public class FunctionService {
     /**
      * count
      * @param tableName
-     * @return
+     * @return int if code 200
      */
 
     public Message count(String tableName){
