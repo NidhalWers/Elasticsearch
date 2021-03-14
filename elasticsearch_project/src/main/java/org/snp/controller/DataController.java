@@ -4,6 +4,7 @@ import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.snp.indexage.entities.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
+import org.snp.model.credentials.FunctionCredentials;
 import org.snp.model.credentials.QueryCredentials;
 import org.snp.model.credentials.JoinCredentials;
 import org.snp.service.data.FunctionService;
@@ -82,6 +83,48 @@ public class DataController {
                 throw new NotFoundException((String) ((MessageAttachment)message).getAttachment());
             else
                 throw new InternalServerErrorException();
+        }
+    }
+
+    @POST
+    @Path("/function")
+    public double function(FunctionCredentials functionCredentials){
+        if(functionCredentials == null)
+            throw new BadRequestException("query should not be null");
+        if(functionCredentials.functionName == null)
+            throw new BadRequestException("function_name should not be null");
+
+        Message message;
+        switch (functionCredentials.functionName){
+            case "sum" :
+                message = functionService.sum(functionCredentials.tableName, functionCredentials.columnName);
+                break;
+            case "avg" :
+                message = functionService.avg(functionCredentials.tableName, functionCredentials.columnName);
+                break;
+            case "min" :
+                message = functionService.min(functionCredentials.tableName, functionCredentials.columnName);
+                break;
+            case "max" :
+                message = functionService.max(functionCredentials.tableName, functionCredentials.columnName);
+                break;
+            case "count" :
+                if( functionCredentials.columnName != null)
+                    message = functionService.count(functionCredentials.tableName, functionCredentials.columnName);
+                else
+                    message = functionService.count(functionCredentials.tableName);
+                break;
+            default:
+                throw new BadRequestException("function_name does not correspond");
+        }
+
+        if(message.getCode() == 200){
+            return (double) ((MessageAttachment)message).getAttachment();
+        }else{
+            if(message.getCode() == 404)
+                throw new NotFoundException((String) ((MessageAttachment)message).getAttachment());
+            else
+                throw new BadRequestException((String) ((MessageAttachment)message).getAttachment());
         }
     }
 }

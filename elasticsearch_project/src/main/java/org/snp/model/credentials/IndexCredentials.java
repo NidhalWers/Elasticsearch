@@ -1,11 +1,13 @@
 package org.snp.model.credentials;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
+
+import javax.json.bind.annotation.JsonbProperty;
 import java.util.ArrayList;
 
+//TODO change les JsonProperty en JsonbProperty et sur Postman
 public class IndexCredentials {
-    //@JsonProperty("table_name")
+    @JsonbProperty("table_name")
     public String tableName;
 
     public ArrayList<ColumnCredentials> columns;
