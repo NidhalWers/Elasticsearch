@@ -16,6 +16,9 @@ public class QueryCredentials {
     @JsonbProperty("columns_selected")
     public ArrayList<ColumnCredentials> columnsSelected;
 
+    @JsonbProperty("update_params")
+    public  ArrayList<AttributeCredentials> updateParams;
+
     public QueryCredentials() {
     }
 
@@ -42,14 +45,15 @@ public class QueryCredentials {
 
     public static class AttributeCredentials {
 
-        public String name;
+        @JsonbProperty("name")
+        public String columnName;
 
         public String value;
 
         public AttributeCredentials(){}
 
-        public AttributeCredentials(String name, String value) {
-            this.name = name;
+        public AttributeCredentials(String columnName, String value) {
+            this.columnName = columnName;
             this.value = value;
         }
     }

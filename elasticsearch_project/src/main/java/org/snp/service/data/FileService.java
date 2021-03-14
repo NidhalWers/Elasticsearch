@@ -22,8 +22,7 @@ public class FileService {
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile(fileName, "r");
             randomAccessFile.seek(pos);
-            /*String v =""+randomAccessFile.readUTF();
-            v=v;*/
+
             String value= randomAccessFile.readLine();
 
             randomAccessFile.close();
@@ -34,6 +33,43 @@ public class FileService {
             e.printStackTrace();
         }
 
+
+        return null;
+    }
+
+    public String updateColumnAtPos(String fileName, int pos, int columnNumber, String newValue){
+        RandomAccessFile randomAccessFile = null;
+        try {
+            randomAccessFile = new RandomAccessFile(fileName, "rw");
+            randomAccessFile.seek(pos);
+
+            String line = randomAccessFile.readLine();
+            String[] arrayLine = line.split(",");
+            int total = line.getBytes().length;
+
+            int newPos=pos;
+            int i = 0;
+            while(i<columnNumber){
+                newPos += arrayLine[i].length() + 1; //+1 because of the ','
+                i++;
+            }
+
+            byte[] byteValue = newValue.getBytes();
+
+            randomAccessFile.seek(newPos);
+            randomAccessFile.write(byteValue,0,byteValue.length);
+
+
+
+            randomAccessFile.seek(pos);
+            String res = randomAccessFile.readLine();
+            randomAccessFile.close();
+            return res;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return null;
     }

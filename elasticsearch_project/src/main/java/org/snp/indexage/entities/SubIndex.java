@@ -28,6 +28,32 @@ public class SubIndex {
         return referenceMap.get(key);
     }
 
+    public boolean deleteByReference(String reference){
+        String key =null;
+        for(Map.Entry entry :  referenceMap.entrySet()){
+            List<String> refList = (List<String>) entry.getValue();
+            if(refList.contains(reference)) {
+                refList.remove(reference);
+                if(refList.isEmpty())
+                    key= (String) entry.getKey();
+            }
+        }
+        if(key!=null){
+            referenceMap.remove(key);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean updateByReference(String newKey, String reference){
+        boolean delete = deleteByReference(reference);
+        if(delete){
+            insertLine(newKey, reference);
+            return true;
+        }
+        return false;
+    }
+
     public Map<String, List<String>> getReferenceMap() {
         return referenceMap;
     }

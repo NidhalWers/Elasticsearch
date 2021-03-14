@@ -2,6 +2,7 @@ package org.snp.service.data;
 
 import org.snp.dao.DataDao;
 import org.snp.dao.TableDao;
+import org.snp.indexage.entities.SubIndex;
 import org.snp.indexage.entities.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
@@ -13,6 +14,7 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @ApplicationScoped
 public class DataService {
@@ -23,6 +25,10 @@ public class DataService {
     private DataDao dataDAO = new DataDao();
 
 
+    /**
+     * Select
+     *
+     */
     public Message query(QueryCredentials queryCredentials){
         Table table = tableDao.find(queryCredentials.tableName);
         if(table == null)
@@ -35,10 +41,10 @@ public class DataService {
         if(queryCredentials.queryParams!=null) {
             HashMap<String, String> queryMap = new HashMap<>();
             for (QueryCredentials.AttributeCredentials attributeCredentials : queryCredentials.queryParams) {
-                String columnName = attributeCredentials.name;
+                String columnName = attributeCredentials.columnName;
                 if (!table.containsColumn(columnName))
                     return new MessageAttachment<>(404, "column " + columnName + " does not exists in " + queryCredentials.tableName);
-                queryMap.put(attributeCredentials.name, attributeCredentials.value);
+                queryMap.put(attributeCredentials.columnName, attributeCredentials.value);
             }
 
 
@@ -75,6 +81,124 @@ public class DataService {
 
         return new MessageAttachment<List>(200, values);
     }
+
+    /**
+     * DELETE
+     *
+     */
+
+    public Message delete(QueryCredentials queryCredentials){
+        Table table = tableDao.find(queryCredentials.tableName);
+        if(table == null)
+            return new MessageAttachment<>(404, "table "+ queryCredentials.tableName+" does not exists");
+
+        List<String> references;
+        /**
+         * column query verification
+         */
+        if(queryCredentials.queryParams!=null) {
+            HashMap<String, String> queryMap = new HashMap<>();
+            for (QueryCredentials.AttributeCredentials attributeCredentials : queryCredentials.queryParams) {
+                String columnName = attributeCredentials.columnName;
+                if (!table.containsColumn(columnName))
+                    return new MessageAttachment<>(404, "column " + columnName + " does not exists in " + queryCredentials.tableName);
+                queryMap.put(attributeCredentials.columnName, attributeCredentials.value);
+            }
+
+
+            references = dataDAO.find(table, queryMap);
+            if (references == null || references.isEmpty())
+                return new MessageAttachment<>(404, "data not found");
+        }else{
+            references = dataDAO.findAll(table);
+        }
+
+        /**
+         * suppression in subindex
+         */
+        for(SubIndex subIndex : table.getSubIndexMap().values()){
+            for(String ref : references){
+                subIndex.deleteByReference(ref);
+            }
+        }
+
+        /**
+         * suppression in the file
+         */
+
+
+
+        return new MessageAttachment<>(200, references.size());
+    }
+
+    /**
+     * UPDATE
+     *
+     */
+
+    public Message update(QueryCredentials queryCredentials){
+        Table table = tableDao.find(queryCredentials.tableName);
+        if(table == null)
+            return new MessageAttachment<>(404, "table "+ queryCredentials.tableName+" does not exists");
+        if(queryCredentials.updateParams == null)
+            return new MessageAttachment<>(404, "update_params could not be null");
+
+        List<String> references;
+        /**
+         * column query verification
+         */
+        if(queryCredentials.queryParams!=null) {
+            HashMap<String, String> queryMap = new HashMap<>();
+            for (QueryCredentials.AttributeCredentials attributeCredentials : queryCredentials.queryParams) {
+                String columnName = attributeCredentials.columnName;
+                if (!table.containsColumn(columnName))
+                    return new MessageAttachment<>(404, "column " + columnName + " does not exists in " + queryCredentials.tableName);
+                queryMap.put(attributeCredentials.columnName, attributeCredentials.value);
+            }
+
+
+            references = dataDAO.find(table, queryMap);
+            if (references == null || references.isEmpty())
+                return new MessageAttachment<>(404, "data not found");
+        }else{
+            references = dataDAO.findAll(table);
+        }
+
+        /**
+         * update in subindex
+         */
+        for(Map.Entry entry : table.getSubIndexMap().entrySet()){
+            for (QueryCredentials.AttributeCredentials attributeCredentials : queryCredentials.updateParams){
+                String columnName = attributeCredentials.columnName;
+                if(columnName.equals(entry.getKey())){
+                    SubIndex subIndex = (SubIndex) entry.getValue();
+                    for(String ref : references){
+                        subIndex.updateByReference(attributeCredentials.value, ref);
+                    }
+                }
+            }
+        }
+
+        /**
+         * update in file
+         */
+        List<String> values = new ArrayList<>();
+        for(QueryCredentials.AttributeCredentials attributeCredentials : queryCredentials.updateParams) {
+            String columnName = attributeCredentials.columnName;
+            int columnNumber = table.positionOfColumn(columnName);
+            String newValue = attributeCredentials.value;
+            for (String ref : references) {
+                String[] refSplited = ref.split(",");
+                values.add(fileService.updateColumnAtPos(refSplited[0], Integer.valueOf(refSplited[1]), columnNumber, newValue));
+            }
+        }
+
+
+        return new MessageAttachment<>(200, references.size());
+    }
+
+
+
 
 
     private List<String> getValuesForColumn(Table table, List<String> columnsName, List<String> allValues){
