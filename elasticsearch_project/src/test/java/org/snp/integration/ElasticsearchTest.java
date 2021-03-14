@@ -113,7 +113,7 @@ public class ElasticsearchTest {
 
         given()
                 .body("{\n" +
-                        "    \"tableName\" : \""+table.getName()+"\",\n" +
+                        "    \"table_name\" : \""+table.getName()+"\",\n" +
                         "    \"columns\" : [\n" +
                         "        {\"name\" : \"column1\"},\n" +
                         "        {\"name\" : \"column2\"}\n" +
@@ -138,7 +138,7 @@ public class ElasticsearchTest {
     public void testAddIndexNonExistingTable(){
         given()
                 .body("{\n" +
-                        "    \"tableName\" : \"bad test\",\n" +
+                        "    \"table_name\" : \"bad test\",\n" +
                         "    \"columns\" : [\n" +
                         "        {\"name\" : \"column1\"},\n" +
                         "        {\"name\" : \"column2\"}\n" +
