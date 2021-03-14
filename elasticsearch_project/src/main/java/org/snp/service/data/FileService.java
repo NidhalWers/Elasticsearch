@@ -6,8 +6,10 @@ import org.snp.indexage.entities.Column;
 import org.snp.indexage.entities.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
+import org.snp.service.TableService;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.io.*;
 import java.util.HashMap;
 import java.util.List;
@@ -37,29 +39,67 @@ public class FileService {
         return null;
     }
 
-    public String updateColumnAtPos(String fileName, int pos, int columnNumber, String newValue){
+    @Inject
+    TableService tableService;
+
+    public String updateColumnAtPos(Table table, String fileName, int pos, int columnNumber, String newValue){
         RandomAccessFile randomAccessFile = null;
         try {
             randomAccessFile = new RandomAccessFile(fileName, "rw");
+            int fileSize = (int) randomAccessFile.length();
             randomAccessFile.seek(pos);
 
             String line = randomAccessFile.readLine();
             String[] arrayLine = line.split(",");
-            int total = line.getBytes().length;
 
             int newPos=pos;
+            int posToCopy = 0;
+            int sizeDifference = 0;
             int i = 0;
-            while(i<columnNumber){
-                newPos += arrayLine[i].length() + 1; //+1 because of the ','
+            while(i<=columnNumber){
+                if(i<columnNumber) {
+                    newPos += arrayLine[i].length() + 1; //+1 because of the ','
+                }else{
+                    posToCopy = newPos + arrayLine[i].length();
+                    sizeDifference = newValue.length() - arrayLine[i].length();
+                }
                 i++;
             }
+
+            /**
+             * read the other data
+             */
+            int followingSize = fileSize - posToCopy;
+            byte[] followingData = new byte[followingSize];
+            randomAccessFile.seek(posToCopy);
+            randomAccessFile.readFully(followingData, 0, followingSize );
+
+            /**
+             * update the value
+             */
 
             byte[] byteValue = newValue.getBytes();
 
             randomAccessFile.seek(newPos);
             randomAccessFile.write(byteValue,0,byteValue.length);
 
+            /**
+             * write following
+             */
+            if(sizeDifference > 0)
+                randomAccessFile.setLength( randomAccessFile.length() +  sizeDifference);
+            randomAccessFile.write(followingData, 0, followingSize);
 
+            /**
+             * update the position
+             */
+
+            if(sizeDifference!=0)
+                tableService.updateAllReference(table, sizeDifference);
+
+            /**
+             * verify the updated value
+             */
 
             randomAccessFile.seek(pos);
             String res = randomAccessFile.readLine();

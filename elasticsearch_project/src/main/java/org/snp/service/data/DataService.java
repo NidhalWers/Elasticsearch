@@ -142,54 +142,57 @@ public class DataService {
             return new MessageAttachment<>(404, "table "+ queryCredentials.tableName+" does not exists");
         if(queryCredentials.updateParams == null)
             return new MessageAttachment<>(404, "update_params could not be null");
+        if(queryCredentials.queryParams==null)
+            return new MessageAttachment<>(404, "query_params could not be null");
 
         List<String> references;
         /**
          * column query verification
          */
-        if(queryCredentials.queryParams!=null) {
-            HashMap<String, String> queryMap = new HashMap<>();
-            for (QueryCredentials.AttributeCredentials attributeCredentials : queryCredentials.queryParams) {
-                String columnName = attributeCredentials.columnName;
-                if (!table.containsColumn(columnName))
-                    return new MessageAttachment<>(404, "column " + columnName + " does not exists in " + queryCredentials.tableName);
-                queryMap.put(attributeCredentials.columnName, attributeCredentials.value);
-            }
 
-
-            references = dataDAO.find(table, queryMap);
-            if (references == null || references.isEmpty())
-                return new MessageAttachment<>(404, "data not found");
-        }else{
-            references = dataDAO.findAll(table);
+        HashMap<String, String> queryMap = new HashMap<>();
+        for (QueryCredentials.AttributeCredentials attributeCredentials : queryCredentials.queryParams) {
+            String columnName = attributeCredentials.columnName;
+            if (!table.containsColumn(columnName))
+                return new MessageAttachment<>(404, "column " + columnName + " does not exists in " + queryCredentials.tableName);
+            queryMap.put(attributeCredentials.columnName, attributeCredentials.value);
         }
 
+
+        references = dataDAO.find(table, queryMap);
+        if (references == null || references.isEmpty())
+            return new MessageAttachment<>(404, "data not found");
+
+
         /**
-         * update in subindex
+         * update
          */
+        List<String> values = new ArrayList<>();
         for(Map.Entry entry : table.getSubIndexMap().entrySet()){
             for (QueryCredentials.AttributeCredentials attributeCredentials : queryCredentials.updateParams){
                 String columnName = attributeCredentials.columnName;
+                int columnNumber = table.positionOfColumn(columnName);
+                String newValue = attributeCredentials.value;
+
                 if(columnName.equals(entry.getKey())){
                     SubIndex subIndex = (SubIndex) entry.getValue();
-                    for(String ref : references){
+                    for(int i = 0; i<references.size(); i++){
+                        String ref = references.get(i);
+                        /**
+                         * update in subindex
+                         */
                         subIndex.updateByReference(attributeCredentials.value, ref);
+                        /**
+                         * update in file
+                         */
+                        String[] refSplited = ref.split(",");
+                        values.add(fileService.updateColumnAtPos(table, refSplited[0], Integer.valueOf(refSplited[1]), columnNumber, newValue));
+                        //update the position byte
+                        references = dataDAO.find(table, queryMap);
+                        if (references == null || references.isEmpty())
+                            break;
                     }
                 }
-            }
-        }
-
-        /**
-         * update in file
-         */
-        List<String> values = new ArrayList<>();
-        for(QueryCredentials.AttributeCredentials attributeCredentials : queryCredentials.updateParams) {
-            String columnName = attributeCredentials.columnName;
-            int columnNumber = table.positionOfColumn(columnName);
-            String newValue = attributeCredentials.value;
-            for (String ref : references) {
-                String[] refSplited = ref.split(",");
-                values.add(fileService.updateColumnAtPos(refSplited[0], Integer.valueOf(refSplited[1]), columnNumber, newValue));
             }
         }
 

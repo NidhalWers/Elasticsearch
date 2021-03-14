@@ -45,6 +45,21 @@ public class SubIndex {
         return false;
     }
 
+    public void updateTheReference(int difference ){
+
+        for(Map.Entry entry : referenceMap.entrySet()){
+            List<String> refList = (List<String>) entry.getValue();
+            for(int i=0; i<refList.size(); i++){
+                String ref = refList.get(i);
+                refList.remove(ref);
+                String[] split = ref.split(",");
+                int oldPos = Integer.valueOf(split[1]);
+                int newPos = oldPos + difference;
+                refList.add(split[0]+","+newPos+","+split[2]);
+            }
+        }
+    }
+
     public boolean updateByReference(String newKey, String reference){
         boolean delete = deleteByReference(reference);
         if(delete){
