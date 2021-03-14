@@ -1,18 +1,19 @@
 package org.snp.model.credentials;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.json.bind.annotation.JsonbProperty;
 import java.util.ArrayList;
 
 public class QueryCredentials {
-    //@JsonProperty("table_name")
+    @JsonbProperty("table_name")
     public String tableName;
 
     //map key = nom de colonne
     //    value = valeur de la colonne
-    //@JsonProperty("query_params")
+    @JsonbProperty("query_params")
     public ArrayList<AttributeCredentials> queryParams;
 
+    @JsonbProperty("columns_selected")
     public ArrayList<ColumnCredentials> columnsSelected;
 
     public QueryCredentials() {
@@ -41,7 +42,6 @@ public class QueryCredentials {
 
     public static class AttributeCredentials {
 
-        @JsonProperty("name")
         public String name;
 
         public String value;

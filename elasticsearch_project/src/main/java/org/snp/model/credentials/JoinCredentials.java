@@ -1,23 +1,22 @@
 package org.snp.model.credentials;
 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
+import javax.json.bind.annotation.JsonbProperty;
 import java.util.List;
 
 public class JoinCredentials {
 
 
-    @JsonProperty("tables")
+    @JsonbProperty("tables")
     public List<JoinTable> tables;
 
     public JoinCredentials(){}
 
 
     public static class JoinTable{
-        @JsonProperty("table_name")
+        @JsonbProperty("table_name")
         public String tableName;
-        @JsonProperty("column_name")
+        @JsonbProperty("column_name")
         public String columnName;
 
         public JoinTable(){}
