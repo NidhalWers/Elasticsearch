@@ -34,13 +34,12 @@ public class SubIndex {
             List<String> refList = (List<String>) entry.getValue();
             if(refList.contains(reference)) {
                 refList.remove(reference);
-                if(refList.isEmpty())
-                    key= (String) entry.getKey();
+                if(refList.isEmpty()) {
+                    key = (String) entry.getKey();
+                    referenceMap.remove(key);
+                }
+                return true;
             }
-        }
-        if(key!=null){
-            referenceMap.remove(key);
-            return true;
         }
         return false;
     }
@@ -57,10 +56,13 @@ public class SubIndex {
                 if(oldPos > from) {
                     int newPos = oldPos + difference;
                     witnessList.add(split[0] + "," + newPos + "," + split[2]);
+                }else{
+                    witnessList.add(split[0] + "," + oldPos + "," + split[2]);
                 }
             }
             refList.clear();
             refList.addAll(witnessList);
+            int B = 6;
         }
     }
 

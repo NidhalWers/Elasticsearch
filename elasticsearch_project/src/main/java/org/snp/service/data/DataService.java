@@ -181,7 +181,7 @@ public class DataService {
                         /**
                          * update in subindex
                          */
-                        subIndex.updateByReference(attributeCredentials.value, ref);
+                        subIndex.updateByReference(newValue, ref);
                         /**
                          * update in file
                          */
