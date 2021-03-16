@@ -95,7 +95,7 @@ public class FileService {
              */
 
             if(sizeDifference!=0)
-                tableService.updateAllReference(table, sizeDifference);
+                tableService.updateAllReference(table, sizeDifference, pos);
 
             /**
              * verify the updated value

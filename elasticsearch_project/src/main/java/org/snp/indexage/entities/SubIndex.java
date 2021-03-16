@@ -45,18 +45,22 @@ public class SubIndex {
         return false;
     }
 
-    public void updateTheReference(int difference ){
+    public void updateTheReference(int difference, int from){
 
         for(Map.Entry entry : referenceMap.entrySet()){
             List<String> refList = (List<String>) entry.getValue();
+            List<String> witnessList = new ArrayList<>();
             for(int i=0; i<refList.size(); i++){
                 String ref = refList.get(i);
-                refList.remove(ref);
                 String[] split = ref.split(",");
                 int oldPos = Integer.valueOf(split[1]);
-                int newPos = oldPos + difference;
-                refList.add(split[0]+","+newPos+","+split[2]);
+                if(oldPos > from) {
+                    int newPos = oldPos + difference;
+                    witnessList.add(split[0] + "," + newPos + "," + split[2]);
+                }
             }
+            refList.clear();
+            refList.addAll(witnessList);
         }
     }
 

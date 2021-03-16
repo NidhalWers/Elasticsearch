@@ -67,9 +67,9 @@ public class TableService {
     //todo remove index with a list of column's name
 
 
-    public void updateAllReference(Table table, int difference){
+    public void updateAllReference(Table table, int difference, int from){
         for(SubIndex subIndex : table.getSubIndexMap().values()){
-            subIndex.updateTheReference(difference);
+            subIndex.updateTheReference(difference, from);
         }
     }
 

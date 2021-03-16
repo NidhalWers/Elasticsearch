@@ -176,7 +176,7 @@ public class DataService {
 
                 if(columnName.equals(entry.getKey())){
                     SubIndex subIndex = (SubIndex) entry.getValue();
-                    for(int i = 0; i<references.size(); i++){
+                    for(int i = 0; i<references.size(); ){
                         String ref = references.get(i);
                         /**
                          * update in subindex
