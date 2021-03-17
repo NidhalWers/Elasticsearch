@@ -16,8 +16,10 @@ public class SubIndex {
             List refList = new ArrayList();
             refList.add(reference);
             referenceMap.put(key, refList);
-        }else
-            referenceMap.get(key).add(reference);
+        }else {
+            if(! referenceMap.get(key).contains(reference))
+                referenceMap.get(key).add(reference);
+        }
     }
 
     public Column getColumn() {

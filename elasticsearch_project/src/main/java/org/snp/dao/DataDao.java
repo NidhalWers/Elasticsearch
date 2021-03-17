@@ -23,7 +23,13 @@ public class DataDao {
         }
         Collections.sort(keys);
         String indexKey = String.join(",",keys);
-        return table.getIndexes().get(indexKey).find(query);
+        Index index = table.getIndexes().get(indexKey);
+        if(index != null)
+            return index.find(query);
+        else {
+            return null;
+            //todo verifier si il y a un index pour chaque colonne et faire l'intersection
+        }
     }
 
     public List<String> findAll(Table table){

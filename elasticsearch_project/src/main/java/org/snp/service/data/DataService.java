@@ -47,6 +47,10 @@ public class DataService {
                 queryMap.put(attributeCredentials.columnName, attributeCredentials.value);
             }
 
+            /**
+             * index verification
+             */
+
 
             references = dataDAO.find(table, queryMap);
             if (references == null || references.isEmpty())
@@ -176,6 +180,7 @@ public class DataService {
 
                 if(columnName.equals(entry.getKey())){
                     SubIndex subIndex = (SubIndex) entry.getValue();
+                    int size = references.size();
                     for(int i = 0; i<references.size(); ){
                         String ref = references.get(i);
                         /**
@@ -191,6 +196,8 @@ public class DataService {
                         references = dataDAO.find(table, queryMap);
                         if (references == null || references.isEmpty())
                             break;
+                        if(references.size() == size)
+                            i++;
                     }
                 }
             }
