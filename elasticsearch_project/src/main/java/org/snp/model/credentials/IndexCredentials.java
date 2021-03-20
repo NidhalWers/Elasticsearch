@@ -5,7 +5,6 @@ package org.snp.model.credentials;
 import javax.json.bind.annotation.JsonbProperty;
 import java.util.ArrayList;
 
-//TODO change les JsonProperty en JsonbProperty et sur Postman
 public class IndexCredentials {
     @JsonbProperty("table_name")
     public String tableName;

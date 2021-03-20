@@ -48,6 +48,40 @@ public class DataController {
         }
     }
 
+    @POST
+    @Path("/update")
+    public int update(QueryCredentials queryCredentials){
+        if(queryCredentials ==null){
+            throw new BadRequestException("query should not be null");
+        }
+        Message message = dataService.update(queryCredentials);
+        if(message.getCode() == 200)
+            return (int) ((MessageAttachment)message).getAttachment();
+        else {
+            if(message.getCode() == 404)
+                throw new NotFoundException((String) ((MessageAttachment)message).getAttachment());
+            else
+                throw new InternalServerErrorException();
+        }
+    }
+
+    @POST
+    @Path("/delete")
+    public int delete(QueryCredentials queryCredentials){
+        if(queryCredentials ==null){
+            throw new BadRequestException("query should not be null");
+        }
+        Message message = dataService.delete(queryCredentials);
+        if(message.getCode() == 200)
+            return (int) ((MessageAttachment)message).getAttachment();
+        else {
+            if(message.getCode() == 404)
+                throw new NotFoundException((String) ((MessageAttachment)message).getAttachment());
+            else
+                throw new InternalServerErrorException();
+        }
+    }
+
 
     @POST
     @Path("/query")
