@@ -1,9 +1,12 @@
 package org.snp.dao;
 
 import org.snp.indexage.entities.Index;
+import org.snp.indexage.entities.SubIndex;
 import org.snp.indexage.entities.Table;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.NotFoundException;
 import java.util.*;
 
 @ApplicationScoped
@@ -22,22 +25,25 @@ public class DataDao {
         }
         Collections.sort(keys);
         String indexKey = String.join(",",keys);
-        return table.getIndexes().get(indexKey).find(query);
-    }
-
-    public void delete(Table table, HashMap<String, String> data, String reference){
-
-    }
-
-    public void update(Table table, HashMap<String,String> query, HashMap<String, String> data, String reference){
-        ArrayList<String> keys = new ArrayList<>();
-        for(String key : query.keySet()){
-            keys.add(key);
-        }
-        Collections.sort(keys);
-        String indexKey = String.join(",",keys);
         Index index = table.getIndexes().get(indexKey);
+        if(index != null)
+            return index.find(query);
+        else {
+            throw new NotFoundException("no index with these columns found");
+        }
+    }
 
-        //todo
+    public List<String> findAll(Table table){
+        ArrayList<String> allResults = new ArrayList<>();
+        for(SubIndex subIndex : table.getSubIndexMap().values()){
+            for(List<String> references : subIndex.getReferenceMap().values()){
+                for(String ref : references){
+                    if(! allResults.contains(ref))
+                        allResults.add(ref);
+                }
+            }
+        }
+
+        return allResults;
     }
 }
