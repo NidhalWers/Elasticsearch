@@ -88,13 +88,13 @@ public class IndexTest {
                 .subIndexes(subIndexMap)
                 .build();
 
-        subIndex.insertLine("nom", "oruc");
+        subIndex.insertLine("oruc", "ligne2");
 
 
         HashMap<String,String> query = new HashMap<>();
         query.put("nom", "oruc");
 
         List<String> resultTest = subIndex.find("oruc");
-        Assertions.assertFalse(resultTest.contains("ligne2"));
+        Assertions.assertTrue(resultTest.contains("ligne2"));
     }
 }
