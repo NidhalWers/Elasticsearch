@@ -54,7 +54,7 @@ public class DataController {
         if(queryCredentials ==null){
             throw new BadRequestException("query should not be null");
         }
-        Message message = dataService.update(queryCredentials);
+            Message message = dataService.update(queryCredentials);
         if(message.getCode() == 200)
             return (int) ((MessageAttachment)message).getAttachment();
         else {
