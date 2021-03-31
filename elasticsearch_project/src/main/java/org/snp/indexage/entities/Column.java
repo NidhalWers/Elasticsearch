@@ -23,8 +23,8 @@ public class Column {
     @Override
     public String toString() {
         return "Column{" +
-                "name='" + name + '\'' +
-                ", type='" + type + '\'' +
+                "name=" + name + '\'' +
+                ", type=" + type + '\'' +
                 '}';
     }
 
