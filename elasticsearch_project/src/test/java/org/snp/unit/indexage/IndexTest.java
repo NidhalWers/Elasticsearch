@@ -4,10 +4,15 @@ package org.snp.unit.indexage;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.snp.indexage.entities.Column;
+import org.snp.indexage.entities.SubIndex;
 import org.snp.utils.TestFactory;
 import org.snp.indexage.entities.Index;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @QuarkusTest
 public class IndexTest {
@@ -22,54 +27,40 @@ public class IndexTest {
     @Test
     public void testInsertLineHappyPath(){
 
-        Index index = TestFactory.createIndexNom();
+        Map<String, SubIndex> subIndexMap = new HashMap<>();
+        SubIndex subIndex = SubIndex.builder()
+                .column(Column.builder()
+                        .name("nom")
+                        .type("String")
+                        .build())
+                .build();
+        subIndexMap.put("nom",subIndex );
 
-        /*List<String> list = new ArrayList<>();
-        list.add("ligne1");
-        Mockito.when(subIndex.find(any())).thenReturn(list);
-        */
-
-        HashMap<String, String> data = new HashMap<>();
-        data.put("nom", "teyeb");
-        data.put("prenom", "nidhal");
-        data.put("age", "21");
-
-        index.insertLine(data, "ligne1");
-
-        HashMap<String,String> query = new HashMap<>();
-        query.put("nom","teyeb");
-
-        Assertions.assertTrue(index.find(query).contains("ligne1"));
-
-   }
-
-
-    @Test
-    public void testInsertLineSadPath(){
-
-       Index index = TestFactory.createIndexNom();
-
-       /*
-        List<String> list = new ArrayList<>();
-        list.add("ligne1");
-        Mockito.when(subIndex.find(any())).thenReturn(list);
-        */
+        ArrayList<Column> column = new ArrayList<>();
+        column.add(Column.builder()
+                .name("nom")
+                .type("String")
+                .build());
+        //créer la map
+        Index index = Index.builder()
+                .columns(column)
+                .subIndexes(subIndexMap)
+                .build();
 
 
         HashMap<String, String> data = new HashMap<>();
         data.put("nom", "oruc");
-        data.put("prenom", "sinem");
-        data.put("age", "22");
 
         index.insertLine(data, "ligne1");
 
         HashMap<String,String> query = new HashMap<>();
         query.put("nom", "oruc");
 
-        Assertions.assertFalse(index.find(query).contains("ligne2"));
+        //Assertions.assertFalse(index.find(query).contains("ligne2"));
+        Assertions.assertTrue(subIndex.find("oruc").contains("ligne1"));
 
+   }
 
-    }
 
     /**
      * method to test : find(HashMap<String,String> query)
@@ -77,11 +68,33 @@ public class IndexTest {
 
     @Test
     public void testFindHappyPath(){
+        Map<String, SubIndex> subIndexMap = new HashMap<>();
+        SubIndex subIndex = SubIndex.builder()
+                .column(Column.builder()
+                        .name("nom")
+                        .type("String")
+                        .build())
+                .build();
+        subIndexMap.put("nom",subIndex );
 
-    }
+        ArrayList<Column> column = new ArrayList<>();
+        column.add(Column.builder()
+                .name("nom")
+                .type("String")
+                .build());
+        //créer la map
+        Index index = Index.builder()
+                .columns(column)
+                .subIndexes(subIndexMap)
+                .build();
 
-    @Test
-    public void testFindSadPath(){
+        subIndex.insertLine("oruc", "ligne2");
 
+
+        HashMap<String,String> query = new HashMap<>();
+        query.put("nom", "oruc");
+
+        List<String> resultTest = subIndex.find("oruc");
+        Assertions.assertTrue(resultTest.contains("ligne2"));
     }
 }

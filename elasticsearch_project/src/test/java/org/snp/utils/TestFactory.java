@@ -13,30 +13,7 @@ import java.util.Map;
 
 public class TestFactory {
 
-    public static Index createIndexNom(){
-        Index index;
 
-        Map<String, SubIndex> subIndexMap = new HashMap<>();
-        subIndexMap.put("nom", SubIndex.builder()
-                                        .column(Column.builder()
-                                                .name("nom")
-                                                .type("String")
-                                                .build())
-                                        .build());
-
-        ArrayList<Column> column = new ArrayList<>();
-        column.add(Column.builder()
-                        .name("nom")
-                        .type("String")
-                        .build());
-        //créer la map
-        index = Index.builder()
-                .columns(column)
-                .subIndexes(subIndexMap)
-                .build();
-
-        return index;
-    }
 
     static TableService tableService = new TableService();
 
