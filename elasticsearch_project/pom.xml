@@ -91,6 +91,7 @@
       <artifactId>quarkus-junit5-mockito</artifactId>
       <scope>test</scope>
     </dependency>
+
   </dependencies>
   <build>
     <plugins>

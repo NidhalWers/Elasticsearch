@@ -64,7 +64,7 @@ public class TableService {
     public void removeIndex(Table table, Index index){ //todo
         table.getIndexes().remove(index);
     }
-    //todo remove index with a list of column's name
+    //todo remove index with a list of column's name and test
 
 
     public void updateAllReference(Table table, int difference, int from){
