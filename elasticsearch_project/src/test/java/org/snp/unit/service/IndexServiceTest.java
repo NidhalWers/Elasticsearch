@@ -34,7 +34,6 @@ public class IndexServiceTest {
         IndexCredentials indexCredentials = new IndexCredentials("person",list);
 
 
-        System.out.println("\n\n\t table dao\t"+tableDao);
         Mockito.when(tableDao.find("person")).thenReturn(Table
                                                                 .builder()
                                                                 .name("person")
