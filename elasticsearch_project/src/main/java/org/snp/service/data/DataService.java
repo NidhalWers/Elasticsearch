@@ -2,8 +2,8 @@ package org.snp.service.data;
 
 import org.snp.dao.DataDao;
 import org.snp.dao.TableDao;
-import org.snp.indexage.entities.SubIndex;
-import org.snp.indexage.entities.Table;
+import org.snp.indexage.SubIndex;
+import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.ColumnCredentials;
@@ -64,7 +64,7 @@ public class DataService {
         List<String> values = new ArrayList<>();
         for(String ref : references){
             String[] refSplited = ref.split(",");
-            values.add(fileService.getAllDataAtPos(refSplited[0], Integer.valueOf(refSplited[1]), Integer.valueOf(refSplited[2])) );
+            values.add(fileService.getAllDataAtPos(refSplited[0], Integer.valueOf(refSplited[1]) ));
         }
 
         /**

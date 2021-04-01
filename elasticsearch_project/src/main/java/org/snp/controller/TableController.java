@@ -1,6 +1,6 @@
 package org.snp.controller;
 
-import org.snp.indexage.entities.Table;
+import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.TableCredentials;
@@ -18,12 +18,12 @@ import javax.ws.rs.core.MediaType;
 public class TableController {
 
     @Inject
-    private TableService tableService;
+    TableService tableService;
 
     @POST
     @Path("/")
     public Table createTable(TableCredentials tableCredentials) {
-        if(tableCredentials.getName()==null ||tableCredentials.getColumns()==null){
+        if(tableCredentials.name==null ||tableCredentials.columns==null){
             throw new BadRequestException("name or columns should not be null");
         }
         Message message =  tableService.create(tableCredentials);

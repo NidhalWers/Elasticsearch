@@ -22,10 +22,4 @@ public class Message {
         return false;
     }
 
-    @Override
-    public String toString() {
-        return "Message{" +
-                "code=" + code +
-                '}';
-    }
 }

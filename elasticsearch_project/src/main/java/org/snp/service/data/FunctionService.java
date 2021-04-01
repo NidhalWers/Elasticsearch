@@ -1,7 +1,7 @@
 package org.snp.service.data;
 
 import org.snp.dao.TableDao;
-import org.snp.indexage.entities.Table;
+import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.JoinCredentials;

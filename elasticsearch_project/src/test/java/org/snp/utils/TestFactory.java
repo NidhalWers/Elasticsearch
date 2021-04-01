@@ -1,15 +1,11 @@
 package org.snp.utils;
 
-import org.snp.indexage.entities.Column;
-import org.snp.indexage.entities.Index;
-import org.snp.indexage.entities.Table;
-import org.snp.indexage.entities.SubIndex;
+import org.snp.indexage.Column;
+import org.snp.indexage.Table;
 import org.snp.service.TableService;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class TestFactory {
 

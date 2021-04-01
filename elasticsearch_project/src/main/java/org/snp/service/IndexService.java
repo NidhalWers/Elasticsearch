@@ -1,8 +1,8 @@
 package org.snp.service;
 
 import org.snp.dao.TableDao;
-import org.snp.indexage.entities.Column;
-import org.snp.indexage.entities.Table;
+import org.snp.indexage.Column;
+import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.ColumnCredentials;
@@ -15,9 +15,9 @@ import java.util.ArrayList;
 @ApplicationScoped
 public class IndexService {
 
-    @Inject private TableDao tableDao;
-    @Inject private ColumnService columnService;
-    @Inject private TableService tableService;
+    @Inject TableDao tableDao;
+    @Inject ColumnService columnService;
+    @Inject TableService tableService;
 
     public Message create(IndexCredentials indexCredentials){
         Table table = tableDao.find(indexCredentials.tableName);

@@ -1,7 +1,7 @@
 package org.snp.controller;
 
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
-import org.snp.indexage.entities.Table;
+import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.FunctionCredentials;
@@ -54,7 +54,7 @@ public class DataController {
         if(queryCredentials ==null){
             throw new BadRequestException("query should not be null");
         }
-        Message message = dataService.update(queryCredentials);
+            Message message = dataService.update(queryCredentials);
         if(message.getCode() == 200)
             return (int) ((MessageAttachment)message).getAttachment();
         else {
@@ -100,7 +100,7 @@ public class DataController {
         }
     }
 
-    @Inject private
+    @Inject
     FunctionService functionService;
 
     @POST

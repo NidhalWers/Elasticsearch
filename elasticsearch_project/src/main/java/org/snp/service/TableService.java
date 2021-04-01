@@ -2,10 +2,10 @@ package org.snp.service;
 
 
 import org.snp.dao.TableDao;
-import org.snp.indexage.entities.Column;
-import org.snp.indexage.entities.Index;
-import org.snp.indexage.entities.Table;
-import org.snp.indexage.entities.SubIndex;
+import org.snp.indexage.Column;
+import org.snp.indexage.Index;
+import org.snp.indexage.Table;
+import org.snp.indexage.SubIndex;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.TableCredentials;
@@ -20,13 +20,13 @@ public class TableService {
     @Inject
     ColumnService columnService;
     public Message create(TableCredentials tableCredentials){
-        Table table = dao.find(tableCredentials.getName());
+        Table table = dao.find(tableCredentials.name);
         if(table != null) //already exists
             return new Message(403);
-        ArrayList<Column> columns = columnService.getListColumns(tableCredentials.getColumns());
+        ArrayList<Column> columns = columnService.getListColumns(tableCredentials.columns);
         table = Table
             .builder()
-            .name(tableCredentials.getName())
+            .name(tableCredentials.name)
             .columns(columns)
             .build();
         dao.insert(table);
@@ -64,7 +64,7 @@ public class TableService {
     public void removeIndex(Table table, Index index){ //todo
         table.getIndexes().remove(index);
     }
-    //todo remove index with a list of column's name
+    //todo remove index with a list of column's name and test
 
 
     public void updateAllReference(Table table, int difference, int from){
