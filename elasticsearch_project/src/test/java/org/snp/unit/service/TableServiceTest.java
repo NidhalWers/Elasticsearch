@@ -35,10 +35,10 @@ public class TableServiceTest {
         list.add(new ColumnCredentials("age", "int"));
 
         TableCredentials tableCredentials = new TableCredentials("person", list);
-        ArrayList<Column> columns = columnService.getListColumns(tableCredentials.getColumns());
+        ArrayList<Column> columns = columnService.getListColumns(tableCredentials.columns);
         Table table = Table
                 .builder()
-                .name(tableCredentials.getName())
+                .name(tableCredentials.name)
                 .columns(columns)
                 .build();
 

@@ -20,13 +20,13 @@ public class TableService {
     @Inject
     ColumnService columnService;
     public Message create(TableCredentials tableCredentials){
-        Table table = dao.find(tableCredentials.getName());
+        Table table = dao.find(tableCredentials.name);
         if(table != null) //already exists
             return new Message(403);
-        ArrayList<Column> columns = columnService.getListColumns(tableCredentials.getColumns());
+        ArrayList<Column> columns = columnService.getListColumns(tableCredentials.columns);
         table = Table
             .builder()
-            .name(tableCredentials.getName())
+            .name(tableCredentials.name)
             .columns(columns)
             .build();
         dao.insert(table);

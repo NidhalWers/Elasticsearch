@@ -23,7 +23,7 @@ public class TableController {
     @POST
     @Path("/")
     public Table createTable(TableCredentials tableCredentials) {
-        if(tableCredentials.getName()==null ||tableCredentials.getColumns()==null){
+        if(tableCredentials.name==null ||tableCredentials.columns==null){
             throw new BadRequestException("name or columns should not be null");
         }
         Message message =  tableService.create(tableCredentials);
