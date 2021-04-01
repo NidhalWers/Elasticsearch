@@ -100,7 +100,7 @@ public class DataController {
         }
     }
 
-    @Inject private
+    @Inject
     FunctionService functionService;
 
     @POST

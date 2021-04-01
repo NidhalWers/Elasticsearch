@@ -15,9 +15,9 @@ import java.util.ArrayList;
 @ApplicationScoped
 public class IndexService {
 
-    @Inject private TableDao tableDao;
-    @Inject private ColumnService columnService;
-    @Inject private TableService tableService;
+    @Inject TableDao tableDao;
+    @Inject ColumnService columnService;
+    @Inject TableService tableService;
 
     public Message create(IndexCredentials indexCredentials){
         Table table = tableDao.find(indexCredentials.tableName);

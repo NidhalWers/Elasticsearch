@@ -18,7 +18,7 @@ import javax.ws.rs.core.MediaType;
 public class IndexController {
 
     @Inject
-    private IndexService indexService;
+    IndexService indexService;
 
     @POST
     @Path("/add")

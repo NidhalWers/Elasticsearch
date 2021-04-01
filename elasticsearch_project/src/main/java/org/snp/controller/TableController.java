@@ -18,7 +18,7 @@ import javax.ws.rs.core.MediaType;
 public class TableController {
 
     @Inject
-    private TableService tableService;
+    TableService tableService;
 
     @POST
     @Path("/")

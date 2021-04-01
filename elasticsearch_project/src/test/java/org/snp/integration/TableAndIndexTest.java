@@ -19,7 +19,7 @@ import static org.hamcrest.core.Is.is;
 
 @QuarkusTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class ElasticsearchTest {
+public class TableAndIndexTest {
     static Table table;
 
     @BeforeAll
