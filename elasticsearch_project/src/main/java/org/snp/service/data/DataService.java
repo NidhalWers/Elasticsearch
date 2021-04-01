@@ -64,7 +64,7 @@ public class DataService {
         List<String> values = new ArrayList<>();
         for(String ref : references){
             String[] refSplited = ref.split(",");
-            values.add(fileService.getAllDataAtPos(refSplited[0], Integer.valueOf(refSplited[1]), Integer.valueOf(refSplited[2])) );
+            values.add(fileService.getAllDataAtPos(refSplited[0], Integer.valueOf(refSplited[1]) ));
         }
 
         /**

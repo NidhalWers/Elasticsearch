@@ -20,7 +20,7 @@ public class FileService {
     private TableDao tableDao = new TableDao();
     private DataDao dataDAO = new DataDao();
 
-    public String getAllDataAtPos(String fileName, int pos, int size){
+    public String getAllDataAtPos(String fileName, int pos){
         try {
             RandomAccessFile randomAccessFile = new RandomAccessFile(fileName, "r");
             randomAccessFile.seek(pos);
