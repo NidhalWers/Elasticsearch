@@ -2,8 +2,8 @@ package org.snp.service.data;
 
 import org.snp.dao.DataDao;
 import org.snp.dao.TableDao;
-import org.snp.indexage.entities.Column;
-import org.snp.indexage.entities.Table;
+import org.snp.indexage.Column;
+import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.service.TableService;

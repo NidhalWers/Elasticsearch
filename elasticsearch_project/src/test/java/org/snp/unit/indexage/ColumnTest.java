@@ -3,7 +3,7 @@ package org.snp.unit.indexage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import org.snp.indexage.entities.Column;
+import org.snp.indexage.Column;
 
 public class ColumnTest {
 

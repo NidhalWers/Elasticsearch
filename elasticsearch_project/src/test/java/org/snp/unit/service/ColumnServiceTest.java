@@ -3,7 +3,7 @@ package org.snp.unit.service;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.snp.indexage.entities.Column;
+import org.snp.indexage.Column;
 import org.snp.model.credentials.ColumnCredentials;
 import org.snp.service.ColumnService;
 

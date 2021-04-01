@@ -1,7 +1,7 @@
 package org.snp.utils;
 
 import org.snp.dao.DataDao;
-import org.snp.indexage.entities.Table;
+import org.snp.indexage.Table;
 
 import java.util.HashMap;
 

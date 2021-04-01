@@ -1,7 +1,7 @@
 package org.snp.service;
 
 
-import org.snp.indexage.entities.Column;
+import org.snp.indexage.Column;
 import org.snp.model.credentials.ColumnCredentials;
 
 import javax.enterprise.context.ApplicationScoped;

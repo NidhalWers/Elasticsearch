@@ -4,10 +4,10 @@ import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import org.snp.indexage.entities.Column;
+import org.snp.indexage.Column;
 import org.snp.service.TableService;
 import org.snp.utils.TestFactory;
-import org.snp.indexage.entities.Table;
+import org.snp.indexage.Table;
 
 import java.util.List;
 

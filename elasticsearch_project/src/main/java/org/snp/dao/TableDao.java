@@ -1,6 +1,6 @@
 package org.snp.dao;
 
-import org.snp.indexage.entities.Table;
+import org.snp.indexage.Table;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;

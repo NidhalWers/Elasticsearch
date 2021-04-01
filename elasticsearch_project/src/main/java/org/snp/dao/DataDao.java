@@ -1,11 +1,10 @@
 package org.snp.dao;
 
-import org.snp.indexage.entities.Index;
-import org.snp.indexage.entities.SubIndex;
-import org.snp.indexage.entities.Table;
+import org.snp.indexage.Index;
+import org.snp.indexage.SubIndex;
+import org.snp.indexage.Table;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.BadRequestException;
 import javax.ws.rs.NotFoundException;
 import java.util.*;
 

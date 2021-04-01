@@ -2,8 +2,8 @@ package org.snp.integration;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.*;
-import org.snp.indexage.entities.Column;
-import org.snp.indexage.entities.Table;
+import org.snp.indexage.Column;
+import org.snp.indexage.Table;
 import org.snp.service.TableService;
 
 import javax.inject.Inject;
@@ -11,7 +11,6 @@ import javax.ws.rs.core.MediaType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.TreeMap;
 
 import static io.restassured.RestAssured.given;

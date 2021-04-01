@@ -4,10 +4,9 @@ package org.snp.unit.indexage;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.snp.indexage.entities.Column;
-import org.snp.indexage.entities.SubIndex;
-import org.snp.utils.TestFactory;
-import org.snp.indexage.entities.Index;
+import org.snp.indexage.Column;
+import org.snp.indexage.SubIndex;
+import org.snp.indexage.Index;
 
 import java.util.ArrayList;
 import java.util.HashMap;

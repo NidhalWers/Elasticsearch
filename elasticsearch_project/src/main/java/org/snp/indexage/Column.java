@@ -1,4 +1,4 @@
-package org.snp.indexage.entities;
+package org.snp.indexage;
 
 import java.util.Objects;
 

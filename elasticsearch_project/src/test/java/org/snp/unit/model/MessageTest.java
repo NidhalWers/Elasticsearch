@@ -2,7 +2,6 @@ package org.snp.unit.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.snp.indexage.entities.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 

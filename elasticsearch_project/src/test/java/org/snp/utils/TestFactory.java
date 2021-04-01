@@ -1,7 +1,7 @@
 package org.snp.utils;
 
-import org.snp.indexage.entities.Column;
-import org.snp.indexage.entities.Table;
+import org.snp.indexage.Column;
+import org.snp.indexage.Table;
 import org.snp.service.TableService;
 
 import java.util.ArrayList;

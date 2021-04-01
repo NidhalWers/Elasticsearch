@@ -2,10 +2,10 @@ package org.snp.service;
 
 
 import org.snp.dao.TableDao;
-import org.snp.indexage.entities.Column;
-import org.snp.indexage.entities.Index;
-import org.snp.indexage.entities.Table;
-import org.snp.indexage.entities.SubIndex;
+import org.snp.indexage.Column;
+import org.snp.indexage.Index;
+import org.snp.indexage.Table;
+import org.snp.indexage.SubIndex;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.TableCredentials;
