@@ -9,6 +9,6 @@ import javax.ws.rs.ext.Provider;
 public class InternalServerErrorExceptionMapper implements ExceptionMapper<InternalServerErrorException> {
     @Override
     public Response toResponse(InternalServerErrorException e) {
-        return null;
+        return Response.status(500, e.getMessage()).build();
     }
 }
