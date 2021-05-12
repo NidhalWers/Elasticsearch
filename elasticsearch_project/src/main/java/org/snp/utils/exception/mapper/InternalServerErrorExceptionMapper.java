@@ -1,4 +1,4 @@
-package org.snp.utils;
+package org.snp.utils.exception.mapper;
 
 import javax.ws.rs.InternalServerErrorException;
 import javax.ws.rs.core.Response;
