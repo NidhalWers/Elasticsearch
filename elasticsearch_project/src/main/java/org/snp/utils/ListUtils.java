@@ -9,11 +9,13 @@ public class ListUtils {
         List newList = new ArrayList();
         boolean first=true;
         for(List aList : lists){
-            if(first){
-                newList.addAll(aList);
-                first=false;
-            }else{
-                newList.retainAll(aList);
+            if(aList!=null) {
+                if (first) {
+                    newList.addAll(aList);
+                    first = false;
+                } else {
+                    newList.retainAll(aList);
+                }
             }
         }
         return newList;

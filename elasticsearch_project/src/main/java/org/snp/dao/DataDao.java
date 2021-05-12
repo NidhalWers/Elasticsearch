@@ -3,6 +3,7 @@ package org.snp.dao;
 import org.snp.indexage.Index;
 import org.snp.indexage.SubIndex;
 import org.snp.indexage.Table;
+import org.snp.utils.ListUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.NotFoundException;
@@ -28,7 +29,20 @@ public class DataDao {
         if(index != null)
             return index.find(query);
         else {
-            throw new NotFoundException("no index with these columns found");
+            List<List> allResults = new ArrayList<>();
+            SubIndex subIndex;
+            for(String k : keys) {
+                subIndex=table.getSubIndexMap().get(k);
+                if (subIndex!=null) {
+                    allResults.add( subIndex.find(query.get((k))) );
+                }
+            }
+            List<String> finalResult = ListUtils.intersection(allResults);
+
+            if(finalResult==null || finalResult.isEmpty())
+                throw new NotFoundException("no index with these columns found");
+            else
+                return finalResult;
         }
     }
 

@@ -47,10 +47,6 @@ public class DataService {
                 queryMap.put(attributeCredentials.columnName, attributeCredentials.value);
             }
 
-            /**
-             * index verification
-             */
-
 
             references = dataDAO.find(table, queryMap);
             if (references == null || references.isEmpty())
