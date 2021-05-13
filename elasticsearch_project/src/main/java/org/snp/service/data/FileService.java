@@ -118,24 +118,22 @@ public class FileService {
     public Message parseCSVAndInsert(String tableName, InputStream csvFile, String fileName) throws IOException {
         InputStreamReader inputStreamReader = new InputStreamReader(csvFile);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-        String line;
-        String[] values;
-        List<Column> columns;
         Table table = tableDao.find(tableName);
-        int position=0;
+        int position=1;
         if(table==null){
             return new MessageAttachment<>(404, "table "+tableName+" does not exists");
         }
+        //create file
         File tempFile = File.createTempFile(fileName,".csv");
         //delete data on system exit
         tempFile.deleteOnExit();
         String tempFileName = tempFile.getAbsolutePath();
         FileOutputStream fos = new FileOutputStream(tempFile);
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
-        HashMap<String, String> lineToInsert;
         try {
             //skip header
-            bufferedReader.skip(1);
+            bufferedReader.readLine();
+            String line;
             while ((line = bufferedReader.readLine())!= null) {
                 position=insertCsvLineIntoTable(line,table,position,tempFileName);
                 //write into data file
@@ -148,6 +146,8 @@ public class FileService {
         } finally {
             bufferedReader.close();
             inputStreamReader.close();
+            bw.close();
+            fos.close();
         }
 
         return new MessageAttachment<Table>(200, table);
