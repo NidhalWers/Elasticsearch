@@ -126,20 +126,21 @@ public class FileService {
         if(table==null){
             return new MessageAttachment<>(404, "table "+tableName+" does not exists");
         }
+        File tempFile = File.createTempFile(fileName,".csv");
+        //delete data on system exit
+        tempFile.deleteOnExit();
+        String tempFileName = tempFile.getAbsolutePath();
+        FileOutputStream fos = new FileOutputStream(tempFile);
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
         HashMap<String, String> lineToInsert;
         try {
-            columns =table.getColumns();
-            line = bufferedReader.readLine();
-            position+=line.getBytes().length+1;
+            //skip header
+            bufferedReader.skip(1);
             while ((line = bufferedReader.readLine())!= null) {
-                values = line.split(",");
-                lineToInsert = new HashMap<>();
-                for (int i = 0; i < values.length; i++) {
-                    lineToInsert.put(columns.get(i).getName(), values[i]);
-                }
-                int  lineLength = line.getBytes().length;
-                dataDAO.insert(table, lineToInsert,fileName+","+position+","+lineLength);
-                position+=lineLength+1;
+                position=insertCsvLineIntoTable(line,table,position,tempFileName);
+                //write into data file
+                bw.write(line);
+                bw.newLine();
             }
         } catch (Exception e) {
             System.err.println(e);
@@ -152,4 +153,14 @@ public class FileService {
         return new MessageAttachment<Table>(200, table);
     }
 
+    private int insertCsvLineIntoTable(String line, Table table, int position, String fileName ){
+        String []values = line.split(",");
+        HashMap<String, String> lineToInsert = new HashMap<>();
+        for (int i = 0; i < values.length; i++) {
+            lineToInsert.put(table.getColumns().get(i).getName(), values[i]);
+        }
+        int  lineLength = line.getBytes().length;
+        dataDAO.insert(table, lineToInsert,fileName+","+position+","+lineLength);
+        return position+lineLength+1;
+    }
 }

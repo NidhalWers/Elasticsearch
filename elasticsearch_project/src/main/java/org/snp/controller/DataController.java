@@ -41,18 +41,8 @@ public class DataController {
             if(data.fileName==null || data.fileName=="" ){
                 throw new BadRequestException("Name should not be null");
             }
-            File targetFile = File.createTempFile(data.fileName,".csv");
-            String targetFileName = targetFile.getAbsolutePath();
-            targetFile.deleteOnExit();
-            try (FileOutputStream outputStream = new FileOutputStream(targetFile, false)) {
-                int read;
-                byte[] bytes = new byte[data.file.available()];
-                while ((read = data.file.read(bytes)) != -1) {
-                    outputStream.write(bytes, 0, read);
-                }
-            }
 
-            Message message = fileService.parseCSVAndInsert(data.tableName,data.file,targetFileName);
+            Message message = fileService.parseCSVAndInsert(data.tableName,data.file,data.fileName);
             if(message.getCode()==200)
                 return (Table) ((MessageAttachment)message).getAttachment();
             else{
