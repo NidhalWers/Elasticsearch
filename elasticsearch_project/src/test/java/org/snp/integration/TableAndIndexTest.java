@@ -149,6 +149,7 @@ public class TableAndIndexTest {
                 .post("/index/add")
                 .then()
                 .statusCode(404)
+                .body(is("table bad test does not exist"))
         ;
     }
 
