@@ -13,6 +13,7 @@ import io.quarkus.runtime.Quarkus;
 
 @QuarkusMain
 public class Main {
+    public static final boolean isMaster = System.getProperty("isMaster").equals("true") ;
     public static void main(String... args) {
         Quarkus.run(MyApp.class, args);
     }
@@ -20,8 +21,7 @@ public class Main {
     public static class MyApp implements QuarkusApplication {
 
         @Override
-        public int run(String... args) throws Exception {
-            boolean isMaster = System.getProperty("isMaster").equals("true") ;
+        public int run(String... args)  {
             if(isMaster){
                 System.out.println("I'm the master");
             }else{

@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="ntw_project:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
@@ -22,8 +27,13 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95257ffb-84e3-463c-8ddb-35a74ecded1c" name="Default Changelist" comment="cleaned fileService; finalise save file in temp">
+    <list default="true" id="95257ffb-84e3-463c-8ddb-35a74ecded1c" name="Default Changelist" comment="added main is slave">
+      <change afterPath="$PROJECT_DIR$/elasticsearch_project/src/main/java/META-INF/MANIFEST.MF" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/artifacts/ntw_project_jar/ntw_project.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/elasticsearch_project/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/elasticsearch_project/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/elasticsearch_project/src/main/java/org/snp/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/elasticsearch_project/src/main/java/org/snp/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/elasticsearch_project/src/main/java/org/snp/controller/DataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/elasticsearch_project/src/main/java/org/snp/controller/DataController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/elasticsearch_project/src/main/java/org/snp/service/data/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/elasticsearch_project/src/main/java/org/snp/service/data/FileService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -74,8 +84,8 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/elasticsearch_project" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
@@ -86,19 +96,65 @@
       <recent name="org.snp.utils" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Quarkus (Maven).Slave1">
+    <configuration name="Main" type="Application" factoryName="Application" editBeforeRun="true" singleton="false" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="org.snp.Main" />
+      <module name="ntw_project" />
+      <option name="VM_PARAMETERS" value="-Dquarkus.http.port=8080 -DisMaster=true" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/elasticsearch_project" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.snp.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Slave" type="Application" factoryName="Application">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Master" type="QuarkusMavenBridge">
+      <option name="jreName" value="11" />
+      <option name="vmOptions" value="-Dquarkus.http.port=8080 -DisMaster=true" />
+      <option name="workingDir" value="C:\Users\pauli\IdeaProjects\Elasticsearch\elasticsearch_project" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Slave1" type="QuarkusMavenBridge">
+      <option name="compileBeforeLaunch" value="false" />
+      <option name="jreName" value="15" />
+      <option name="vmOptions" value="-Dquarkus.http.port=8081 -DisMaster=false" />
+      <option name="workingDir" value="$PROJECT_DIR$/elasticsearch_project" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Slave2" type="QuarkusMavenBridge">
+      <option name="compileBeforeLaunch" value="false" />
+      <option name="jreName" value="15" />
+      <option name="vmOptions" value="-Dquarkus.http.port=8082 -DisMaster=false" />
+      <option name="workingDir" value="$PROJECT_DIR$/elasticsearch_project" />
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="QuarkusMavenBridge">
       <option name="jreName" value="15" />
       <option name="vmOptions" />
       <option name="workingDir" value="$PROJECT_DIR$/elasticsearch_project" />
       <method v="2" />
     </configuration>
-    <configuration name="run" type="QuarkusMavenBridge">
-      <option name="jreName" value="11" />
-      <option name="vmOptions" />
-      <option name="workingDir" value="$PROJECT_DIR$/elasticsearch_project" />
-      <method v="2" />
-    </configuration>
+    <list>
+      <item itemvalue="Application.Main" />
+      <item itemvalue="Application.Slave" />
+      <item itemvalue="Quarkus (Maven).Master" />
+      <item itemvalue="Quarkus (Maven).Slave1" />
+      <item itemvalue="Quarkus (Maven).Slave2" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -116,7 +172,21 @@
       <option name="project" value="LOCAL" />
       <updated>1620902944861</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="added port">
+      <created>1620924286664</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1620924286664</updated>
+    </task>
+    <task id="LOCAL-00003" summary="added master slave support (need to set system properties at runtime)">
+      <created>1620925792988</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1620925792988</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -134,70 +204,118 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Refactored CSV insert and parse; added file save" />
     <MESSAGE value="cleaned fileService; finalise save file in temp" />
-    <option name="LAST_COMMIT_MESSAGE" value="cleaned fileService; finalise save file in temp" />
+    <MESSAGE value="added Main method" />
+    <MESSAGE value="added port" />
+    <MESSAGE value="added master slave support (need to set system properties at runtime)" />
+    <MESSAGE value="added main is slave" />
+    <option name="LAST_COMMIT_MESSAGE" value="added main is slave" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="2625" y="464" key="#BuildArtifactsBeforeRunChooser" timestamp="1620923887752">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2625" y="464" key="#BuildArtifactsBeforeRunChooser/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620923887752" />
+    <state x="2360" y="94" key="#Project_Structure" timestamp="1620923968270">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2360" y="94" key="#Project_Structure/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620923968270" />
+    <state x="2694" y="198" width="1092" height="842" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1620925600541">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2694" y="198" width="1092" height="842" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620925600541" />
+    <state x="2660" y="225" key="#com.intellij.ide.macro.MacrosDialog" timestamp="1620923769520">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2660" y="225" key="#com.intellij.ide.macro.MacrosDialog/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620923769520" />
+    <state x="2610" y="310" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1620924189970">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2610" y="310" key="#com.intellij.ide.util.TreeClassChooserDialog/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620924189970" />
     <state width="433" height="438" key="DebuggerActiveHint" timestamp="1620918663552">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="433" height="438" key="DebuggerActiveHint/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1620918663552" />
-    <state width="1877" height="289" key="GridCell.Tab.0.bottom" timestamp="1620919970328">
+    <state x="2747" y="270" key="EnvironmentVariablesDialog" timestamp="1620922320337">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2747" y="270" key="EnvironmentVariablesDialog/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620922320337" />
+    <state x="2625" y="414" key="FileChooserDialogImpl" timestamp="1620924096014">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2625" y="414" key="FileChooserDialogImpl/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620924096014" />
+    <state width="1877" height="289" key="GridCell.Tab.0.bottom" timestamp="1620926029729">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state width="1493" height="289" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1620919409116" />
-    <state width="1877" height="289" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620919970328" />
+    <state width="1877" height="289" key="GridCell.Tab.0.bottom/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620926029729" />
     <state width="1493" height="348" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1620905908090" />
-    <state width="1877" height="289" key="GridCell.Tab.0.center" timestamp="1620919970328">
+    <state width="1877" height="289" key="GridCell.Tab.0.center" timestamp="1620926029729">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state width="1493" height="289" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1620919409115" />
-    <state width="1877" height="289" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620919970328" />
+    <state width="1877" height="289" key="GridCell.Tab.0.center/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620926029729" />
     <state width="1493" height="348" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1620905908089" />
-    <state width="1877" height="289" key="GridCell.Tab.0.left" timestamp="1620919970327">
+    <state width="1877" height="289" key="GridCell.Tab.0.left" timestamp="1620926029729">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state width="1493" height="289" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1620919409115" />
-    <state width="1877" height="289" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620919970327" />
+    <state width="1877" height="289" key="GridCell.Tab.0.left/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620926029729" />
     <state width="1493" height="348" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1620905908089" />
-    <state width="1877" height="289" key="GridCell.Tab.0.right" timestamp="1620919970328">
+    <state width="1877" height="289" key="GridCell.Tab.0.right" timestamp="1620926029729">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state width="1493" height="289" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1620919409115" />
-    <state width="1877" height="289" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620919970328" />
+    <state width="1877" height="289" key="GridCell.Tab.0.right/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620926029729" />
     <state width="1493" height="348" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1620905908089" />
-    <state width="1877" height="289" key="GridCell.Tab.1.bottom" timestamp="1620919970328">
+    <state width="1877" height="289" key="GridCell.Tab.1.bottom" timestamp="1620926029730">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state width="1493" height="289" key="GridCell.Tab.1.bottom/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1620919408916" />
-    <state width="1877" height="289" key="GridCell.Tab.1.bottom/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620919970328" />
+    <state width="1877" height="289" key="GridCell.Tab.1.bottom/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620926029730" />
     <state width="1493" height="348" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1620905908090" />
-    <state width="1877" height="289" key="GridCell.Tab.1.center" timestamp="1620919970328">
+    <state width="1877" height="289" key="GridCell.Tab.1.center" timestamp="1620926029729">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state width="1493" height="289" key="GridCell.Tab.1.center/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1620919408916" />
-    <state width="1877" height="289" key="GridCell.Tab.1.center/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620919970328" />
+    <state width="1877" height="289" key="GridCell.Tab.1.center/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620926029729" />
     <state width="1493" height="348" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1620905908090" />
-    <state width="1877" height="289" key="GridCell.Tab.1.left" timestamp="1620919970328">
+    <state width="1877" height="289" key="GridCell.Tab.1.left" timestamp="1620926029729">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state width="1493" height="289" key="GridCell.Tab.1.left/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1620919408916" />
-    <state width="1877" height="289" key="GridCell.Tab.1.left/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620919970328" />
+    <state width="1877" height="289" key="GridCell.Tab.1.left/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620926029729" />
     <state width="1493" height="348" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1620905908090" />
-    <state width="1877" height="289" key="GridCell.Tab.1.right" timestamp="1620919970328">
+    <state width="1877" height="289" key="GridCell.Tab.1.right" timestamp="1620926029730">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state width="1493" height="289" key="GridCell.Tab.1.right/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1620919408916" />
-    <state width="1877" height="289" key="GridCell.Tab.1.right/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620919970328" />
+    <state width="1877" height="289" key="GridCell.Tab.1.right/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620926029730" />
     <state width="1493" height="348" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1620905908090" />
-    <state x="2472" y="253" key="Vcs.Push.Dialog.v2" timestamp="1620902952149">
+    <state x="2410" y="175" key="Maven.ArtifactSearchDialog" timestamp="1620926002422">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="2472" y="253" key="Vcs.Push.Dialog.v2/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620902952149" />
+    <state x="2410" y="175" key="Maven.ArtifactSearchDialog/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620926002422" />
+    <state x="2472" y="253" key="Vcs.Push.Dialog.v2" timestamp="1620925812239">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2472" y="253" key="Vcs.Push.Dialog.v2/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620925812239" />
+    <state x="2697" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1620924361862">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2697" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620924361862" />
     <state x="422" y="197" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1620917830815">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="422" y="197" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1620917830815" />
     <state x="2447" y="249" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620837301895" />
+    <state x="2262" y="181" key="new project wizard" timestamp="1620923685686">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2262" y="181" key="new project wizard/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620923685686" />
+    <state x="2536" y="240" key="run.anything.popup" timestamp="1620925014575">
+      <screen x="1920" y="0" width="1920" height="1040" />
+    </state>
+    <state x="2536" y="240" key="run.anything.popup/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620925014575" />
     <state x="2543" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1620902054442">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>

@@ -1,6 +1,7 @@
 package org.snp.controller;
 
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
+import org.snp.dao.TableDao;
 import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
@@ -17,9 +18,11 @@ import javax.inject.Inject;
 import javax.management.BadAttributeValueExpException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 @Path("/data")
@@ -29,6 +32,7 @@ public class DataController {
 
     @Inject DataService dataService;
     @Inject FileService fileService;
+    @Inject TableDao tableDao;
 
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
@@ -55,6 +59,7 @@ public class DataController {
             throw new InternalServerErrorException("IOException");
         }
     }
+
 
     @POST
     @Path("/update")

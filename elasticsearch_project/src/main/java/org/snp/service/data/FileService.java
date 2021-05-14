@@ -153,7 +153,7 @@ public class FileService {
         return new MessageAttachment<Table>(200, table);
     }
 
-    private int insertCsvLineIntoTable(String line, Table table, int position, String fileName ){
+    public int insertCsvLineIntoTable(String line, Table table, int position, String fileName ){
         String []values = line.split(",");
         HashMap<String, String> lineToInsert = new HashMap<>();
         for (int i = 0; i < values.length; i++) {
@@ -163,4 +163,5 @@ public class FileService {
         dataDAO.insert(table, lineToInsert,fileName+","+position+","+lineLength);
         return position+lineLength+1;
     }
+
 }
