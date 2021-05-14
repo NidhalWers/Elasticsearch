@@ -20,16 +20,16 @@ public class HttpClient {
         this.port = port;
     }
 
-    public ResponseBody get(String uri) throws IOException {
+    public Response get(String uri) throws IOException {
         Request request = new Request.Builder()
                 .url(BASE_URI+port+uri)
                 .build();
         Call call = client.newCall(request);
         Response response = call.execute();
-        return response.body();
+        return response;
     }
 
-    public ResponseBody post(String uri, String json) throws IOException {
+    public Response post(String uri, String json) throws IOException {
         RequestBody requestBody = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
                 .url("http://localhost:" + port + uri)
@@ -37,7 +37,7 @@ public class HttpClient {
                 .build();
         Call call = client.newCall(request);
         Response response = call.execute();
-        return response.body();
+        return response;
     }
 
 
