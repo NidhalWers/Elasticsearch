@@ -44,7 +44,7 @@ public class DataController {
         try{
             //save file here
             if(!Main.isMaster){
-                throw new UnauthorizedException();
+                //throw new Unauth();
             }
             if(data.fileName==null || data.fileName.isEmpty() ){
                 throw new BadRequestException("Name should not be null");
@@ -60,6 +60,10 @@ public class DataController {
                     throw new InternalServerErrorException();
             }
         }catch (IOException e){
+            e.printStackTrace();
+            throw new InternalServerErrorException("IOException");
+        }catch (Exception e){
+            e.printStackTrace();
             throw new InternalServerErrorException("IOException");
         }
     }

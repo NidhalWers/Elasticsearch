@@ -20,4 +20,7 @@ public class TableDao {
         }
         return null;
     }
+    public ArrayList<Table> findAll(){
+        return tables;
+    }
 }
