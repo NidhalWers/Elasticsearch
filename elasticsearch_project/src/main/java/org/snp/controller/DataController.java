@@ -8,6 +8,7 @@ import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.FunctionCredentials;
 import org.snp.model.credentials.QueryCredentials;
 import org.snp.model.credentials.JoinCredentials;
+import org.snp.model.credentials.RowCredentials;
 import org.snp.service.data.FunctionService;
 import org.snp.service.data.DataService;
 import org.snp.model.multipart.MultipartBody;
@@ -32,7 +33,6 @@ public class DataController {
 
     @Inject DataService dataService;
     @Inject FileService fileService;
-    @Inject TableDao tableDao;
 
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
@@ -95,6 +95,16 @@ public class DataController {
         }
     }
 
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("insertline")
+    public Response insertLine(RowCredentials rowCredentials){
+        if (rowCredentials==null || rowCredentials.table.isEmpty() ||rowCredentials.line ==null || rowCredentials.line.isEmpty() ){
+            throw new BadRequestException("query should not be null");
+        }
+        Response response = fileService.insertCsvLineIntoTable(rowCredentials);
+        return  response;
+    }
 
     @POST
     @Path("/query")

@@ -1,11 +1,14 @@
 package org.snp.service.data;
 
+import javax.ws.rs.core.Response;
 import org.snp.dao.DataDao;
 import org.snp.dao.TableDao;
 import org.snp.indexage.Column;
 import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
+import org.snp.model.credentials.RowCredentials;
+import org.snp.model.response.RowInsertedModel;
 import org.snp.service.TableService;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -153,7 +156,7 @@ public class FileService {
         return new MessageAttachment<Table>(200, table);
     }
 
-    public int insertCsvLineIntoTable(String line, Table table, int position, String fileName ){
+    private int insertCsvLineIntoTable(String line, Table table, int position, String fileName ){
         String []values = line.split(",");
         HashMap<String, String> lineToInsert = new HashMap<>();
         for (int i = 0; i < values.length; i++) {
@@ -162,6 +165,25 @@ public class FileService {
         int  lineLength = line.getBytes().length;
         dataDAO.insert(table, lineToInsert,fileName+","+position+","+lineLength);
         return position+lineLength+1;
+    }
+    public Response insertCsvLineIntoTable(RowCredentials rowCredentials){
+        String tableName = rowCredentials.table;
+        int position = rowCredentials.position;
+        String fileName = rowCredentials.fileName;
+        String line = rowCredentials.line;
+
+        Table table = tableDao.find(tableName);
+        if(table==null){
+            return Response.status(404).build();
+        }
+        String []values = line.split(",");
+        HashMap<String, String> lineToInsert = new HashMap<>();
+        for (int i = 0; i < values.length; i++) {
+            lineToInsert.put(table.getColumns().get(i).getName(), values[i]);
+        }
+        int  lineLength = line.getBytes().length;
+        dataDAO.insert(table, lineToInsert,fileName+","+position+","+lineLength);
+        return Response.ok(new RowInsertedModel(tableName,position+lineLength+1)).build();
     }
 
 }
