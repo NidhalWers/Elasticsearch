@@ -14,7 +14,7 @@ public class SlaveClient extends HttpClient{
 
     public RowInsertedModel insertLine(RowCredentials rowCredentials) throws IOException {
         String json = gson.toJson(rowCredentials);
-        ResponseBody responseBody = post("/data/",json);
+        ResponseBody responseBody = post("/data/insertline",json);
         RowInsertedModel rowInsertedModel= gson.fromJson(responseBody.string(),RowInsertedModel.class);
         return rowInsertedModel;
     }

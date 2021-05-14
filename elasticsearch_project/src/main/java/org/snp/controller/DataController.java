@@ -97,7 +97,7 @@ public class DataController {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("insertline")
+    @Path("/insertline")
     public Response insertLine(RowCredentials rowCredentials){
         if (rowCredentials==null || rowCredentials.table.isEmpty() ||rowCredentials.line ==null || rowCredentials.line.isEmpty() ){
             throw new BadRequestException("query should not be null");
