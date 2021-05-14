@@ -28,13 +28,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95257ffb-84e3-463c-8ddb-35a74ecded1c" name="Default Changelist" comment="added main is slave">
-      <change afterPath="$PROJECT_DIR$/elasticsearch_project/src/main/java/META-INF/MANIFEST.MF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/out/artifacts/ntw_project_jar/ntw_project.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/elasticsearch_project/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/elasticsearch_project/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/elasticsearch_project/src/main/java/org/snp/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/elasticsearch_project/src/main/java/org/snp/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/elasticsearch_project/src/main/java/org/snp/controller/DataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/elasticsearch_project/src/main/java/org/snp/controller/DataController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/elasticsearch_project/src/main/java/org/snp/service/data/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/elasticsearch_project/src/main/java/org/snp/service/data/FileService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -144,11 +140,11 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Application.Main" />
       <item itemvalue="Application.Slave" />
+      <item itemvalue="Application.Main" />
+      <item itemvalue="Quarkus (Maven).Slave2" />
       <item itemvalue="Quarkus (Maven).Master" />
       <item itemvalue="Quarkus (Maven).Slave1" />
-      <item itemvalue="Quarkus (Maven).Slave2" />
     </list>
     <recent_temporary>
       <list>
@@ -186,7 +182,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620925792988</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="added main is slave">
+      <created>1620993739228</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1620993739228</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -235,6 +238,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state width="433" height="438" key="DebuggerActiveHint/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1620918663552" />
+    <state x="93" y="93" width="1350" height="638" key="DiffContextDialog" timestamp="1620993986302">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="93" y="93" width="1350" height="638" key="DiffContextDialog/0.0.1536.824@0.0.1536.824" timestamp="1620993986302" />
     <state x="2747" y="270" key="EnvironmentVariablesDialog" timestamp="1620922320337">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
@@ -295,10 +302,11 @@
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>
     <state x="2410" y="175" key="Maven.ArtifactSearchDialog/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620926002422" />
-    <state x="2472" y="253" key="Vcs.Push.Dialog.v2" timestamp="1620925812239">
-      <screen x="1920" y="0" width="1920" height="1040" />
+    <state x="442" y="200" key="Vcs.Push.Dialog.v2" timestamp="1620993903358">
+      <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="2472" y="253" key="Vcs.Push.Dialog.v2/0.0.1536.824/1920.0.1920.1040@1920.0.1920.1040" timestamp="1620925812239" />
+    <state x="442" y="200" key="Vcs.Push.Dialog.v2/0.0.1536.824@0.0.1536.824" timestamp="1620993903358" />
     <state x="2697" y="434" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1620924361862">
       <screen x="1920" y="0" width="1920" height="1040" />
     </state>

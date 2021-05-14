@@ -42,7 +42,7 @@ public class DataController {
     public Table loadData(@MultipartForm MultipartBody data){
         try{
             //save file here
-            if(data.fileName==null || data.fileName=="" ){
+            if(data.fileName==null || data.fileName.isEmpty() ){
                 throw new BadRequestException("Name should not be null");
             }
 
