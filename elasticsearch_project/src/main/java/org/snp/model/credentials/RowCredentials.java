@@ -14,8 +14,10 @@ public class RowCredentials {
     @JsonbProperty
     public String fileName;
 
-    public RowCredentials(String table,String line) {
+    public RowCredentials(String table, String line, int position, String fileName) {
         this.table = table;
         this.line = line;
+        this.position = position;
+        this.fileName = fileName;
     }
 }
