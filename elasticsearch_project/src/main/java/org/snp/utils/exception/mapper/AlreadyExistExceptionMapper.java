@@ -10,6 +10,6 @@ import javax.ws.rs.ext.Provider;
 public class AlreadyExistExceptionMapper implements ExceptionMapper<AlreadyExistException> {
     @Override
     public Response toResponse(AlreadyExistException e) {
-        return Response.status(500, e.getMessage()).build();
+        return Response.status(Response.Status.CONFLICT.getStatusCode(), e.getMessage()).build();
     }
 }

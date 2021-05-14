@@ -52,7 +52,23 @@
       <recent name="org.snp.utils" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Quarkus (Maven).run">
+    <configuration name="TableAndIndexTest.testCreateTableSecondeTime" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ntw_project" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.snp.integration.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.snp.integration" />
+      <option name="MAIN_CLASS_NAME" value="org.snp.integration.TableAndIndexTest" />
+      <option name="METHOD_NAME" value="testCreateTableSecondeTime" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="QuarkusMavenBridge">
       <option name="jreName" value="15" />
       <option name="vmOptions" />
@@ -65,6 +81,11 @@
       <option name="workingDir" value="$PROJECT_DIR$/elasticsearch_project" />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.TableAndIndexTest.testCreateTableSecondeTime" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -94,7 +115,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/elasticsearch_project/src/main/java/org/snp/service/data/DataService.java</url>
-          <line>85</line>
+          <line>81</line>
           <option name="timeStamp" value="7" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
