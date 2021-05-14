@@ -47,10 +47,6 @@ public class DataService {
                 queryMap.put(attributeCredentials.columnName, attributeCredentials.value);
             }
 
-            /**
-             * index verification
-             */
-
 
             references = dataDAO.find(table, queryMap);
             if (references == null || references.isEmpty())
@@ -83,7 +79,7 @@ public class DataService {
 
         }
 
-        return new MessageAttachment<List>(200, values);
+         return new MessageAttachment<List>(200, values);
     }
 
     /**
