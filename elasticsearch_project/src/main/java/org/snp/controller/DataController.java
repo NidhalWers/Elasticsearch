@@ -20,7 +20,7 @@ import java.util.List;
 
 @Path("/data")
 @Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.TEXT_PLAIN)
+@Produces(MediaType.APPLICATION_JSON)
 public class DataController {
 
     @Inject DataService dataService;
