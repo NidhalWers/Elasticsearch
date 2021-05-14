@@ -3,7 +3,7 @@ package org.snp.service.data;
 import javax.ws.rs.core.Response;
 import org.snp.dao.DataDao;
 import org.snp.dao.TableDao;
-import org.snp.indexage.Column;
+import org.snp.httpclient.SlaveClient;
 import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
@@ -15,13 +15,13 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.io.*;
 import java.util.HashMap;
-import java.util.List;
 
 @ApplicationScoped
 public class FileService {
 
     private TableDao tableDao = new TableDao();
     private DataDao dataDAO = new DataDao();
+    private SlaveClient [] slaveClients = {new SlaveClient(8081),new SlaveClient(8082)};
 
     public String getAllDataAtPos(String fileName, int pos){
         try {
@@ -138,7 +138,7 @@ public class FileService {
             bufferedReader.readLine();
             String line;
             while ((line = bufferedReader.readLine())!= null) {
-                position=insertCsvLineIntoTable(line,table,position,tempFileName);
+                position=insertLineIntoNode(line,table,position,tempFileName);
                 //write into data file
                 bw.write(line);
                 bw.newLine();
@@ -156,6 +156,16 @@ public class FileService {
         return new MessageAttachment<Table>(200, table);
     }
 
+    private int insertLineIntoNode(String line, Table table, int position, String fileName ) throws Exception{
+        int choice= Integer.parseInt(line,16)%3;
+        if(choice==2){
+            return insertCsvLineIntoTable(line, table, position,  fileName );
+        }else{
+            RowInsertedModel rowInsertedModel = slaveClients[choice].insertLine(new RowCredentials(table.getName(),line,position,fileName));
+            return rowInsertedModel.position;
+        }
+    }
+
     private int insertCsvLineIntoTable(String line, Table table, int position, String fileName ){
         String []values = line.split(",");
         HashMap<String, String> lineToInsert = new HashMap<>();
@@ -166,6 +176,8 @@ public class FileService {
         dataDAO.insert(table, lineToInsert,fileName+","+position+","+lineLength);
         return position+lineLength+1;
     }
+
+
     public Response insertCsvLineIntoTable(RowCredentials rowCredentials){
         String tableName = rowCredentials.table;
         int position = rowCredentials.position;
