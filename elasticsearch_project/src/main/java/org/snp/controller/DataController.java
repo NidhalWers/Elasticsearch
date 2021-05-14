@@ -1,6 +1,8 @@
 package org.snp.controller;
 
+import io.quarkus.security.UnauthorizedException;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
+import org.snp.Main;
 import org.snp.dao.TableDao;
 import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
@@ -38,10 +40,12 @@ public class DataController {
     @Produces(MediaType.APPLICATION_JSON)
     @POST
     @Path("/load")
-    //link to csv : https://dzone.com/articles/how-to-read-a-big-csv-file-with-java-8-and-stream
     public Table loadData(@MultipartForm MultipartBody data){
         try{
             //save file here
+            if(!Main.isMaster){
+                throw new UnauthorizedException();
+            }
             if(data.fileName==null || data.fileName.isEmpty() ){
                 throw new BadRequestException("Name should not be null");
             }
