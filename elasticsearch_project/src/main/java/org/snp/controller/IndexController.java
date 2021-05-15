@@ -32,6 +32,7 @@ public class IndexController {
             if(message.hasAttachment())
                 return (Table) ((MessageAttachment)message).getAttachment();
             else
+                // A revoir - bug quand index existe.
                 throw new NotFoundException("table "+indexCredentials.tableName+" does not exist");
         }catch (IOException e){
             e.printStackTrace();

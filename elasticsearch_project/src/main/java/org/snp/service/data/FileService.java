@@ -1,6 +1,8 @@
 package org.snp.service.data;
 
 import javax.ws.rs.core.Response;
+
+import com.sun.mail.iap.ByteArray;
 import org.snp.dao.DataDao;
 import org.snp.dao.TableDao;
 import org.snp.httpclient.SlaveClient;
@@ -157,7 +159,7 @@ public class FileService {
     }
 
     private int insertLineIntoNode(String line, Table table, int position, String fileName ) throws Exception{
-        int choice= Integer.parseInt(line,16)%3;
+        int choice = line.hashCode() % 3;
         if(choice==2){
             return insertCsvLineIntoTable(line, table, position,  fileName );
         }else{

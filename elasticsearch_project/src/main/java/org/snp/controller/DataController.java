@@ -44,7 +44,8 @@ public class DataController {
         try{
             //save file here
             if(!Main.isMaster){
-                //throw new Unauth();
+                // A RETOURNER 401 NON AUTORISE
+                return null;
             }
             if(data.fileName==null || data.fileName.isEmpty() ){
                 throw new BadRequestException("Name should not be null");
@@ -105,6 +106,7 @@ public class DataController {
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Path("/insertline")
     public Response insertLine(RowCredentials rowCredentials){
         if (rowCredentials==null || rowCredentials.table.isEmpty() ||rowCredentials.line ==null || rowCredentials.line.isEmpty() ){
