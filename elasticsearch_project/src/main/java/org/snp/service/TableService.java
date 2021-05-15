@@ -1,7 +1,9 @@
 package org.snp.service;
 
 
+import org.snp.Main;
 import org.snp.dao.TableDao;
+import org.snp.httpclient.SlaveClient;
 import org.snp.indexage.Column;
 import org.snp.indexage.Index;
 import org.snp.indexage.Table;
@@ -17,9 +19,10 @@ import java.util.*;
 @ApplicationScoped
 public class TableService {
     private static TableDao dao = new TableDao();
+    private SlaveClient [] slaveClients = {new SlaveClient(8081),new SlaveClient(8082)};
     @Inject
     ColumnService columnService;
-    public Message create(TableCredentials tableCredentials){
+    public Message create(TableCredentials tableCredentials) throws Exception{
         Table table = dao.find(tableCredentials.name);
         if(table != null) //already exists
             return new Message(403);
@@ -30,6 +33,11 @@ public class TableService {
             .columns(columns)
             .build();
         dao.insert(table);
+        if(Main.isMaster){
+            for(SlaveClient slaveClient :slaveClients){
+                slaveClient.createTable(tableCredentials);
+            }
+        }
         return new MessageAttachment<Table>(200, table);
     }
 
