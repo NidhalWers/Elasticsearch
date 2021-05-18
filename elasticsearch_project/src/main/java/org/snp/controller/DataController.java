@@ -27,6 +27,8 @@ import java.util.List;
 @Produces(MediaType.TEXT_PLAIN)
 public class DataController {
 
+    private static final String FILE_PREFIX = "elasticsearch_";
+
     @Inject DataService dataService;
     @Inject FileService fileService;
 
@@ -37,12 +39,7 @@ public class DataController {
     //link to csv : https://dzone.com/articles/how-to-read-a-big-csv-file-with-java-8-and-stream
     public Table loadData(@MultipartForm MultipartBody data){
         try{
-            //save file here
-            if(data.fileName==null || data.fileName=="" ){
-                throw new BadRequestException("Name should not be null");
-            }
-
-            Message message = fileService.parseCSVAndInsert(data.tableName,data.file,data.fileName);
+            Message message = fileService.parseCSVAndInsert(data.tableName,data.file,(FILE_PREFIX+data.tableName));
             if(message.getCode()==200)
                 return (Table) ((MessageAttachment)message).getAttachment();
             else{
