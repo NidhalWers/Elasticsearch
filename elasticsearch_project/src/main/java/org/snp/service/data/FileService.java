@@ -1,18 +1,18 @@
 package org.snp.service.data;
 
+
 import org.snp.dao.DataDao;
 import org.snp.dao.TableDao;
-import org.snp.indexage.Column;
 import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.service.TableService;
+import org.snp.utils.OSValidator;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.io.*;
 import java.util.HashMap;
-import java.util.List;
 
 @ApplicationScoped
 public class FileService {
@@ -114,12 +114,19 @@ public class FileService {
         return null;
     }
 
-
     public Message parseCSVAndInsert(String tableName, InputStream csvFile, String fileName) throws IOException {
         InputStreamReader inputStreamReader = new InputStreamReader(csvFile);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         Table table = tableDao.find(tableName);
-        int position=1;
+        int position;
+        if(OSValidator.isWindows()) {
+            position = 1;
+        }else{
+            if(OSValidator.isUnix()){
+                position=0;
+            }else
+                position=1;
+        }
         if(table==null){
             return new MessageAttachment<>(404, "table "+tableName+" does not exists");
         }
