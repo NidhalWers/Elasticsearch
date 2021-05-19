@@ -9,16 +9,12 @@ import org.snp.model.credentials.QueryCredentials;
 import org.snp.model.credentials.JoinCredentials;
 import org.snp.service.data.FunctionService;
 import org.snp.service.data.DataService;
-import org.snp.model.multipart.MultipartBody;
+import org.snp.model.credentials.DataCredentials;
 import org.snp.service.data.FileService;
-import org.snp.utils.exception.AlreadyExistException;
 
 import javax.inject.Inject;
-import javax.management.BadAttributeValueExpException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -37,7 +33,7 @@ public class DataController {
     @POST
     @Path("/load")
     //link to csv : https://dzone.com/articles/how-to-read-a-big-csv-file-with-java-8-and-stream
-    public Table loadData(@MultipartForm MultipartBody data){
+    public Table loadData(@MultipartForm DataCredentials data){
         try{
             Message message = fileService.parseCSVAndInsert(data.tableName,data.file,(FILE_PREFIX+data.tableName));
             if(message.getCode()==200)
