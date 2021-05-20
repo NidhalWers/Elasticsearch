@@ -38,10 +38,8 @@ public class DataController {
     //link to csv : https://dzone.com/articles/how-to-read-a-big-csv-file-with-java-8-and-stream
     public Table loadData(@MultipartForm DataCredentials data){
         try{
-            //save file here
             if(!Main.isMasterTest()){
-                // A RETOURNER 401 NON AUTORISE
-                return null;
+                throw new NotAuthorizedException("not authorized to load data in a slave node");
             }
             Message message = fileService.parseCSVAndInsert(data.tableName,data.file,(FILE_PREFIX+data.tableName));
             if(message.getCode()==200)
@@ -50,10 +48,39 @@ public class DataController {
                 if(message.getCode() == 404)
                     throw new NotFoundException((String) ((MessageAttachment)message).getAttachment());
                 else
-                    throw new InternalServerErrorException();
+                    throw new InternalServerErrorException("internal error");
             }
         }catch (IOException e){
             throw new InternalServerErrorException("IOException");
+        }
+    }
+
+    @POST
+    @Path("/insertline")
+    public Response insertLine(RowCredentials rowCredentials){
+        if (rowCredentials==null || rowCredentials.table.isEmpty() ||rowCredentials.line ==null || rowCredentials.line.isEmpty() ){
+            throw new BadRequestException("query should not be null");
+        }
+        Response response = fileService.insertCsvLineIntoTable(rowCredentials);
+        return  response;
+    }
+
+
+
+    @POST
+    @Path("/query")
+    public List<String> get(QueryCredentials queryCredentials){
+        if(queryCredentials ==null){
+            throw new BadRequestException("query should not be null");
+        }
+        Message message = dataService.query(queryCredentials);
+        if(message.getCode() == 200)
+            return (List<String>) ((MessageAttachment)message).getAttachment();
+        else {
+            if(message.getCode() == 404)
+                throw new NotFoundException((String) ((MessageAttachment)message).getAttachment());
+            else
+                throw new InternalServerErrorException();
         }
     }
 
@@ -83,33 +110,6 @@ public class DataController {
         Message message = dataService.delete(queryCredentials);
         if(message.getCode() == 200)
             return (int) ((MessageAttachment)message).getAttachment();
-        else {
-            if(message.getCode() == 404)
-                throw new NotFoundException((String) ((MessageAttachment)message).getAttachment());
-            else
-                throw new InternalServerErrorException();
-        }
-    }
-
-    @POST
-    @Path("/insertline")
-    public Response insertLine(RowCredentials rowCredentials){
-        if (rowCredentials==null || rowCredentials.table.isEmpty() ||rowCredentials.line ==null || rowCredentials.line.isEmpty() ){
-            throw new BadRequestException("query should not be null");
-        }
-        Response response = fileService.insertCsvLineIntoTable(rowCredentials);
-        return  response;
-    }
-
-    @POST
-    @Path("/query")
-    public List<String> get(QueryCredentials queryCredentials){
-        if(queryCredentials ==null){
-            throw new BadRequestException("query should not be null");
-        }
-        Message message = dataService.query(queryCredentials);
-        if(message.getCode() == 200)
-            return (List<String>) ((MessageAttachment)message).getAttachment();
         else {
             if(message.getCode() == 404)
                 throw new NotFoundException((String) ((MessageAttachment)message).getAttachment());
