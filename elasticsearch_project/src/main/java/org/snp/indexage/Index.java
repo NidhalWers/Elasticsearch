@@ -16,7 +16,7 @@ public class Index {
 
     public void insertLine(HashMap<String,String> data, String reference ){
         for(Column column : columns){
-            String value = data.get(column.getName()) != null ? data.get(column.getName()) : "NULL" ;
+            String value = data.getOrDefault(column.getName(),"NULL")  ;
             subIndexMap
                     .get(column.getName())
                         .insertLine(value, reference);

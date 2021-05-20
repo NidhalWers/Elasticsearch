@@ -67,12 +67,13 @@ public class FunctionService {
                     }
                 }
             }
+            return new MessageAttachment<List>(200, result);
 
         }else{
             return messageTable1;
         }
 
-        return new MessageAttachment<List>(200, result);
+
     }
 
     private String getValueForColumn(Table table, String columnName, String value){

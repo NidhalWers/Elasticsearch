@@ -12,11 +12,13 @@ import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.RowCredentials;
 import org.snp.model.response.RowInsertedModel;
 import org.snp.service.TableService;
+import org.snp.utils.OSValidator;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 
 @ApplicationScoped
 public class FileService {
@@ -124,7 +126,15 @@ public class FileService {
         InputStreamReader inputStreamReader = new InputStreamReader(csvFile);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         Table table = tableDao.find(tableName);
-        int position=1;
+        int position;
+        if(OSValidator.isWindows()) {
+            position = 1;
+        }else{
+            if(OSValidator.isUnix()){
+                position=0;
+            }else
+                position=1;
+        }
         if(table==null){
             return new MessageAttachment<>(404, "table "+tableName+" does not exists");
         }
@@ -140,7 +150,7 @@ public class FileService {
             bufferedReader.readLine();
             String line;
             while ((line = bufferedReader.readLine())!= null) {
-                position=insertLineIntoNode(line,table,position,tempFileName);
+                position=insertCsvLineIntoTable(line,table,position,tempFileName);
                 //write into data file
                 bw.write(line);
                 bw.newLine();

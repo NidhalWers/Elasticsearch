@@ -88,6 +88,7 @@ public class TableAndIndexTest {
                 .post("/table/")
                 .then()
                 .statusCode(409)
+                .body(is("table test already exists"))
         ;
     }
 
@@ -148,6 +149,7 @@ public class TableAndIndexTest {
                 .post("/index/add")
                 .then()
                 .statusCode(404)
+                .body(is("table bad test does not exist"))
         ;
     }
 

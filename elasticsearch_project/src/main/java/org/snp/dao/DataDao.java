@@ -6,7 +6,7 @@ import org.snp.indexage.Table;
 import org.snp.utils.ListUtils;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.ws.rs.NotFoundException;
+
 import java.util.*;
 
 @ApplicationScoped
@@ -39,10 +39,7 @@ public class DataDao {
             }
             List<String> finalResult = ListUtils.intersection(allResults);
 
-            if(finalResult==null || finalResult.isEmpty())
-                throw new NotFoundException("no index with these columns found");
-            else
-                return finalResult;
+            return finalResult;
         }
     }
 

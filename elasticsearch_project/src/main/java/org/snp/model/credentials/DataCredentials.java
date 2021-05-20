@@ -1,4 +1,4 @@
-package org.snp.model.multipart;
+package org.snp.model.credentials;
 
 import java.io.InputStream;
 
@@ -7,14 +7,10 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.core.MediaType;
 import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
-public class MultipartBody {
+public class DataCredentials {
     @FormParam("file")
     @PartType(MediaType.APPLICATION_OCTET_STREAM)
     public InputStream file;
-
-    @FormParam("fileName")
-    @PartType(MediaType.APPLICATION_OCTET_STREAM)
-    public String fileName;
 
     @FormParam("table")
     @PartType(MediaType.TEXT_PLAIN)

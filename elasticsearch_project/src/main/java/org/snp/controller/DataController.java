@@ -13,7 +13,7 @@ import org.snp.model.credentials.JoinCredentials;
 import org.snp.model.credentials.RowCredentials;
 import org.snp.service.data.FunctionService;
 import org.snp.service.data.DataService;
-import org.snp.model.multipart.MultipartBody;
+import org.snp.model.credentials.DataCredentials;
 import org.snp.service.data.FileService;
 import org.snp.utils.exception.AlreadyExistException;
 
@@ -30,8 +30,10 @@ import java.util.List;
 
 @Path("/data")
 @Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.TEXT_PLAIN)
+@Produces(MediaType.APPLICATION_JSON)
 public class DataController {
+
+    private static final String FILE_PREFIX = "elasticsearch_";
 
     @Inject DataService dataService;
     @Inject FileService fileService;
@@ -40,18 +42,15 @@ public class DataController {
     @Produces(MediaType.APPLICATION_JSON)
     @POST
     @Path("/load")
-    public Table loadData(@MultipartForm MultipartBody data){
+    //link to csv : https://dzone.com/articles/how-to-read-a-big-csv-file-with-java-8-and-stream
+    public Table loadData(@MultipartForm DataCredentials data){
         try{
             //save file here
             if(!Main.isMaster){
                 // A RETOURNER 401 NON AUTORISE
                 return null;
             }
-            if(data.fileName==null || data.fileName.isEmpty() ){
-                throw new BadRequestException("Name should not be null");
-            }
-
-            Message message = fileService.parseCSVAndInsert(data.tableName,data.file,data.fileName);
+            Message message = fileService.parseCSVAndInsert(data.tableName,data.file,(FILE_PREFIX+data.tableName));
             if(message.getCode()==200)
                 return (Table) ((MessageAttachment)message).getAttachment();
             else{
@@ -61,14 +60,9 @@ public class DataController {
                     throw new InternalServerErrorException();
             }
         }catch (IOException e){
-            e.printStackTrace();
-            throw new InternalServerErrorException("IOException");
-        }catch (Exception e){
-            e.printStackTrace();
             throw new InternalServerErrorException("IOException");
         }
     }
-
 
     @POST
     @Path("/update")
@@ -105,8 +99,6 @@ public class DataController {
     }
 
     @POST
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
     @Path("/insertline")
     public Response insertLine(RowCredentials rowCredentials){
         if (rowCredentials==null || rowCredentials.table.isEmpty() ||rowCredentials.line ==null || rowCredentials.line.isEmpty() ){
