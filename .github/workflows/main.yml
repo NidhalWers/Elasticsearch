@@ -19,4 +19,5 @@ jobs:
       - name: Run tests
         run: |
            cd elasticsearch_project
-           mvn clean test
+           mvn -DisMaster=true clean test
+
