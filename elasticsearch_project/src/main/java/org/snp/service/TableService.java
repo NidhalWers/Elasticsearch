@@ -33,7 +33,7 @@ public class TableService {
             .columns(columns)
             .build();
         dao.insert(table);
-        if(Main.isMaster){
+        if(Main.isMasterTest()){
             for(SlaveClient slaveClient :slaveClients){
                 slaveClient.createTable(tableCredentials);
             }

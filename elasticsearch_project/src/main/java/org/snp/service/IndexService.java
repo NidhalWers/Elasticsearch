@@ -12,7 +12,6 @@ import org.snp.model.credentials.IndexCredentials;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.io.IOException;
 import java.util.ArrayList;
 
 @ApplicationScoped
@@ -39,7 +38,7 @@ public class IndexService {
 
         if(!tableService.addIndex(table, columns))
             return new Message(403);
-        if(Main.isMaster){
+        if(Main.isMasterTest()){
             for(SlaveClient slaveClient :slaveClients){
                 slaveClient.addIndex(indexCredentials);
             }

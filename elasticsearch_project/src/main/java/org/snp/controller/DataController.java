@@ -39,7 +39,7 @@ public class DataController {
     public Table loadData(@MultipartForm DataCredentials data){
         try{
             //save file here
-            if(!Main.isMaster){
+            if(!Main.isMasterTest()){
                 // A RETOURNER 401 NON AUTORISE
                 return null;
             }

@@ -13,19 +13,26 @@ import io.quarkus.runtime.Quarkus;
 
 @QuarkusMain
 public class Main {
-    public static final boolean isMaster = System.getProperty("isMaster").equals("true") ;
+
+
     public static void main(String... args) {
         Quarkus.run(MyApp.class, args);
     }
 
+    public static boolean isMasterTest(){
+        return MyApp.isMasterTest;
+    }
     public static class MyApp implements QuarkusApplication {
+
+
+        public static final boolean isMasterTest = System.getProperty("isMaster").equals("true") ;
 
         @Override
         public int run(String... args)  {
-            if(isMaster){
+            if(isMasterTest){
                 System.out.println("I'm the master");
             }else{
-                System.out.println("I'm the slave");
+                System.out.println("I'm a slave, my name is "+System.getProperty("name"));
             }
             Quarkus.waitForExit();
             return 0;
