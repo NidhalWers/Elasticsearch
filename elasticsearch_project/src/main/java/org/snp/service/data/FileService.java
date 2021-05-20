@@ -18,7 +18,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.io.*;
 import java.util.HashMap;
-import java.util.List;
 
 @ApplicationScoped
 public class FileService {
@@ -150,7 +149,7 @@ public class FileService {
             bufferedReader.readLine();
             String line;
             while ((line = bufferedReader.readLine())!= null) {
-                position=insertCsvLineIntoTable(line,table,position,tempFileName);
+                position=insertCsvLineIntoTable(line,table,position,tempFileName); //todo change the method
                 //write into data file
                 bw.write(line);
                 bw.newLine();
@@ -168,7 +167,8 @@ public class FileService {
         return new MessageAttachment<Table>(200, table);
     }
 
-    private int insertLineIntoNode(String line, Table table, int position, String fileName ) throws Exception{
+    //todo use this method
+    private int insertLineIntoNode(String line, Table table, int position, String fileName ){
         int choice = line.hashCode() % 3;
         if(choice==2){
             return insertCsvLineIntoTable(line, table, position,  fileName );
