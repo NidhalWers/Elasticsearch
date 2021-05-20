@@ -27,17 +27,12 @@ public class IndexController {
     public Table addIndex(IndexCredentials indexCredentials){
         if(indexCredentials==null){
             throw new BadRequestException("body should not be null");
-        }try{
-            Message message = indexService.create(indexCredentials);
-            if(message.hasAttachment())
-                return (Table) ((MessageAttachment)message).getAttachment();
-            else
-                // A revoir - bug quand index existe.
-                throw new NotFoundException("table "+indexCredentials.tableName+" does not exist");
-        }catch (IOException e){
-            e.printStackTrace();
-            throw new InternalServerErrorException("IOException");
         }
+        Message message = indexService.create(indexCredentials);
+        if(message.hasAttachment())
+            return (Table) ((MessageAttachment)message).getAttachment();
+        else
+            throw new NotFoundException("table "+indexCredentials.tableName+" does not exist");
     }
 }
 

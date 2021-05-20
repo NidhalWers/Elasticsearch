@@ -23,7 +23,7 @@ public class IndexService {
     @Inject TableService tableService;
     private SlaveClient[] slaveClients = {new SlaveClient(8081),new SlaveClient(8082)};
 
-    public Message create(IndexCredentials indexCredentials) throws IOException {
+    public Message create(IndexCredentials indexCredentials) {
         Table table = tableDao.find(indexCredentials.tableName);
         if(table == null)
             return new Message(404);

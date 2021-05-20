@@ -1,9 +1,7 @@
 package org.snp.controller;
 
-import io.quarkus.security.UnauthorizedException;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.snp.Main;
-import org.snp.dao.TableDao;
 import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
@@ -15,17 +13,12 @@ import org.snp.service.data.FunctionService;
 import org.snp.service.data.DataService;
 import org.snp.model.credentials.DataCredentials;
 import org.snp.service.data.FileService;
-import org.snp.utils.exception.AlreadyExistException;
 
 import javax.inject.Inject;
-import javax.management.BadAttributeValueExpException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 
 @Path("/data")

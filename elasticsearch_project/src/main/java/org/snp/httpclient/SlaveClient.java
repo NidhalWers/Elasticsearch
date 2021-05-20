@@ -16,23 +16,40 @@ public class SlaveClient extends HttpClient{
         super(port);
     }
 
-    public RowInsertedModel insertLine(RowCredentials rowCredentials) throws IOException {
+    public RowInsertedModel insertLine(RowCredentials rowCredentials){
         String json = gson.toJson(rowCredentials);
-        Response response = post("/data/insertline",json);
-        if(!response.isSuccessful()){
-            throw  new InternalServerErrorException();
+        Response response = null;
+        try {
+            response = post("/data/insertline",json);
+
+            if(!response.isSuccessful()){
+                throw  new InternalServerErrorException();
+            }
+            RowInsertedModel rowInsertedModel= null;
+            rowInsertedModel = gson.fromJson(response.body().string(), RowInsertedModel.class);
+            return rowInsertedModel;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
-        RowInsertedModel rowInsertedModel= gson.fromJson(response.body().string(),RowInsertedModel.class);
-        return rowInsertedModel;
+
     }
 
-    public void createTable(TableCredentials tableCredentials) throws IOException {
+    public void createTable(TableCredentials tableCredentials) {
         String json = gson.toJson(tableCredentials);
-        Response response = post("/table", json);
+        try {
+            Response response = post("/table", json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-    public void addIndex(IndexCredentials indexCredentials) throws IOException {
+    public void addIndex(IndexCredentials indexCredentials){
         String json = gson.toJson(indexCredentials);
-        Response response = post("/index/add", json);
+        try {
+            Response response = post("/index/add", json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

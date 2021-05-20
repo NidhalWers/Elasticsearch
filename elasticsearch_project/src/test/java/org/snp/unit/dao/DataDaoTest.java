@@ -2,6 +2,7 @@ package org.snp.unit.dao;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.snp.dao.DataDao;
 import org.snp.indexage.Table;

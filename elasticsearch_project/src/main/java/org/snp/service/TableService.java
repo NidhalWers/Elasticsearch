@@ -22,7 +22,7 @@ public class TableService {
     private SlaveClient [] slaveClients = {new SlaveClient(8081),new SlaveClient(8082)};
     @Inject
     ColumnService columnService;
-    public Message create(TableCredentials tableCredentials) throws Exception{
+    public Message create(TableCredentials tableCredentials){
         Table table = dao.find(tableCredentials.name);
         if(table != null) //already exists
             return new Message(403);
