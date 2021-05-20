@@ -23,7 +23,7 @@ public class SlaveClient extends HttpClient{
             response = post("/data/insertline",json);
 
             if(!response.isSuccessful()){
-                throw  new InternalServerErrorException();
+                throw  new InternalServerErrorException("error during the redirection of insertLine");
             }
             RowInsertedModel rowInsertedModel= null;
             rowInsertedModel = gson.fromJson(response.body().string(), RowInsertedModel.class);

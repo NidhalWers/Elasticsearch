@@ -2,7 +2,7 @@ package org.snp.service.data;
 
 import javax.ws.rs.core.Response;
 
-import com.sun.mail.iap.ByteArray;
+import org.snp.Main;
 import org.snp.dao.DataDao;
 import org.snp.dao.TableDao;
 import org.snp.httpclient.SlaveClient;
@@ -24,7 +24,13 @@ public class FileService {
 
     private TableDao tableDao = new TableDao();
     private DataDao dataDAO = new DataDao();
-    private SlaveClient [] slaveClients = {new SlaveClient(8081),new SlaveClient(8082)};
+    private SlaveClient [] slaveClients;
+
+    public FileService(){
+        if(Main.isMasterTest())
+            slaveClients = new SlaveClient[]{new SlaveClient(8081), new SlaveClient(8082)};
+    }
+
 
     public String getAllDataAtPos(String fileName, int pos){
         try {

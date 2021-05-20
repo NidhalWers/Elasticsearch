@@ -20,7 +20,12 @@ public class IndexService {
     @Inject TableDao tableDao;
     @Inject ColumnService columnService;
     @Inject TableService tableService;
-    private SlaveClient[] slaveClients = {new SlaveClient(8081),new SlaveClient(8082)};
+    private SlaveClient[] slaveClients;
+
+    public IndexService(){
+        if(Main.isMasterTest())
+            slaveClients = new SlaveClient[]{new SlaveClient(8081), new SlaveClient(8082)};
+    }
 
     public Message create(IndexCredentials indexCredentials) {
         Table table = tableDao.find(indexCredentials.tableName);

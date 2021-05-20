@@ -19,7 +19,13 @@ import java.util.*;
 @ApplicationScoped
 public class TableService {
     private static TableDao dao = new TableDao();
-    private SlaveClient [] slaveClients = {new SlaveClient(8081),new SlaveClient(8082)};
+    private SlaveClient [] slaveClients;
+
+    public TableService(){
+        if(Main.isMasterTest())
+            slaveClients = new SlaveClient[]{new SlaveClient(8081), new SlaveClient(8082)};
+    }
+
     @Inject
     ColumnService columnService;
     public Message create(TableCredentials tableCredentials){
