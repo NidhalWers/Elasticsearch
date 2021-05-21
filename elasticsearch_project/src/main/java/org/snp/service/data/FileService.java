@@ -154,8 +154,11 @@ public class FileService {
             //skip header
             bufferedReader.readLine();
             String line;
+            int  lineLength;
             while ((line = bufferedReader.readLine())!= null) {
-                position=insertCsvLineIntoTable(line,table,position,tempFileName); //todo why position= ?
+                insertLineIntoNode(line,table,position,tempFileName);
+                lineLength = line.getBytes().length;
+                position+=lineLength+1;
                 //write into data file
                 bw.write(line);
                 bw.newLine();
@@ -174,25 +177,25 @@ public class FileService {
     }
 
 
-    private int insertLineIntoNode(String line, Table table, int position, String fileName ){
+    private void insertLineIntoNode(String line, Table table, int position, String fileName ){
         int choice = line.hashCode() % 3;
         if(choice==2){
-            return insertCsvLineIntoTable(line, table, position,  fileName );
+            insertCsvLineIntoTable(line, table, position,  fileName );
+            return;
         }else{
-            RowInsertedModel rowInsertedModel = slaveClients[choice].insertLine(new RowCredentials(table.getName(),line,position,fileName));
-            return rowInsertedModel.position;
+            slaveClients[choice].insertLine(new RowCredentials(table.getName(),line,position,fileName));
+            return;
         }
     }
 
-    private int insertCsvLineIntoTable(String line, Table table, int position, String fileName ){
+    private void insertCsvLineIntoTable(String line, Table table, int position, String fileName ){
         String []values = line.split(",");
         HashMap<String, String> lineToInsert = new HashMap<>();
         for (int i = 0; i < values.length; i++) {
             lineToInsert.put(table.getColumns().get(i).getName(), values[i]);
         }
-        int  lineLength = line.getBytes().length;
+        int lineLength = line.getBytes().length;
         dataDAO.insert(table, lineToInsert,fileName+","+position+","+lineLength);
-        return position+lineLength+1;
     }
 
 
