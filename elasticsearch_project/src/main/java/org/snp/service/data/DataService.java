@@ -1,7 +1,9 @@
 package org.snp.service.data;
 
+import org.snp.Main;
 import org.snp.dao.DataDao;
 import org.snp.dao.TableDao;
+import org.snp.httpclient.SlaveClient;
 import org.snp.indexage.SubIndex;
 import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
@@ -24,11 +26,18 @@ public class DataService {
     private TableDao tableDao = new TableDao();
     private DataDao dataDAO = new DataDao();
 
+    private SlaveClient[] slaveClients;
 
-    /**
-     * Select
-     *
-     */
+    public DataService() {
+        if (Main.isMasterTest())
+            slaveClients = new SlaveClient[]{new SlaveClient(8081), new SlaveClient(8082)};
+
+    }
+
+        /**
+         * Select
+         *
+         */
     public Message query(QueryCredentials queryCredentials){
         Table table = tableDao.find(queryCredentials.tableName);
         if(table == null)
@@ -79,6 +88,17 @@ public class DataService {
 
         }
 
+        /**
+         * redirection to the slaves
+         */
+        if(Main.isMasterTest()){
+            List<String> slaveResult;
+            for(SlaveClient slaveClient : slaveClients){
+                slaveResult = slaveClient.dataGet(queryCredentials);
+                if(slaveResult!=null)
+                    values.addAll(slaveResult);
+            }
+        }
          return new MessageAttachment<List>(200, values);
     }
 
@@ -122,13 +142,17 @@ public class DataService {
             }
         }
 
+        int finalResult = references.size();
         /**
-         * suppression in the file
+         * redirection to the slaves
          */
+        if(Main.isMasterTest()){
+            for(SlaveClient slaveClient : slaveClients){
+                finalResult += slaveClient.dataDelete(queryCredentials);
+            }
+        }
 
-
-
-        return new MessageAttachment<>(200, references.size());
+        return new MessageAttachment<>(200, finalResult);
     }
 
     /**
@@ -199,8 +223,18 @@ public class DataService {
             }
         }
 
+        int finalResult = references.size();
+        /**
+         * redirection to the slaves
+         */
+        if(Main.isMasterTest()){
+            for(SlaveClient slaveClient : slaveClients){
+                finalResult += slaveClient.dataUpdate(queryCredentials);
+            }
+        }
 
-        return new MessageAttachment<>(200, references.size());
+
+        return new MessageAttachment<>(200, finalResult);
     }
 
 
