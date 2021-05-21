@@ -179,7 +179,7 @@ public class FileService {
 
     private void insertLineIntoNode(String line, Table table, int position, String fileName ){
         int choice = line.hashCode() % 3;
-        if(choice==2){
+        if(choice==2){ //if Master
             insertCsvLineIntoTable(line, table, position,  fileName );
             return;
         }else{

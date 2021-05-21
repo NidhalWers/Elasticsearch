@@ -1,5 +1,6 @@
 package org.snp.httpclient;
 
+import com.google.gson.Gson;
 import com.squareup.okhttp.Response;
 
 import org.snp.model.credentials.IndexCredentials;
@@ -17,10 +18,10 @@ public class SlaveClient extends HttpClient{
     }
 
     public RowInsertedModel insertLine(RowCredentials rowCredentials){
+        Gson gson = new Gson();
         String json = gson.toJson(rowCredentials);
-        Response response = null;
         try {
-            response = post("/data/insertline",json);
+            Response response = post("/data/insertline",json);
 
             if(!response.isSuccessful()){
                 throw  new InternalServerErrorException("error during the redirection of insertLine");
@@ -36,6 +37,7 @@ public class SlaveClient extends HttpClient{
     }
 
     public void createTable(TableCredentials tableCredentials) {
+        Gson gson = new Gson();
         String json = gson.toJson(tableCredentials);
         try {
             Response response = post("/table", json);
@@ -44,6 +46,7 @@ public class SlaveClient extends HttpClient{
         }
     }
     public void addIndex(IndexCredentials indexCredentials){
+        Gson gson = new Gson();
         String json = gson.toJson(indexCredentials);
         try {
             Response response = post("/index/add", json);
