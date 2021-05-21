@@ -1,5 +1,6 @@
 package org.snp.controller;
 
+import io.quarkus.security.UnauthorizedException;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.snp.Main;
 import org.snp.indexage.Table;
@@ -57,12 +58,21 @@ public class DataController {
 
     @POST
     @Path("/insertline")
-    public Response insertLine(RowCredentials rowCredentials){
-        if (rowCredentials==null || rowCredentials.table.isEmpty() ||rowCredentials.line ==null || rowCredentials.line.isEmpty() ){
-            throw new BadRequestException("query should not be null");
+    public Table insertLine(RowCredentials rowCredentials){
+        if(Main.isMasterTest())
+            throw new UnauthorizedException("not authorized to invoke this method in master node");
+        if (rowCredentials==null || rowCredentials.tableName.isBlank() || rowCredentials.line ==null || rowCredentials.line.isBlank() ){
+            throw new BadRequestException("query should not be null, blank or empty");
         }
-        Response response = fileService.insertCsvLineIntoTable(rowCredentials);
-        return  response;
+        Message message = fileService.insertCsvLineIntoTable(rowCredentials);
+        if(message.getCode()==200)
+            return (Table) ((MessageAttachment)message).getAttachment();
+        else{
+            if(message.getCode() == 404)
+                throw new NotFoundException((String) ((MessageAttachment)message).getAttachment());
+            else
+                throw new InternalServerErrorException("internal error");
+        }
     }
 
 

@@ -1,12 +1,11 @@
 package org.snp.model.credentials;
 
 import javax.json.bind.annotation.JsonbProperty;
-import java.util.HashMap;
 
 
 public class RowCredentials {
     @JsonbProperty
-    public String table;
+    public String tableName;
     @JsonbProperty
     public String line;
     @JsonbProperty
@@ -15,8 +14,8 @@ public class RowCredentials {
     public String fileName;
 
     public RowCredentials(){}
-    public RowCredentials(String table, String line, int position, String fileName) {
-        this.table = table;
+    public RowCredentials(String tableName, String line, int position, String fileName) {
+        this.tableName = tableName;
         this.line = line;
         this.position = position;
         this.fileName = fileName;

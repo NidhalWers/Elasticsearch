@@ -32,12 +32,14 @@ public class IndexService {
         if(table == null)
             return new Message(404);
 
+        /* todo qu'est ce que ça fait ici ça ?
         String[] columnsName = new String[indexCredentials.columns.size()];
         int i=0;
         for(ColumnCredentials c : indexCredentials.columns){
             columnsName[i] = c.name;
             i++;
         }
+        */
 
         ArrayList<Column> columns = columnService.getListColumns(indexCredentials.columns);
 

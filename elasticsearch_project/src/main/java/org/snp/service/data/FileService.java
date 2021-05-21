@@ -155,7 +155,7 @@ public class FileService {
             bufferedReader.readLine();
             String line;
             while ((line = bufferedReader.readLine())!= null) {
-                position=insertCsvLineIntoTable(line,table,position,tempFileName); //todo change the method
+                position=insertCsvLineIntoTable(line,table,position,tempFileName); //todo why position= ?
                 //write into data file
                 bw.write(line);
                 bw.newLine();
@@ -173,7 +173,7 @@ public class FileService {
         return new MessageAttachment<Table>(200, table);
     }
 
-    //todo use this method
+
     private int insertLineIntoNode(String line, Table table, int position, String fileName ){
         int choice = line.hashCode() % 3;
         if(choice==2){
@@ -196,15 +196,15 @@ public class FileService {
     }
 
 
-    public Response insertCsvLineIntoTable(RowCredentials rowCredentials){
-        String tableName = rowCredentials.table;
+    public Message insertCsvLineIntoTable(RowCredentials rowCredentials){
+        String tableName = rowCredentials.tableName;
         int position = rowCredentials.position;
         String fileName = rowCredentials.fileName;
         String line = rowCredentials.line;
 
         Table table = tableDao.find(tableName);
         if(table==null){
-            return Response.status(404).build();
+            return new MessageAttachment<>(404, "table "+tableName+" does not exists");
         }
         String []values = line.split(",");
         HashMap<String, String> lineToInsert = new HashMap<>();
@@ -213,7 +213,7 @@ public class FileService {
         }
         int  lineLength = line.getBytes().length;
         dataDAO.insert(table, lineToInsert,fileName+","+position+","+lineLength);
-        return Response.ok(new RowInsertedModel(tableName,position+lineLength+1)).build();
+        return new MessageAttachment<>(200, table);
     }
 
 }

@@ -26,6 +26,8 @@ public class TableController {
 
     @POST
     public Table createTable(TableCredentials tableCredentials) {
+        if(tableCredentials==null)
+            throw new BadRequestException("body can not be empty");
         if(tableCredentials.name==null ||tableCredentials.columns==null){
             throw new BadRequestException("name or columns should not be null");
         }
