@@ -85,6 +85,7 @@ public class TableService {
         for(SubIndex subIndex : table.getSubIndexMap().values()){
             subIndex.updateTheReference(difference, from);
         }
+        //todo redirection to all the other nodes
     }
 
 
