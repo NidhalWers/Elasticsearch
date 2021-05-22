@@ -82,7 +82,6 @@ public class DataController {
         if(queryCredentials ==null){
             throw new BadRequestException("query should not be null");
         }
-        System.out.println("\n\tget table name "+queryCredentials.tableName);
         Message message = dataService.query(queryCredentials);
         if(message.getCode() == 200)
             return (List<String>) ((MessageAttachment)message).getAttachment();

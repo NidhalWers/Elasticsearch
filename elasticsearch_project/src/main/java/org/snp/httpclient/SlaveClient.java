@@ -82,14 +82,13 @@ public class SlaveClient extends HttpClient{
         String json = jsonb.toJson(queryCredentials);
         try {
             Response response = post("/data/query",json);
-            String responseBody = response.body().string();
+            String body = response.body().string();
             if(response.isSuccessful()) {
-                List<String> result = jsonb.fromJson(responseBody, new ArrayList<String>(){}.getClass().getGenericSuperclass());
+                List<String> result = jsonb.fromJson(body, new ArrayList<String>(){}.getClass().getGenericSuperclass());
 
                 return result;
-            }else{
-                return null;
             }
+            return null;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -101,8 +100,13 @@ public class SlaveClient extends HttpClient{
         String json = jsonb.toJson(queryCredentials);
         try {
             Response response = post("/data/update",json);
-            int result = jsonb.fromJson(response.body().string(), Integer.class);
-            return result;
+            String body = response.body().string();
+            if(response.isSuccessful()) {
+                int result = jsonb.fromJson(body, Integer.class);
+                return result;
+            }
+            System.out.println(body);
+            return 0;
         } catch (IOException e) {
             e.printStackTrace();
             return 0;
@@ -114,8 +118,13 @@ public class SlaveClient extends HttpClient{
         String json = jsonb.toJson(queryCredentials);
         try {
             Response response = post("/data/delete",json);
-            int result = jsonb.fromJson(response.body().string(), Integer.class);
-            return result;
+            String body = response.body().string();
+            if(response.isSuccessful()) {
+                int result = jsonb.fromJson(body, Integer.class);
+                return result;
+            }
+            System.out.println(body);
+            return 0;
         } catch (IOException e) {
             e.printStackTrace();
             return 0;

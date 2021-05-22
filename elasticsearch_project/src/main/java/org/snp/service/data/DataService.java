@@ -135,7 +135,7 @@ public class DataService {
             }
 
 
-            references = dataDAO.find(table, queryMap);//todo ajouter un boolean pour pas récupérer les slaves
+            references = dataDAO.find(table, queryMap);
             if (!Main.isMasterTest() && (references == null || references.isEmpty()))
                 return new MessageAttachment<>(404, MESSAGE_PREFIX+"data not found");
         }else{
@@ -227,7 +227,7 @@ public class DataService {
                              */
                             String[] refSplited = ref.split(",");
                             values.add(fileService.updateColumnAtPos(table, refSplited[0], Integer.valueOf(refSplited[1]), columnNumber, newValue));
-                            //update the position byte
+                            //cas où on modifie ce qu'on recherche : exemple update nom=Y where nom=X
                             references = dataDAO.find(table, queryMap);
                             if (references == null || references.isEmpty())
                                 break;
