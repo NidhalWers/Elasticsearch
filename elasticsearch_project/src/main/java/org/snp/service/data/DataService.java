@@ -137,18 +137,21 @@ public class DataService {
 
 
             references = dataDAO.find(table, queryMap);
-            if (references == null || references.isEmpty())
+            if (!Main.isMasterTest() && (references == null || references.isEmpty()))
                 return new MessageAttachment<>(404, MESSAGE_PREFIX+"data not found");
         }else{
             references = dataDAO.findAll(table);
         }
 
-        /**
-         * suppression in subindex
-         */
-        for(SubIndex subIndex : table.getSubIndexMap().values()){
-            for(String ref : references){
-                subIndex.deleteByReference(ref);
+        boolean doNotContinueTest = references == null || references.isEmpty();
+        if(! doNotContinueTest) {
+            /**
+             * suppression in subindex
+             */
+            for (SubIndex subIndex : table.getSubIndexMap().values()) {
+                for (String ref : references) {
+                    subIndex.deleteByReference(ref);
+                }
             }
         }
 
@@ -160,6 +163,9 @@ public class DataService {
             for(SlaveClient slaveClient : slaveClients){
                 finalResult += slaveClient.dataDelete(queryCredentials);
             }
+            if(finalResult==0)
+                return new MessageAttachment<>(404, MESSAGE_PREFIX+"data not found");
+
         }
 
         return new MessageAttachment<>(200, finalResult);
@@ -195,53 +201,58 @@ public class DataService {
 
 
         references = dataDAO.find(table, queryMap);
-        if (references == null || references.isEmpty())
+        if (!Main.isMasterTest() && (references == null || references.isEmpty()))
             return new MessageAttachment<>(404, MESSAGE_PREFIX+"data not found");
 
+        boolean doNotContinueTest = references == null || references.isEmpty();
+        if(! doNotContinueTest) {
+            /**
+             * update
+             */
+            List<String> values = new ArrayList<>();
+            for (Map.Entry entry : table.getSubIndexMap().entrySet()) {
+                for (QueryCredentials.AttributeCredentials attributeCredentials : queryCredentials.updateParams) {
+                    String columnName = attributeCredentials.columnName;
+                    int columnNumber = table.positionOfColumn(columnName);
+                    String newValue = attributeCredentials.value;
 
-        /**
-         * update
-         */
-        List<String> values = new ArrayList<>();
-        for(Map.Entry entry : table.getSubIndexMap().entrySet()){
-            for (QueryCredentials.AttributeCredentials attributeCredentials : queryCredentials.updateParams){
-                String columnName = attributeCredentials.columnName;
-                int columnNumber = table.positionOfColumn(columnName);
-                String newValue = attributeCredentials.value;
-
-                if(columnName.equals(entry.getKey())){
-                    SubIndex subIndex = (SubIndex) entry.getValue();
-                    int size = references.size();
-                    for(int i = 0; i<references.size(); ){
-                        String ref = references.get(i);
-                        /**
-                         * update in subindex
-                         */
-                        subIndex.updateByReference(newValue, ref);
-                        /**
-                         * update in file
-                         */
-                        String[] refSplited = ref.split(",");
-                        values.add(fileService.updateColumnAtPos(table, refSplited[0], Integer.valueOf(refSplited[1]), columnNumber, newValue));
-                        //update the position byte
-                        references = dataDAO.find(table, queryMap);
-                        if (references == null || references.isEmpty())
-                            break;
-                        if(references.size() == size)
-                            i++;
+                    if (columnName.equals(entry.getKey())) {
+                        SubIndex subIndex = (SubIndex) entry.getValue();
+                        int size = references.size();
+                        for (int i = 0; i < references.size(); ) {
+                            String ref = references.get(i);
+                            /**
+                             * update in subindex
+                             */
+                            subIndex.updateByReference(newValue, ref);
+                            /**
+                             * update in file
+                             */
+                            String[] refSplited = ref.split(",");
+                            values.add(fileService.updateColumnAtPos(table, refSplited[0], Integer.valueOf(refSplited[1]), columnNumber, newValue));
+                            //update the position byte
+                            references = dataDAO.find(table, queryMap);
+                            if (references == null || references.isEmpty())
+                                break;
+                            if (references.size() == size)
+                                i++;
+                        }
                     }
                 }
             }
         }
 
-        int finalResult = references.size();
         /**
          * redirection to the slaves
          */
+        int finalResult = references.size();
+
         if(Main.isMasterTest()){
             for(SlaveClient slaveClient : slaveClients){
                 finalResult += slaveClient.dataUpdate(queryCredentials);
             }
+            if(finalResult==0)
+                return new MessageAttachment<>(404, MESSAGE_PREFIX+"data not found");
         }
 
 
