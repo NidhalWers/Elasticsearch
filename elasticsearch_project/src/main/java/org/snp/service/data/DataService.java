@@ -116,7 +116,6 @@ public class DataService {
      *
      */
 
-    //todo revoir les conditions du data not found pour le Master
     public Message delete(QueryCredentials queryCredentials){
         Table table = tableDao.find(queryCredentials.tableName);
         if(table == null)
@@ -136,7 +135,7 @@ public class DataService {
             }
 
 
-            references = dataDAO.find(table, queryMap);
+            references = dataDAO.find(table, queryMap);//todo ajouter un boolean pour pas récupérer les slaves
             if (!Main.isMasterTest() && (references == null || references.isEmpty()))
                 return new MessageAttachment<>(404, MESSAGE_PREFIX+"data not found");
         }else{
@@ -175,8 +174,6 @@ public class DataService {
      * UPDATE
      *
      */
-
-    //todo revoir les conditions du data not found pour le Master
     public Message update(QueryCredentials queryCredentials){
         Table table = tableDao.find(queryCredentials.tableName);
         if(table == null)

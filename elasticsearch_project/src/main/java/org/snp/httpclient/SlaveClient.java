@@ -5,10 +5,10 @@ import com.squareup.okhttp.Response;
 
 import org.snp.model.credentials.*;
 
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class SlaveClient extends HttpClient{
 
@@ -22,8 +22,8 @@ public class SlaveClient extends HttpClient{
      * @return
      */
     public void insertLine(RowCredentials rowCredentials){
-        Gson gson = new Gson();
-        String json = gson.toJson(rowCredentials);
+        Jsonb jsonb = JsonbBuilder.create();
+        String json = jsonb.toJson(rowCredentials);
         try {
             Response response = post("/data/insertline",json);
             /*
@@ -46,8 +46,8 @@ public class SlaveClient extends HttpClient{
      * @param tableCredentials
      */
     public void createTable(TableCredentials tableCredentials) {
-        Gson gson = new Gson();
-        String json = gson.toJson(tableCredentials);
+        Jsonb jsonb = JsonbBuilder.create();
+        String json = jsonb.toJson(tableCredentials);
         try {
             post("/table", json);
         } catch (IOException e) {
@@ -60,8 +60,8 @@ public class SlaveClient extends HttpClient{
      * @param indexCredentials
      */
     public void addIndex(IndexCredentials indexCredentials){
-        Gson gson = new Gson();
-        String json = gson.toJson(indexCredentials);
+        Jsonb jsonb = JsonbBuilder.create();
+        String json = jsonb.toJson(indexCredentials);
         try {
             post("/index/add", json);
         } catch (IOException e) {
@@ -75,13 +75,13 @@ public class SlaveClient extends HttpClient{
      */
 
     public List<String> dataGet(QueryCredentials queryCredentials){
-        Gson gson = new Gson();
-        String json = gson.toJson(queryCredentials);//todo à revoir
+        Jsonb jsonb = JsonbBuilder.create();
+        String json = jsonb.toJson(queryCredentials);
         try {
             Response response = post("/data/query",json);
             System.out.println("\nresponse message : "+response.body().string());
             if(response.isSuccessful()) {
-                List<String> result = gson.fromJson(response.body().string(), List.class);
+                List<String> result = jsonb.fromJson(response.body().string(), List.class);
                 return result;
             }else{
                 return null;
@@ -93,11 +93,11 @@ public class SlaveClient extends HttpClient{
     }
 
     public int dataUpdate(QueryCredentials queryCredentials){
-        Gson gson = new Gson();
-        String json = gson.toJson(queryCredentials);
+        Jsonb jsonb = JsonbBuilder.create();
+        String json = jsonb.toJson(queryCredentials);
         try {
             Response response = post("/data/update",json);
-            int result = gson.fromJson(response.body().string(), Integer.class);
+            int result = jsonb.fromJson(response.body().string(), Integer.class);
             return result;
         } catch (IOException e) {
             e.printStackTrace();
@@ -106,11 +106,11 @@ public class SlaveClient extends HttpClient{
     }
 
     public int dataDelete(QueryCredentials queryCredentials){
-        Gson gson = new Gson();
-        String json = gson.toJson(queryCredentials);
+        Jsonb jsonb = JsonbBuilder.create();
+        String json = jsonb.toJson(queryCredentials);
         try {
             Response response = post("/data/delete",json);
-            int result = gson.fromJson(response.body().string(), Integer.class);
+            int result = jsonb.fromJson(response.body().string(), Integer.class);
             return result;
         } catch (IOException e) {
             e.printStackTrace();

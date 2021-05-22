@@ -180,7 +180,7 @@ public class FileService {
     private void insertLineIntoNode(String line, Table table, int position, String fileName ){
         int hash = line.hashCode();
         int choice =  Math.abs( (hash+3) % 3);
-        System.out.println("\n\tline = "+line+"\n\tchoice = "+choice+"\n\thash = "+hash+"\n");
+        System.out.println("\n\tline = "+line+"\n\tchoice = "+choice+"\n\thash = "+hash+"\n");//todo
         if(choice==2){ //if Master
             insertCsvLineIntoTable(line, table, position,  fileName );
             return;
@@ -206,7 +206,7 @@ public class FileService {
         if(table==null){
             return new MessageAttachment<>(404, "table "+rowCredentials.tableName+" does not exists");
         }
-        System.out.println("\ttable "+ rowCredentials.tableName+" exist");
+        System.out.println("\tinsert CSV table "+ rowCredentials.tableName+" exist");//todo
         String []values = rowCredentials.line.split(",");
         HashMap<String, String> lineToInsert = new HashMap<>();
         for (int i = 0; i < values.length; i++) {
