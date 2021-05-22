@@ -306,7 +306,7 @@
 								{
 									"key": "file\n",
 									"type": "file",
-									"src": "/home/nidhal/Bureau/Dossier_Nidhal/Scolaire/L3/Semestre_2/Java_Web/Projet/Elasticsearch/elasticsearch_project/person.csv"
+									"src": "/home/nidhal/Bureau/Dossier_Nidhal/Scolaire/L3/Semestre_2/Java_Web/Projet/Elasticsearch/elasticsearch_project/test_files/person.csv"
 								},
 								{
 									"key": "table",
@@ -441,7 +441,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"table_name\": \"person\",\n    \"query_params\": [\n        {\n            \"name\": \"salaire\" , \"value\" : \"500\"\n        }\n    ]\n}",
+							"raw": "{\n    \"table_name\": \"person\",\n    \"query_params\": [\n        {\n            \"name\": \"salaire\" , \"value\" : \"12500\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -586,7 +586,36 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"table_name\": \"person\",\n    \"query_params\": [\n        {\n            \"name\": \"prenom\" , \"value\" : \"nidhal\"\n        }\n    ],\n    \"update_params\":[\n        {\n            \"name\": \"salaire\", \"value\" : \"2500\"\n        }\n    ]\n}",
+							"raw": "{\n    \"table_name\": \"person\",\n    \"query_params\": [\n        {\n            \"name\": \"prenom\" , \"value\" : \"nidhal\"\n        }\n    ],\n    \"update_params\":[\n        {\n            \"name\": \"salaire\", \"value\" : \"1200\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/data/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"data",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update prenom where prenom",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"table_name\": \"person\",\n    \"query_params\": [\n        {\n            \"name\": \"prenom\" , \"value\" : \"nidhal\"\n        }\n    ],\n    \"update_params\":[\n        {\n            \"name\": \"prenom\", \"value\" : \"nidou\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -972,7 +1001,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/home/nidhal/Bureau/Dossier_Nidhal/Scolaire/L3/Semestre_2/Java_Web/Projet/Elasticsearch/elasticsearch_project/client.csv"
+									"src": "/home/nidhal/Bureau/Dossier_Nidhal/Scolaire/L3/Semestre_2/Java_Web/Projet/Elasticsearch/elasticsearch_project/test_files/client.csv"
 								},
 								{
 									"key": "table",
@@ -1090,7 +1119,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"table_name\": \"client\",\n    \"query_params\": [\n        {\n            \"name\": \"nom_client\" , \"value\" : \"teyeb\"\n        }\n    ],\n    \"update_params\":[\n        {\n            \"name\": \"nom_client\", \"value\" : \"mickunas\"\n        }\n    ]\n}",
+							"raw": "{\n    \"table_name\": \"client\",\n    \"query_params\": [\n        {\n            \"name\": \"nom_client\" , \"value\" : \"teyeb\"\n        }\n    ],\n    \"update_params\":[\n        {\n            \"name\": \"nom_client\", \"value\" : \"pitton\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1119,7 +1148,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"table_name\": \"client\",\n    \"query_params\": [\n        {\n            \"name\": \"nom_client\" , \"value\" : \"teyeb\"\n        },\n        {\n            \"name\": \"prix\", \"value\" : \"279.25\"\n        }\n    ],\n    \"update_params\":[\n        {\n            \"name\": \"nom_client\", \"value\" : \"oruc\"\n        }\n    ]\n}",
+							"raw": "{\n    \"table_name\": \"client\",\n    \"query_params\": [\n        {\n            \"name\": \"nom_client\" , \"value\" : \"oruc\"\n        },\n        {\n            \"name\": \"prix\", \"value\" : \"57.75\"\n        }\n    ],\n    \"update_params\":[\n        {\n            \"name\": \"nom_client\", \"value\" : \"teyeb\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"

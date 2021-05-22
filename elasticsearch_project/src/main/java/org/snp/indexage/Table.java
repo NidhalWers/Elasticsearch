@@ -32,7 +32,7 @@ public class Table {
     public void removeColumn(Column column){
         columns.remove(column);
         //todo remove sub index
-        //todo remove with a name
+        // remove with a name
     }
 
     public List<Column> getColumns() {

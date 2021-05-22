@@ -7,7 +7,6 @@ import org.snp.indexage.Column;
 import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
-import org.snp.model.credentials.ColumnCredentials;
 import org.snp.model.credentials.IndexCredentials;
 
 import javax.enterprise.context.ApplicationScoped;

@@ -5,6 +5,7 @@ import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.TableCredentials;
+import org.snp.model.credentials.redirection.UpdateAllRefCredentials;
 import org.snp.service.TableService;
 import org.snp.utils.exception.AlreadyExistException;
 
@@ -13,6 +14,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
+import java.util.List;
 
 @Path("/table")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -39,8 +41,21 @@ public class TableController {
     }
     @GET
     @Path("/all")
-    public ArrayList<Table> getAllTable(){
+    public List<Table> getAllTable(){
         return tableDAO.findAll();
+    }
+
+    @POST
+    @Path("/updateRef")
+    public void updateAllRefs(UpdateAllRefCredentials updateAllRefCredentials){
+        if(updateAllRefCredentials==null)
+            throw new BadRequestException("body can not be empty");
+        if(updateAllRefCredentials.tableName==null || updateAllRefCredentials.tableName.isBlank())
+            throw new BadRequestException("table name can not be blank or empty");
+        if(updateAllRefCredentials.difference==0)
+            throw new BadRequestException("difference can not be null");
+
+        tableService.updateAllReference(updateAllRefCredentials);
     }
 
 }

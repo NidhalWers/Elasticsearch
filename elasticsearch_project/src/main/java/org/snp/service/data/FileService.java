@@ -1,7 +1,5 @@
 package org.snp.service.data;
 
-import javax.ws.rs.core.Response;
-
 import org.snp.Main;
 import org.snp.dao.DataDao;
 import org.snp.dao.TableDao;
@@ -9,8 +7,7 @@ import org.snp.httpclient.SlaveClient;
 import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
-import org.snp.model.credentials.RowCredentials;
-import org.snp.model.response.RowInsertedModel;
+import org.snp.model.credentials.redirection.RowCredentials;
 import org.snp.service.TableService;
 import org.snp.utils.OSValidator;
 
@@ -25,6 +22,10 @@ public class FileService {
     private TableDao tableDao = new TableDao();
     private DataDao dataDAO = new DataDao();
     private SlaveClient [] slaveClients;
+
+
+    final String NODE_NAME = Main.isMasterTest() ? "Master" : System.getProperty("name");
+    final String MESSAGE_PREFIX = NODE_NAME + " : ";
 
     public FileService(){
         if(Main.isMasterTest())
@@ -141,7 +142,7 @@ public class FileService {
                 position=1;
         }
         if(table==null){
-            return new MessageAttachment<>(404, "table "+tableName+" does not exists");
+            return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+tableName+" does not exists");
         }
         //create file
         File tempFile = File.createTempFile(fileName,".csv");
@@ -180,12 +181,17 @@ public class FileService {
     private void insertLineIntoNode(String line, Table table, int position, String fileName ){
         int hash = line.hashCode();
         int choice =  Math.abs( (hash+3) % 3);
-        System.out.println("\n\tline = "+line+"\n\tchoice = "+choice+"\n\thash = "+hash+"\n");
         if(choice==2){ //if Master
             insertCsvLineIntoTable(line, table, position,  fileName );
             return;
         }else{
-            slaveClients[choice].insertLine(new RowCredentials(table.getName(),line,position,fileName));
+            slaveClients[choice].insertLine(RowCredentials.builder()
+                                                        .tableName(table.getName())
+                                                        .line(line)
+                                                        .position(position)
+                                                        .fileName(fileName)
+                                                        .build()
+                                            );
             return;
         }
     }
@@ -202,22 +208,17 @@ public class FileService {
 
 
     public Message insertCsvLineIntoTable(RowCredentials rowCredentials){
-        String tableName = rowCredentials.tableName;
-        int position = rowCredentials.position;
-        String fileName = rowCredentials.fileName;
-        String line = rowCredentials.line;
-
-        Table table = tableDao.find(tableName);
+        Table table = tableDao.find(rowCredentials.tableName);
         if(table==null){
-            return new MessageAttachment<>(404, "table "+tableName+" does not exists");
+            return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+rowCredentials.tableName+" does not exists");
         }
-        String []values = line.split(",");
+        String []values = rowCredentials.line.split(",");
         HashMap<String, String> lineToInsert = new HashMap<>();
         for (int i = 0; i < values.length; i++) {
             lineToInsert.put(table.getColumns().get(i).getName(), values[i]);
         }
-        int  lineLength = line.getBytes().length;
-        dataDAO.insert(table, lineToInsert,fileName+","+position+","+lineLength);
+        int  lineLength = rowCredentials.line.getBytes().length;
+        dataDAO.insert(table, lineToInsert,rowCredentials.fileName+","+rowCredentials.position+","+lineLength);
         return new MessageAttachment<>(200, table);
     }
 

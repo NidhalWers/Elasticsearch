@@ -1,19 +1,16 @@
 package org.snp.controller;
 
 
-import io.quarkus.security.UnauthorizedException;
 import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.IndexCredentials;
 import org.snp.service.IndexService;
-import org.snp.utils.exception.InternalServerErrorException;
 import org.snp.utils.exception.NotFoundException;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 
 @Path("/index")
@@ -25,7 +22,7 @@ public class IndexController {
     IndexService indexService;
 
     @POST
-    @Path("/add") // sert a rien de mettre la route (mais il faudrait enlevé les appelles postman)
+    @Path("/add")
     public Table addIndex(IndexCredentials indexCredentials) throws AccessDeniedException {
         if(indexCredentials==null)
             throw new BadRequestException("body should not be null");
