@@ -1,22 +1,29 @@
 package org.snp.httpclient;
 
-import com.google.gson.Gson;
 import com.squareup.okhttp.Response;
 
+import org.snp.Main;
 import org.snp.model.credentials.*;
+import org.snp.model.credentials.redirection.RowCredentials;
+import org.snp.model.credentials.redirection.UpdateAllRefCredentials;
 
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
-import javax.ws.rs.core.GenericType;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SlaveClient extends HttpClient{
 
+    private final String name;
+
     public SlaveClient(int port) {
         super(port);
+        name = Main.isMasterTest() ? "Master" : System.getProperty("name");
+    }
+
+    public String getName() {
+        return name;
     }
 
     /**
@@ -128,6 +135,16 @@ public class SlaveClient extends HttpClient{
         } catch (IOException e) {
             e.printStackTrace();
             return 0;
+        }
+    }
+
+    public void updateAllRef(UpdateAllRefCredentials updateAllRefCredentials){
+        Jsonb jsonb = JsonbBuilder.create();
+        String json = jsonb.toJson(updateAllRefCredentials);
+        try {
+            post("/table/updateRef",json);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

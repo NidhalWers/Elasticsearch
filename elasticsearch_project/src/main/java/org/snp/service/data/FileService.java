@@ -1,7 +1,5 @@
 package org.snp.service.data;
 
-import javax.ws.rs.core.Response;
-
 import org.snp.Main;
 import org.snp.dao.DataDao;
 import org.snp.dao.TableDao;
@@ -9,8 +7,7 @@ import org.snp.httpclient.SlaveClient;
 import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
-import org.snp.model.credentials.RowCredentials;
-import org.snp.model.response.RowInsertedModel;
+import org.snp.model.credentials.redirection.RowCredentials;
 import org.snp.service.TableService;
 import org.snp.utils.OSValidator;
 
@@ -184,7 +181,13 @@ public class FileService {
             insertCsvLineIntoTable(line, table, position,  fileName );
             return;
         }else{
-            slaveClients[choice].insertLine(new RowCredentials(table.getName(),line,position,fileName));
+            slaveClients[choice].insertLine(RowCredentials.builder()
+                                                        .tableName(table.getName())
+                                                        .line(line)
+                                                        .position(position)
+                                                        .fileName(fileName)
+                                                        .build()
+                                            );
             return;
         }
     }

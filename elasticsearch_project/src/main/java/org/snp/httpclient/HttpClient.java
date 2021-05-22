@@ -1,10 +1,6 @@
 package org.snp.httpclient;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.squareup.okhttp.*;
-import org.snp.model.credentials.RowCredentials;
-import org.snp.model.response.RowInsertedModel;
 
 import java.io.IOException;
 

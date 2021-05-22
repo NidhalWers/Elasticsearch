@@ -202,6 +202,7 @@ public class DataService {
             return new MessageAttachment<>(404, MESSAGE_PREFIX+"data not found");
 
         boolean doNotContinueTest = references == null || references.isEmpty();
+        int finalResult=0;
         if(! doNotContinueTest) {
             /**
              * update
@@ -216,6 +217,7 @@ public class DataService {
                     if (columnName.equals(entry.getKey())) {
                         SubIndex subIndex = (SubIndex) entry.getValue();
                         int size = references.size();
+                        finalResult = size;
                         for (int i = 0; i < references.size(); ) {
                             String ref = references.get(i);
                             /**
@@ -242,7 +244,6 @@ public class DataService {
         /**
          * redirection to the slaves
          */
-        int finalResult = references.size();
 
         if(Main.isMasterTest()){
             for(SlaveClient slaveClient : slaveClients){
