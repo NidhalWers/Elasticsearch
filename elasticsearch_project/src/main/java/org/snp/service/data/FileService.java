@@ -23,6 +23,10 @@ public class FileService {
     private DataDao dataDAO = new DataDao();
     private SlaveClient [] slaveClients;
 
+
+    final String NODE_NAME = Main.isMasterTest() ? "Master" : System.getProperty("name");
+    final String MESSAGE_PREFIX = NODE_NAME + " : ";
+
     public FileService(){
         if(Main.isMasterTest())
             slaveClients = new SlaveClient[]{new SlaveClient(8081), new SlaveClient(8082)};
@@ -138,7 +142,7 @@ public class FileService {
                 position=1;
         }
         if(table==null){
-            return new MessageAttachment<>(404, "table "+tableName+" does not exists");
+            return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+tableName+" does not exists");
         }
         //create file
         File tempFile = File.createTempFile(fileName,".csv");
@@ -206,7 +210,7 @@ public class FileService {
     public Message insertCsvLineIntoTable(RowCredentials rowCredentials){
         Table table = tableDao.find(rowCredentials.tableName);
         if(table==null){
-            return new MessageAttachment<>(404, "table "+rowCredentials.tableName+" does not exists");
+            return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+rowCredentials.tableName+" does not exists");
         }
         String []values = rowCredentials.line.split(",");
         HashMap<String, String> lineToInsert = new HashMap<>();

@@ -76,7 +76,7 @@ public class TableService {
         return true;
     }
 
-    public void removeIndex(Table table, Index index){ //todo
+    public void removeIndex(Table table, Index index){
         table.getIndexes().remove(index);
     }
     //todo remove index with a list of column's name and test

@@ -1,5 +1,6 @@
 package org.snp.service.data;
 
+import org.snp.Main;
 import org.snp.dao.TableDao;
 import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
@@ -18,6 +19,9 @@ public class FunctionService {
     private TableDao tableDao = new TableDao();
     @Inject DataService dataService;
 
+    final String NODE_NAME = Main.isMasterTest() ? "Master" : System.getProperty("name");
+    final String MESSAGE_PREFIX = NODE_NAME + " : ";
+
     /**
      * join
      * @param joinCredentials
@@ -31,15 +35,15 @@ public class FunctionService {
         //first table
         Table table1 = tableDao.find(joinCredentials.tables.get(0).tableName);
         if(table1 == null)
-            return new MessageAttachment<>(404, "table "+joinCredentials.tables.get(0).tableName+" does not exists");
+            return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+joinCredentials.tables.get(0).tableName+" does not exists");
         if(! table1.containsColumn( joinCredentials.tables.get(0).columnName ))
-            return new MessageAttachment<>(404, "column "+joinCredentials.tables.get(0).columnName+" does not exists in "+table1.getName());
+            return new MessageAttachment<>(404, MESSAGE_PREFIX+"column "+joinCredentials.tables.get(0).columnName+" does not exists in "+table1.getName());
         //second table
         Table table2 = tableDao.find(joinCredentials.tables.get(1).tableName);
         if(table2 == null)
-            return new MessageAttachment<>(404, "table "+joinCredentials.tables.get(1).tableName+" does not exists");
+            return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+joinCredentials.tables.get(1).tableName+" does not exists");
         if(! table2.containsColumn( joinCredentials.tables.get(1).columnName ))
-            return new MessageAttachment<>(404, "column "+joinCredentials.tables.get(1).columnName+" does not exists in "+table2.getName());
+            return new MessageAttachment<>(404, MESSAGE_PREFIX+"column "+joinCredentials.tables.get(1).columnName+" does not exists in "+table2.getName());
 
 
         List<String> result = new ArrayList<>();
@@ -92,9 +96,9 @@ public class FunctionService {
     public Message sum(String tableName, String columnName){
         Table table = tableDao.find(tableName);
         if(table == null)
-            return new MessageAttachment<>(404, "table "+ tableName+" does not exists");
+            return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+ tableName+" does not exists");
         if(! table.getColumnFromName(columnName).getType().equals("double") && ! table.getColumnFromName(columnName).getType().equals("int") )
-            return new MessageAttachment<>(400, "column's type does not correspond to int or double");
+            return new MessageAttachment<>(400, MESSAGE_PREFIX+"column's type does not correspond to int or double");
 
 
         QueryCredentials queryCredentials = new QueryCredentials(tableName)
@@ -126,9 +130,9 @@ public class FunctionService {
     public Message avg(String tableName, String columnName){
         Table table = tableDao.find(tableName);
         if(table == null)
-            return new MessageAttachment<>(404, "table "+ tableName+" does not exists");
+            return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+ tableName+" does not exists");
         if(! table.getColumnFromName(columnName).getType().equals("double") && ! table.getColumnFromName(columnName).getType().equals("int") )
-            return new MessageAttachment<>(400, "column's type does not correspond to int or double");
+            return new MessageAttachment<>(400, MESSAGE_PREFIX+"column's type does not correspond to int or double");
 
 
         QueryCredentials queryCredentials = new QueryCredentials(tableName)
@@ -160,9 +164,9 @@ public class FunctionService {
     public Message min(String tableName, String columnName){
         Table table = tableDao.find(tableName);
         if(table == null)
-            return new MessageAttachment<>(404, "table "+ tableName+" does not exists");
+            return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+ tableName+" does not exists");
         if(! table.getColumnFromName(columnName).getType().equals("double") && ! table.getColumnFromName(columnName).getType().equals("int") )
-            return new MessageAttachment<>(400, "column's type does not correspond to int or double");
+            return new MessageAttachment<>(400, MESSAGE_PREFIX+"column's type does not correspond to int or double");
 
 
         QueryCredentials queryCredentials = new QueryCredentials(tableName)
@@ -200,9 +204,9 @@ public class FunctionService {
     public Message max(String tableName, String columnName){
         Table table = tableDao.find(tableName);
         if(table == null)
-            return new MessageAttachment<>(404, "table "+ tableName+" does not exists");
+            return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+ tableName+" does not exists");
         if(! table.getColumnFromName(columnName).getType().equals("double") && ! table.getColumnFromName(columnName).getType().equals("int") )
-            return new MessageAttachment<>(400, "column's type does not correspond to int or double");
+            return new MessageAttachment<>(400, MESSAGE_PREFIX+"column's type does not correspond to int or double");
 
 
         QueryCredentials queryCredentials = new QueryCredentials(tableName)
@@ -240,7 +244,7 @@ public class FunctionService {
     public Message count(String tableName, String columnName){
         Table table = tableDao.find(tableName);
         if(table == null)
-            return new MessageAttachment<>(404, "table "+ tableName+" does not exists");
+            return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+ tableName+" does not exists");
 
 
         QueryCredentials queryCredentials = new QueryCredentials(tableName)
@@ -267,7 +271,7 @@ public class FunctionService {
     public Message count(String tableName){
         Table table = tableDao.find(tableName);
         if(table == null)
-            return new MessageAttachment<>(404, "table "+ tableName+" does not exists");
+            return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+ tableName+" does not exists");
 
 
         QueryCredentials queryCredentials = new QueryCredentials(tableName);
