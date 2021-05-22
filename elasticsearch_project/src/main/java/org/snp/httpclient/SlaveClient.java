@@ -4,11 +4,11 @@ import com.google.gson.Gson;
 import com.squareup.okhttp.Response;
 
 import org.snp.model.credentials.*;
-import org.snp.model.response.RowInsertedModel;
 
-import javax.ws.rs.InternalServerErrorException;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SlaveClient extends HttpClient{
 
@@ -21,21 +21,22 @@ public class SlaveClient extends HttpClient{
      * @param rowCredentials
      * @return
      */
-    public RowInsertedModel insertLine(RowCredentials rowCredentials){
+    public void insertLine(RowCredentials rowCredentials){
         Gson gson = new Gson();
         String json = gson.toJson(rowCredentials);
         try {
             Response response = post("/data/insertline",json);
-
+            /*
             if(!response.isSuccessful()){
                 throw  new InternalServerErrorException("error during the redirection of insertLine");
             }
             RowInsertedModel rowInsertedModel= null;
             rowInsertedModel = gson.fromJson(response.body().string(), RowInsertedModel.class);
             return rowInsertedModel;
+            */
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            //return null;
         }
 
     }
@@ -75,11 +76,16 @@ public class SlaveClient extends HttpClient{
 
     public List<String> dataGet(QueryCredentials queryCredentials){
         Gson gson = new Gson();
-        String json = gson.toJson(queryCredentials);
+        String json = gson.toJson(queryCredentials);//todo à revoir
         try {
             Response response = post("/data/query",json);
-            List<String> result = gson.fromJson(response.body().string(), List.class);
-            return result;
+            System.out.println("\nresponse message : "+response.body().string());
+            if(response.isSuccessful()) {
+                List<String> result = gson.fromJson(response.body().string(), List.class);
+                return result;
+            }else{
+                return null;
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return null;

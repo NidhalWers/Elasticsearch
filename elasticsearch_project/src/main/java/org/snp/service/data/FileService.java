@@ -202,22 +202,18 @@ public class FileService {
 
 
     public Message insertCsvLineIntoTable(RowCredentials rowCredentials){
-        String tableName = rowCredentials.tableName;
-        int position = rowCredentials.position;
-        String fileName = rowCredentials.fileName;
-        String line = rowCredentials.line;
-
-        Table table = tableDao.find(tableName);
+        Table table = tableDao.find(rowCredentials.tableName);
         if(table==null){
-            return new MessageAttachment<>(404, "table "+tableName+" does not exists");
+            return new MessageAttachment<>(404, "table "+rowCredentials.tableName+" does not exists");
         }
-        String []values = line.split(",");
+        System.out.println("\ttable "+ rowCredentials.tableName+" exist");
+        String []values = rowCredentials.line.split(",");
         HashMap<String, String> lineToInsert = new HashMap<>();
         for (int i = 0; i < values.length; i++) {
             lineToInsert.put(table.getColumns().get(i).getName(), values[i]);
         }
-        int  lineLength = line.getBytes().length;
-        dataDAO.insert(table, lineToInsert,fileName+","+position+","+lineLength);
+        int  lineLength = rowCredentials.line.getBytes().length;
+        dataDAO.insert(table, lineToInsert,rowCredentials.fileName+","+rowCredentials.position+","+lineLength);
         return new MessageAttachment<>(200, table);
     }
 

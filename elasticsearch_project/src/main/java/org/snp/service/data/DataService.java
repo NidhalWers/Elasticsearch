@@ -23,6 +23,9 @@ public class DataService {
 
     @Inject FileService fileService;
 
+    final String NODE_NAME = Main.isMasterTest() ? "Master" : System.getProperty("name");
+    final String MESSAGE_PREFIX = NODE_NAME + " : ";
+
     private TableDao tableDao = new TableDao();
     private DataDao dataDAO = new DataDao();
 
@@ -41,7 +44,7 @@ public class DataService {
     public Message query(QueryCredentials queryCredentials){
         Table table = tableDao.find(queryCredentials.tableName);
         if(table == null)
-            return new MessageAttachment<>(404, "table "+ queryCredentials.tableName+" does not exists");
+            return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+ queryCredentials.tableName+" does not exists");
 
         List<String> references;
         /**
@@ -52,40 +55,44 @@ public class DataService {
             for (QueryCredentials.AttributeCredentials attributeCredentials : queryCredentials.queryParams) {
                 String columnName = attributeCredentials.columnName;
                 if (!table.containsColumn(columnName))
-                    return new MessageAttachment<>(404, "column " + columnName + " does not exists in " + queryCredentials.tableName);
+                    return new MessageAttachment<>(404, MESSAGE_PREFIX+"column " + columnName + " does not exists in " + queryCredentials.tableName);
                 queryMap.put(attributeCredentials.columnName, attributeCredentials.value);
             }
 
 
             references = dataDAO.find(table, queryMap);
-            if (references == null || references.isEmpty())
-                return new MessageAttachment<>(404, "data not found");
+            if (!Main.isMasterTest() && (references == null || references.isEmpty()))
+                return new MessageAttachment<>(404, MESSAGE_PREFIX+"data not found");
         }else{
             references = dataDAO.findAll(table);
         }
-        /**
-         * all the row
-         */
+
         List<String> values = new ArrayList<>();
-        for(String ref : references){
-            String[] refSplited = ref.split(",");
-            values.add(fileService.getAllDataAtPos(refSplited[0], Integer.valueOf(refSplited[1]) ));
-        }
 
-        /**
-         * column selected verification
-         */
-        if(queryCredentials.columnsSelected!=null) {
-            List<String> columnsName = new ArrayList<>();
-            for (ColumnCredentials columnCredentials : queryCredentials.columnsSelected) {
-                String columnName = columnCredentials.name;
-                if (!table.containsColumn(columnName))
-                    return new MessageAttachment<>(404, "column " + columnName + " does not exists in " + queryCredentials.tableName);
-                columnsName.add(columnName);
+        boolean doNotContinueTest = references == null || references.isEmpty();
+        if(! doNotContinueTest) {
+            /**
+             * all the row
+             */
+            for (String ref : references) {
+                String[] refSplited = ref.split(",");
+                values.add(fileService.getAllDataAtPos(refSplited[0], Integer.valueOf(refSplited[1])));
             }
+            /**
+             * column selected verification
+             */
+            if (queryCredentials.columnsSelected != null) {
+                List<String> columnsName = new ArrayList<>();
+                for (ColumnCredentials columnCredentials : queryCredentials.columnsSelected) {
+                    String columnName = columnCredentials.name;
+                    if (!table.containsColumn(columnName))
+                        return new MessageAttachment<>(404, MESSAGE_PREFIX + "column " + columnName + " does not exists in " + queryCredentials.tableName);
+                    columnsName.add(columnName);
+                }
 
-            values = getValuesForColumn(table, columnsName, values);
+                values = getValuesForColumn(table, columnsName, values);
 
+            }
         }
 
         /**
@@ -98,6 +105,8 @@ public class DataService {
                 if(slaveResult!=null)
                     values.addAll(slaveResult);
             }
+            if(values.isEmpty())
+                return new MessageAttachment<>(404, MESSAGE_PREFIX+"data not found");
         }
          return new MessageAttachment<List>(200, values);
     }
@@ -107,10 +116,11 @@ public class DataService {
      *
      */
 
+    //todo revoir les conditions du data not found pour le Master
     public Message delete(QueryCredentials queryCredentials){
         Table table = tableDao.find(queryCredentials.tableName);
         if(table == null)
-            return new MessageAttachment<>(404, "table "+ queryCredentials.tableName+" does not exists");
+            return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+ queryCredentials.tableName+" does not exists");
 
         List<String> references;
         /**
@@ -121,14 +131,14 @@ public class DataService {
             for (QueryCredentials.AttributeCredentials attributeCredentials : queryCredentials.queryParams) {
                 String columnName = attributeCredentials.columnName;
                 if (!table.containsColumn(columnName))
-                    return new MessageAttachment<>(404, "column " + columnName + " does not exists in " + queryCredentials.tableName);
+                    return new MessageAttachment<>(404, MESSAGE_PREFIX+"column " + columnName + " does not exists in " + queryCredentials.tableName);
                 queryMap.put(attributeCredentials.columnName, attributeCredentials.value);
             }
 
 
             references = dataDAO.find(table, queryMap);
             if (references == null || references.isEmpty())
-                return new MessageAttachment<>(404, "data not found");
+                return new MessageAttachment<>(404, MESSAGE_PREFIX+"data not found");
         }else{
             references = dataDAO.findAll(table);
         }
@@ -160,14 +170,15 @@ public class DataService {
      *
      */
 
+    //todo revoir les conditions du data not found pour le Master
     public Message update(QueryCredentials queryCredentials){
         Table table = tableDao.find(queryCredentials.tableName);
         if(table == null)
-            return new MessageAttachment<>(404, "table "+ queryCredentials.tableName+" does not exists");
+            return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+ queryCredentials.tableName+" does not exists");
         if(queryCredentials.updateParams == null)
-            return new MessageAttachment<>(404, "update_params could not be null");
+            return new MessageAttachment<>(404, MESSAGE_PREFIX+"update_params could not be null");
         if(queryCredentials.queryParams==null)
-            return new MessageAttachment<>(404, "query_params could not be null");
+            return new MessageAttachment<>(404, MESSAGE_PREFIX+"query_params could not be null");
 
         List<String> references;
         /**
@@ -178,14 +189,14 @@ public class DataService {
         for (QueryCredentials.AttributeCredentials attributeCredentials : queryCredentials.queryParams) {
             String columnName = attributeCredentials.columnName;
             if (!table.containsColumn(columnName))
-                return new MessageAttachment<>(404, "column " + columnName + " does not exists in " + queryCredentials.tableName);
+                return new MessageAttachment<>(404, MESSAGE_PREFIX+"column " + columnName + " does not exists in " + queryCredentials.tableName);
             queryMap.put(attributeCredentials.columnName, attributeCredentials.value);
         }
 
 
         references = dataDAO.find(table, queryMap);
         if (references == null || references.isEmpty())
-            return new MessageAttachment<>(404, "data not found");
+            return new MessageAttachment<>(404, MESSAGE_PREFIX+"data not found");
 
 
         /**
