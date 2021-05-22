@@ -178,7 +178,9 @@ public class FileService {
 
 
     private void insertLineIntoNode(String line, Table table, int position, String fileName ){
-        int choice = line.hashCode() % 3;
+        int hash = line.hashCode();
+        int choice =  Math.abs( (hash+3) % 3);
+        System.out.println("\n\tline = "+line+"\n\tchoice = "+choice+"\n\thash = "+hash+"\n");
         if(choice==2){ //if Master
             insertCsvLineIntoTable(line, table, position,  fileName );
             return;
