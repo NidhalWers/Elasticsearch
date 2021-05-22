@@ -14,6 +14,7 @@ import org.snp.service.data.FunctionService;
 import org.snp.service.data.DataService;
 import org.snp.model.credentials.DataCredentials;
 import org.snp.service.data.FileService;
+import org.snp.utils.exception.NotFoundException;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
