@@ -182,7 +182,7 @@ public class DataController {
         }
 
         if(message.getCode() == 200){
-            return List.of((String) ((MessageAttachment)message).getAttachment());
+            return List.of(String.valueOf( ((MessageAttachment)message).getAttachment()));
         }else{
             if(message.getCode() == 404)
                 throw new NotFoundException((String) ((MessageAttachment)message).getAttachment());
