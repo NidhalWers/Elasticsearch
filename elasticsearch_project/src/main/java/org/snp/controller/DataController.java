@@ -63,7 +63,6 @@ public class DataController {
         if (rowCredentials==null || rowCredentials.tableName.isBlank() || rowCredentials.line ==null || rowCredentials.line.isBlank() ){
             throw new BadRequestException("query should not be null, blank or empty");
         }
-        System.out.println("\ninsert line : " + rowCredentials.line + " in "+System.getProperty("name"));//todo
         Message message = fileService.insertCsvLineIntoTable(rowCredentials);
         if(message.getCode()==200)
             return (Table) ((MessageAttachment)message).getAttachment();

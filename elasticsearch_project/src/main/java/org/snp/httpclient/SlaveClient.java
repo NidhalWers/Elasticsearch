@@ -7,7 +7,10 @@ import org.snp.model.credentials.*;
 
 import javax.json.bind.Jsonb;
 import javax.json.bind.JsonbBuilder;
+import javax.ws.rs.core.GenericType;
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SlaveClient extends HttpClient{
@@ -79,9 +82,10 @@ public class SlaveClient extends HttpClient{
         String json = jsonb.toJson(queryCredentials);
         try {
             Response response = post("/data/query",json);
-            System.out.println("\nresponse message : "+response.body().string());
+            String responseBody = response.body().string();
             if(response.isSuccessful()) {
-                List<String> result = jsonb.fromJson(response.body().string(), List.class);
+                List<String> result = jsonb.fromJson(responseBody, new ArrayList<String>(){}.getClass().getGenericSuperclass());
+
                 return result;
             }else{
                 return null;
