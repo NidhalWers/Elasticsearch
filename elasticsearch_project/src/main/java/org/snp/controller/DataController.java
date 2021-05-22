@@ -20,6 +20,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Path("/data")
@@ -150,7 +151,7 @@ public class DataController {
 
     @POST
     @Path("/function")
-    public double function(FunctionCredentials functionCredentials){
+    public List<String> function(FunctionCredentials functionCredentials){
         if(functionCredentials == null)
             throw new BadRequestException("query should not be null");
         if(functionCredentials.functionName == null)
@@ -181,7 +182,7 @@ public class DataController {
         }
 
         if(message.getCode() == 200){
-            return (double) ((MessageAttachment)message).getAttachment();
+            return List.of((String) ((MessageAttachment)message).getAttachment());
         }else{
             if(message.getCode() == 404)
                 throw new NotFoundException((String) ((MessageAttachment)message).getAttachment());

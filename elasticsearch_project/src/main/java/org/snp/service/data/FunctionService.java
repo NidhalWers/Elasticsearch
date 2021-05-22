@@ -169,26 +169,34 @@ public class FunctionService {
             return new MessageAttachment<>(400, MESSAGE_PREFIX+"column's type does not correspond to int or double");
 
 
-        QueryCredentials queryCredentials = new QueryCredentials(tableName)
-                .setColumnSelected()
-                .addColumn(columnName);
+        QueryCredentials queryCredentials = new QueryCredentials(tableName);
+
+        int indice = table.positionOfColumn(columnName);
 
         Message message = dataService.query(queryCredentials);
         if(message.getCode() == 200){
             List<String> string_value = (List<String>) ((MessageAttachment)message).getAttachment();
             double value = 0;
             boolean first = true;
-            for(String s : string_value){
+            String[] splitLine;
+            String columnValue;
+            String lineResult=null;
+            for(String line : string_value){
+                splitLine = line.split(",");
+                columnValue = splitLine[indice];
                 if(first) {
-                    value = Double.valueOf(s);
+                    value = Double.valueOf(columnValue);
+                    lineResult= line;
                     first = false;
                 }else{
-                    if(value > Double.valueOf(s))
-                        value = Double.valueOf(s);
+                    if(value > Double.valueOf(columnValue)) {
+                        value = Double.valueOf(columnValue);
+                        lineResult=line;
+                    }
                 }
             }
 
-            return new MessageAttachment<>(200, value );
+            return new MessageAttachment<>(200, lineResult );
         }else{
             return message;
         }
@@ -209,26 +217,34 @@ public class FunctionService {
             return new MessageAttachment<>(400, MESSAGE_PREFIX+"column's type does not correspond to int or double");
 
 
-        QueryCredentials queryCredentials = new QueryCredentials(tableName)
-                .setColumnSelected()
-                .addColumn(columnName);
+        QueryCredentials queryCredentials = new QueryCredentials(tableName);
+
+        int indice = table.positionOfColumn(columnName);
 
         Message message = dataService.query(queryCredentials);
         if(message.getCode() == 200){
             List<String> string_value = (List<String>) ((MessageAttachment)message).getAttachment();
             double value = 0;
             boolean first = true;
-            for(String s : string_value){
+            String[] splitLine;
+            String columnValue;
+            String lineResult=null;
+            for(String line : string_value){
+                splitLine = line.split(",");
+                columnValue = splitLine[indice];
                 if(first) {
-                    value = Double.valueOf(s);
+                    value = Double.valueOf(columnValue);
+                    lineResult= line;
                     first = false;
                 }else{
-                    if(value < Double.valueOf(s))
-                        value = Double.valueOf(s);
+                    if(value < Double.valueOf(columnValue)) {
+                        value = Double.valueOf(columnValue);
+                        lineResult= line;
+                    }
                 }
             }
 
-            return new MessageAttachment<>(200, value );
+            return new MessageAttachment<>(200, lineResult );
         }else{
             return message;
         }

@@ -14,6 +14,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
+import java.util.List;
 
 @Path("/table")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -40,7 +41,7 @@ public class TableController {
     }
     @GET
     @Path("/all")
-    public ArrayList<Table> getAllTable(){
+    public List<Table> getAllTable(){
         return tableDAO.findAll();
     }
 

@@ -4,10 +4,11 @@ import org.snp.indexage.Table;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
+import java.util.List;
 
 @ApplicationScoped
 public class TableDao {
-    private static ArrayList<Table> tables=new ArrayList<>();
+    private static List<Table> tables=new ArrayList<>();
 
     public void insert(Table table){
         tables.add(table);
@@ -20,7 +21,7 @@ public class TableDao {
         }
         return null;
     }
-    public ArrayList<Table> findAll(){
+    public List<Table> findAll(){
         return tables;
     }
 }
