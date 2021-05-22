@@ -1,7 +1,9 @@
 package org.snp.service;
 
 
+import org.snp.Main;
 import org.snp.dao.TableDao;
+import org.snp.httpclient.SlaveClient;
 import org.snp.indexage.Column;
 import org.snp.indexage.Index;
 import org.snp.indexage.Table;
@@ -9,6 +11,7 @@ import org.snp.indexage.SubIndex;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.TableCredentials;
+import org.snp.model.credentials.redirection.UpdateAllRefCredentials;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -17,6 +20,13 @@ import java.util.*;
 @ApplicationScoped
 public class TableService {
     private static TableDao dao = new TableDao();
+
+    private SlaveClient [] slaveClients;
+    private SlaveClient masterClient = new SlaveClient(8080);
+    public TableService(){
+        slaveClients = new SlaveClient[]{new SlaveClient(8081), new SlaveClient(8082)};
+    }
+
     @Inject
     ColumnService columnService;
     public Message create(TableCredentials tableCredentials){
@@ -30,6 +40,11 @@ public class TableService {
             .columns(columns)
             .build();
         dao.insert(table);
+        if(Main.isMasterTest()){
+            for(SlaveClient slaveClient :slaveClients){
+                slaveClient.createTable(tableCredentials);
+            }
+        }
         return new MessageAttachment<Table>(200, table);
     }
 
@@ -61,7 +76,7 @@ public class TableService {
         return true;
     }
 
-    public void removeIndex(Table table, Index index){ //todo
+    public void removeIndex(Table table, Index index){
         table.getIndexes().remove(index);
     }
     //todo remove index with a list of column's name and test
@@ -71,7 +86,39 @@ public class TableService {
         for(SubIndex subIndex : table.getSubIndexMap().values()){
             subIndex.updateTheReference(difference, from);
         }
+        /**
+         * redirections
+         */
+        UpdateAllRefCredentials updateAllRefCredentials = UpdateAllRefCredentials.builder()
+                                                            .tableName(table.getName())
+                                                            .difference(difference)
+                                                            .from(from)
+                                                            .build();
+        if(Main.isMasterTest()){
+            for(SlaveClient slaveClient : slaveClients){
+                slaveClient.updateAllRef(updateAllRefCredentials);
+            }
+        }else{
+            for(SlaveClient slaveClient : slaveClients){
+                if(! slaveClient.getName().equals(System.getProperty("name"))){
+                    slaveClient.updateAllRef(updateAllRefCredentials);
+                }
+            }
+            masterClient.updateAllRef(updateAllRefCredentials);
+        }
     }
+
+
+    private TableDao tableDao = new TableDao();
+    public void updateAllReference(UpdateAllRefCredentials updateAllRefCredentials) {
+        Table table = tableDao.find(updateAllRefCredentials.tableName);
+        if(table!=null) {
+            for (SubIndex subIndex : table.getSubIndexMap().values()) {
+                subIndex.updateTheReference(updateAllRefCredentials.difference, updateAllRefCredentials.from);
+            }
+        }
+    }
+
 
 
 }

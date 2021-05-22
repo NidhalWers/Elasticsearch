@@ -1,21 +1,26 @@
 package org.snp.controller;
 
+import io.quarkus.security.UnauthorizedException;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
+import org.snp.Main;
 import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.FunctionCredentials;
 import org.snp.model.credentials.QueryCredentials;
 import org.snp.model.credentials.JoinCredentials;
+import org.snp.model.credentials.redirection.RowCredentials;
 import org.snp.service.data.FunctionService;
 import org.snp.service.data.DataService;
 import org.snp.model.credentials.DataCredentials;
 import org.snp.service.data.FileService;
+import org.snp.utils.exception.NotFoundException;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Path("/data")
@@ -35,6 +40,9 @@ public class DataController {
     //link to csv : https://dzone.com/articles/how-to-read-a-big-csv-file-with-java-8-and-stream
     public Table loadData(@MultipartForm DataCredentials data){
         try{
+            if(!Main.isMasterTest()){
+                throw new NotAuthorizedException("not authorized to load data in a slave node");
+            }
             Message message = fileService.parseCSVAndInsert(data.tableName,data.file,(FILE_PREFIX+data.tableName));
             if(message.getCode()==200)
                 return (Table) ((MessageAttachment)message).getAttachment();
@@ -42,10 +50,48 @@ public class DataController {
                 if(message.getCode() == 404)
                     throw new NotFoundException((String) ((MessageAttachment)message).getAttachment());
                 else
-                    throw new InternalServerErrorException();
+                    throw new InternalServerErrorException("internal error");
             }
         }catch (IOException e){
             throw new InternalServerErrorException("IOException");
+        }
+    }
+
+    @POST
+    @Path("/insertline")
+    public Table insertLine(RowCredentials rowCredentials){
+        if(Main.isMasterTest())
+            throw new UnauthorizedException("not authorized to invoke this method in master node");
+        if (rowCredentials==null || rowCredentials.tableName.isBlank() || rowCredentials.line ==null || rowCredentials.line.isBlank() ){
+            throw new BadRequestException("query should not be null, blank or empty");
+        }
+        Message message = fileService.insertCsvLineIntoTable(rowCredentials);
+        if(message.getCode()==200)
+            return (Table) ((MessageAttachment)message).getAttachment();
+        else{
+            if(message.getCode() == 404)
+                throw new NotFoundException((String) ((MessageAttachment)message).getAttachment());
+            else
+                throw new InternalServerErrorException("internal error");
+        }
+    }
+
+
+
+    @POST
+    @Path("/query")
+    public List<String> get(QueryCredentials queryCredentials){
+        if(queryCredentials ==null){
+            throw new BadRequestException("query should not be null");
+        }
+        Message message = dataService.query(queryCredentials);
+        if(message.getCode() == 200)
+            return (List<String>) ((MessageAttachment)message).getAttachment();
+        else {
+            if(message.getCode() == 404)
+                throw new NotFoundException((String) ((MessageAttachment)message).getAttachment());
+            else
+                throw new InternalServerErrorException();
         }
     }
 
@@ -83,24 +129,6 @@ public class DataController {
         }
     }
 
-
-    @POST
-    @Path("/query")
-    public List<String> get(QueryCredentials queryCredentials){
-        if(queryCredentials ==null){
-            throw new BadRequestException("query should not be null");
-        }
-        Message message = dataService.query(queryCredentials);
-        if(message.getCode() == 200)
-            return (List<String>) ((MessageAttachment)message).getAttachment();
-        else {
-            if(message.getCode() == 404)
-                throw new NotFoundException((String) ((MessageAttachment)message).getAttachment());
-            else
-                throw new InternalServerErrorException();
-        }
-    }
-
     @Inject
     FunctionService functionService;
 
@@ -123,7 +151,7 @@ public class DataController {
 
     @POST
     @Path("/function")
-    public double function(FunctionCredentials functionCredentials){
+    public List<String> function(FunctionCredentials functionCredentials){
         if(functionCredentials == null)
             throw new BadRequestException("query should not be null");
         if(functionCredentials.functionName == null)
@@ -154,7 +182,7 @@ public class DataController {
         }
 
         if(message.getCode() == 200){
-            return (double) ((MessageAttachment)message).getAttachment();
+            return List.of(String.valueOf( ((MessageAttachment)message).getAttachment()));
         }else{
             if(message.getCode() == 404)
                 throw new NotFoundException((String) ((MessageAttachment)message).getAttachment());

@@ -11,6 +11,7 @@ import org.snp.utils.exception.NotFoundException;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.nio.file.AccessDeniedException;
 
 @Path("/index")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -22,15 +23,24 @@ public class IndexController {
 
     @POST
     @Path("/add")
-    public Table addIndex(IndexCredentials indexCredentials){
-        if(indexCredentials==null){
+    public Table addIndex(IndexCredentials indexCredentials) throws AccessDeniedException {
+        if(indexCredentials==null)
             throw new BadRequestException("body should not be null");
-        }
+        if(indexCredentials.tableName==null || indexCredentials.tableName.isBlank())
+            throw new BadRequestException("table name can not be blank or empty");
+        if(indexCredentials.columns==null || indexCredentials.columns.isEmpty())
+            throw new BadRequestException("impossible to create an index without column");
+
         Message message = indexService.create(indexCredentials);
+
         if(message.hasAttachment())
             return (Table) ((MessageAttachment)message).getAttachment();
-        else
-            throw new NotFoundException("table "+indexCredentials.tableName+" does not exist");
+        else {
+            if (message.getCode() == 404)
+                throw new NotFoundException("table " + indexCredentials.tableName + " does not exist");
+            else
+                throw new AccessDeniedException("this index already exist in " + indexCredentials.tableName + " table");
+        }
     }
 }
 
