@@ -1,6 +1,9 @@
 package org.snp.model.credentials;
 
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import javax.json.bind.annotation.JsonbProperty;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +22,12 @@ public class QueryCredentials {
 
     @JsonbProperty("update_params")
     public List<AttributeCredentials> updateParams;
+
+    @JsonbProperty("group_by")
+    public List<String> groupBy;
+
+    @JsonbProperty("order_by")
+    public List<OrderCredentials> orderBy;
 
     public QueryCredentials() {
     }
@@ -47,6 +56,42 @@ public class QueryCredentials {
     public QueryCredentials addColumn(String name){
         columnsSelected.add(new ColumnCredentials(name));
         return this;
+    }
+
+    public static class OrderCredentials{
+        @JsonbProperty("column_name")
+        public String columnName;
+
+        public OrderDirection order;
+
+        public static enum OrderDirection{
+            @JsonEnumDefaultValue
+            UNKNOWN("unknown"),
+
+            ASC("asc"),
+
+            DESC("desc")
+
+            ;
+
+            private String value;
+
+            OrderDirection() {
+            }
+
+            OrderDirection(String value) {
+                this.value = value;
+            }
+
+            @JsonValue
+            public String getValue() {
+                return value;
+            }
+
+            public void setValue(String value) {
+                this.value = value;
+            }
+        }
     }
 
 
