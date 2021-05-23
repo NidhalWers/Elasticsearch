@@ -175,7 +175,6 @@ public class FunctionService {
      * @param columnName
      * @return double if code 20à
      */
-    //todo return un object avec la valeur et la ligne
     public Message min(String tableName, String columnName, List<AttributeCredentials> queryParams){
         Table table = tableDao.find(tableName);
         if(table == null)
@@ -216,7 +215,7 @@ public class FunctionService {
                 }
             }
 
-            return new MessageAttachment<>(200, lineResult );
+            return new MessageAttachment<>(200, lineResult+" || "+value);
         }else{
             return message;
         }
@@ -228,7 +227,6 @@ public class FunctionService {
      * @param columnName
      * @return double if code 200
      */
-    //todo return un object avec la valeur et la ligne
     public Message max(String tableName, String columnName, List<AttributeCredentials> queryParams){
         Table table = tableDao.find(tableName);
         if(table == null)
@@ -270,7 +268,7 @@ public class FunctionService {
                 }
             }
 
-            return new MessageAttachment<>(200, lineResult );
+            return new MessageAttachment<>(200, lineResult+" || "+value );
         }else{
             return message;
         }
