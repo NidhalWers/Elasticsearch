@@ -154,7 +154,7 @@ public class DataController {
 
     @POST
     @Path("/function")
-    public List<String> function(FunctionCredentials functionCredentials){
+    public List<String> function(FunctionCredentials functionCredentials){//todo Tests ok
         if(functionCredentials == null)
             throw new BadRequestException("query should not be null");
         if(functionCredentials.functionName == null)
