@@ -92,7 +92,7 @@ public class FunctionService {
      * @param columnName
      * @return double if code 200
      */
-
+    //todo function : ajouter la possibilité de choisir plus précisément
     public Message sum(String tableName, String columnName){
         Table table = tableDao.find(tableName);
         if(table == null)
@@ -160,7 +160,7 @@ public class FunctionService {
      * @param columnName
      * @return double if code 20à
      */
-
+    //todo return un object avec la valeur et la ligne
     public Message min(String tableName, String columnName){
         Table table = tableDao.find(tableName);
         if(table == null)
@@ -208,7 +208,7 @@ public class FunctionService {
      * @param columnName
      * @return double if code 200
      */
-
+    //todo return un object avec la valeur et la ligne
     public Message max(String tableName, String columnName){
         Table table = tableDao.find(tableName);
         if(table == null)

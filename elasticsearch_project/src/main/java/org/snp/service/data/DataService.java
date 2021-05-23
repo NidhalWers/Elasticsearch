@@ -8,6 +8,7 @@ import org.snp.indexage.SubIndex;
 import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
+import org.snp.model.credentials.AttributeCredentials;
 import org.snp.model.credentials.ColumnCredentials;
 import org.snp.model.credentials.QueryCredentials;
 
@@ -52,7 +53,7 @@ public class DataService {
          */
         if(queryCredentials.queryParams!=null) {
             HashMap<String, String> queryMap = new HashMap<>();
-            for (QueryCredentials.AttributeCredentials attributeCredentials : queryCredentials.queryParams) {
+            for (AttributeCredentials attributeCredentials : queryCredentials.queryParams) {
                 String columnName = attributeCredentials.columnName;
                 if (!table.containsColumn(columnName))
                     return new MessageAttachment<>(404, MESSAGE_PREFIX+"column " + columnName + " does not exists in " + queryCredentials.tableName);
@@ -127,7 +128,7 @@ public class DataService {
          */
         if(queryCredentials.queryParams!=null) {
             HashMap<String, String> queryMap = new HashMap<>();
-            for (QueryCredentials.AttributeCredentials attributeCredentials : queryCredentials.queryParams) {
+            for (AttributeCredentials attributeCredentials : queryCredentials.queryParams) {
                 String columnName = attributeCredentials.columnName;
                 if (!table.containsColumn(columnName))
                     return new MessageAttachment<>(404, MESSAGE_PREFIX+"column " + columnName + " does not exists in " + queryCredentials.tableName);
@@ -189,7 +190,7 @@ public class DataService {
          */
 
         HashMap<String, String> queryMap = new HashMap<>();
-        for (QueryCredentials.AttributeCredentials attributeCredentials : queryCredentials.queryParams) {
+        for (AttributeCredentials attributeCredentials : queryCredentials.queryParams) {
             String columnName = attributeCredentials.columnName;
             if (!table.containsColumn(columnName))
                 return new MessageAttachment<>(404, MESSAGE_PREFIX+"column " + columnName + " does not exists in " + queryCredentials.tableName);
@@ -209,7 +210,7 @@ public class DataService {
              */
             List<String> values = new ArrayList<>();
             for (Map.Entry entry : table.getSubIndexMap().entrySet()) {
-                for (QueryCredentials.AttributeCredentials attributeCredentials : queryCredentials.updateParams) {
+                for (AttributeCredentials attributeCredentials : queryCredentials.updateParams) {
                     String columnName = attributeCredentials.columnName;
                     int columnNumber = table.positionOfColumn(columnName);
                     String newValue = attributeCredentials.value;

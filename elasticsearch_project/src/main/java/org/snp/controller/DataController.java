@@ -77,10 +77,13 @@ public class DataController {
     }
 
 
-
+    //todo
+    // group by
+    // order by
+    // having
     @POST
     @Path("/query")
-    public List<String> get(QueryCredentials queryCredentials){
+    public List<String> get(QueryCredentials queryCredentials){ //todo improve queryCredentials to add group by : utilisation de group by + fonction aggrégats
         if(queryCredentials ==null){
             throw new BadRequestException("query should not be null");
         }
@@ -151,7 +154,7 @@ public class DataController {
 
     @POST
     @Path("/function")
-    public List<String> function(FunctionCredentials functionCredentials){
+    public List<String> function(FunctionCredentials functionCredentials){ //todo improve the functionCredentials
         if(functionCredentials == null)
             throw new BadRequestException("query should not be null");
         if(functionCredentials.functionName == null)

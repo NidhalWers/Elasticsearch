@@ -131,7 +131,6 @@ public class TableAndIndexTest {
                         "name", is("test")
                         //"subIndexMap", hasSize(2)
                 );
-                //todo better body test
     }
     @Test
     @Order(4)

@@ -43,18 +43,5 @@ public class QueryCredentials {
         return this;
     }
 
-    public static class AttributeCredentials {
 
-        @JsonbProperty("name")
-        public String columnName;
-
-        public String value;
-
-        public AttributeCredentials(){}
-
-        public AttributeCredentials(String columnName, String value) {
-            this.columnName = columnName;
-            this.value = value;
-        }
-    }
 }
