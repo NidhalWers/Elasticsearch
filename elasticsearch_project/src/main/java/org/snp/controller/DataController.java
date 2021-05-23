@@ -163,22 +163,22 @@ public class DataController {
         Message message;
         switch (functionCredentials.functionName){
             case "sum" :
-                message = functionService.sum(functionCredentials.tableName, functionCredentials.columnName);
+                message = functionService.sum(functionCredentials.tableName, functionCredentials.columnName, functionCredentials.queryParams);
                 break;
             case "avg" :
-                message = functionService.avg(functionCredentials.tableName, functionCredentials.columnName);
+                message = functionService.avg(functionCredentials.tableName, functionCredentials.columnName, functionCredentials.queryParams);
                 break;
             case "min" :
-                message = functionService.min(functionCredentials.tableName, functionCredentials.columnName);
+                message = functionService.min(functionCredentials.tableName, functionCredentials.columnName, functionCredentials.queryParams);
                 break;
             case "max" :
-                message = functionService.max(functionCredentials.tableName, functionCredentials.columnName);
+                message = functionService.max(functionCredentials.tableName, functionCredentials.columnName, functionCredentials.queryParams);
                 break;
             case "count" :
                 if( functionCredentials.columnName != null)
-                    message = functionService.count(functionCredentials.tableName, functionCredentials.columnName);
+                    message = functionService.count(functionCredentials.tableName, functionCredentials.columnName, functionCredentials.queryParams);
                 else
-                    message = functionService.count(functionCredentials.tableName);
+                    message = functionService.count(functionCredentials.tableName, functionCredentials.queryParams);
                 break;
             default:
                 throw new BadRequestException("function_name does not correspond");

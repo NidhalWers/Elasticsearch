@@ -3,6 +3,7 @@ package org.snp.model.credentials;
 
 import javax.json.bind.annotation.JsonbProperty;
 import java.util.ArrayList;
+import java.util.List;
 
 public class QueryCredentials {
     @JsonbProperty("table_name")
@@ -11,13 +12,13 @@ public class QueryCredentials {
     //map key = nom de colonne
     //    value = valeur de la colonne
     @JsonbProperty("query_params")
-    public ArrayList<AttributeCredentials> queryParams;
+    public List<AttributeCredentials> queryParams;
 
     @JsonbProperty("columns_selected")
-    public ArrayList<ColumnCredentials> columnsSelected;
+    public List<ColumnCredentials> columnsSelected;
 
     @JsonbProperty("update_params")
-    public  ArrayList<AttributeCredentials> updateParams;
+    public List<AttributeCredentials> updateParams;
 
     public QueryCredentials() {
     }
@@ -34,6 +35,11 @@ public class QueryCredentials {
         queryParams.add( new AttributeCredentials(name, value) );
         return this;
     }
+    public QueryCredentials setQueryParams(List<AttributeCredentials> queryParams){
+        this.queryParams=queryParams;
+        return this;
+    }
+
     public QueryCredentials setColumnSelected(){
         columnsSelected = new ArrayList<>();
         return this;

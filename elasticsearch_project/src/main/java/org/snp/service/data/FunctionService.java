@@ -5,6 +5,7 @@ import org.snp.dao.TableDao;
 import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
+import org.snp.model.credentials.AttributeCredentials;
 import org.snp.model.credentials.JoinCredentials;
 import org.snp.model.credentials.QueryCredentials;
 
@@ -92,8 +93,7 @@ public class FunctionService {
      * @param columnName
      * @return double if code 200
      */
-    //todo function : ajouter la possibilité de choisir plus précisément
-    public Message sum(String tableName, String columnName){
+    public Message sum(String tableName, String columnName, List<AttributeCredentials> queryParams){
         Table table = tableDao.find(tableName);
         if(table == null)
             return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+ tableName+" does not exists");
@@ -101,10 +101,18 @@ public class FunctionService {
             return new MessageAttachment<>(400, MESSAGE_PREFIX+"column's type does not correspond to int or double");
 
 
-        QueryCredentials queryCredentials = new QueryCredentials(tableName)
-                                            .setColumnSelected()
-                                            .addColumn(columnName);
 
+        QueryCredentials queryCredentials;
+        if(queryParams!=null && ! queryParams.isEmpty()) {
+            queryCredentials = new QueryCredentials(tableName)
+                    .setColumnSelected()
+                    .addColumn(columnName)
+                    .setQueryParams(queryParams);
+        }else{
+            queryCredentials = new QueryCredentials(tableName)
+                    .setColumnSelected()
+                    .addColumn(columnName);
+        }
         Message message = dataService.query(queryCredentials);
         if(message.getCode() == 200){
             List<String> string_value = (List<String>) ((MessageAttachment)message).getAttachment();
@@ -127,7 +135,7 @@ public class FunctionService {
      * @return double if code 200
      */
 
-    public Message avg(String tableName, String columnName){
+    public Message avg(String tableName, String columnName,  List<AttributeCredentials> queryParams){
         Table table = tableDao.find(tableName);
         if(table == null)
             return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+ tableName+" does not exists");
@@ -135,10 +143,17 @@ public class FunctionService {
             return new MessageAttachment<>(400, MESSAGE_PREFIX+"column's type does not correspond to int or double");
 
 
-        QueryCredentials queryCredentials = new QueryCredentials(tableName)
-                .setColumnSelected()
-                .addColumn(columnName);
-
+        QueryCredentials queryCredentials;
+        if(queryParams!=null && ! queryParams.isEmpty()) {
+            queryCredentials = new QueryCredentials(tableName)
+                    .setColumnSelected()
+                    .addColumn(columnName)
+                    .setQueryParams(queryParams);
+        }else{
+            queryCredentials = new QueryCredentials(tableName)
+                    .setColumnSelected()
+                    .addColumn(columnName);
+        }
         Message message = dataService.query(queryCredentials);
         if(message.getCode() == 200){
             List<String> string_value = (List<String>) ((MessageAttachment)message).getAttachment();
@@ -161,15 +176,20 @@ public class FunctionService {
      * @return double if code 20à
      */
     //todo return un object avec la valeur et la ligne
-    public Message min(String tableName, String columnName){
+    public Message min(String tableName, String columnName, List<AttributeCredentials> queryParams){
         Table table = tableDao.find(tableName);
         if(table == null)
             return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+ tableName+" does not exists");
         if(! table.getColumnFromName(columnName).getType().equals("double") && ! table.getColumnFromName(columnName).getType().equals("int") )
             return new MessageAttachment<>(400, MESSAGE_PREFIX+"column's type does not correspond to int or double");
 
-
-        QueryCredentials queryCredentials = new QueryCredentials(tableName);
+        QueryCredentials queryCredentials;
+        if(queryParams!=null && ! queryParams.isEmpty()) {
+            queryCredentials = new QueryCredentials(tableName)
+                    .setQueryParams(queryParams);
+        }else{
+            queryCredentials = new QueryCredentials(tableName);
+        }
 
         int indice = table.positionOfColumn(columnName);
 
@@ -209,7 +229,7 @@ public class FunctionService {
      * @return double if code 200
      */
     //todo return un object avec la valeur et la ligne
-    public Message max(String tableName, String columnName){
+    public Message max(String tableName, String columnName, List<AttributeCredentials> queryParams){
         Table table = tableDao.find(tableName);
         if(table == null)
             return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+ tableName+" does not exists");
@@ -217,7 +237,13 @@ public class FunctionService {
             return new MessageAttachment<>(400, MESSAGE_PREFIX+"column's type does not correspond to int or double");
 
 
-        QueryCredentials queryCredentials = new QueryCredentials(tableName);
+        QueryCredentials queryCredentials;
+        if(queryParams!=null && ! queryParams.isEmpty()) {
+            queryCredentials = new QueryCredentials(tableName)
+                    .setQueryParams(queryParams);
+        }else{
+            queryCredentials = new QueryCredentials(tableName);
+        }
 
         int indice = table.positionOfColumn(columnName);
 
@@ -257,15 +283,23 @@ public class FunctionService {
      * @return int if code 200
      */
 
-    public Message count(String tableName, String columnName){
+    public Message count(String tableName, String columnName, List<AttributeCredentials> queryParams){
         Table table = tableDao.find(tableName);
         if(table == null)
             return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+ tableName+" does not exists");
 
 
-        QueryCredentials queryCredentials = new QueryCredentials(tableName)
-                .setColumnSelected()
-                .addColumn(columnName);
+        QueryCredentials queryCredentials;
+        if(queryParams!=null && ! queryParams.isEmpty()) {
+            queryCredentials = new QueryCredentials(tableName)
+                    .setColumnSelected()
+                    .addColumn(columnName)
+                    .setQueryParams(queryParams);
+        }else{
+            queryCredentials = new QueryCredentials(tableName)
+                    .setColumnSelected()
+                    .addColumn(columnName);
+        }
 
         Message message = dataService.query(queryCredentials);
         if(message.getCode() == 200){
@@ -284,13 +318,19 @@ public class FunctionService {
      * @return int if code 200
      */
 
-    public Message count(String tableName){
+    public Message count(String tableName, List<AttributeCredentials> queryParams){
         Table table = tableDao.find(tableName);
         if(table == null)
             return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+ tableName+" does not exists");
 
 
-        QueryCredentials queryCredentials = new QueryCredentials(tableName);
+        QueryCredentials queryCredentials;
+        if(queryParams!=null && ! queryParams.isEmpty()) {
+            queryCredentials = new QueryCredentials(tableName)
+                    .setQueryParams(queryParams);
+        }else{
+            queryCredentials = new QueryCredentials(tableName);
+        }
 
         Message message = dataService.query(queryCredentials);
         if(message.getCode() == 200){
