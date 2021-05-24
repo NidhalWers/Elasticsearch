@@ -74,9 +74,7 @@ public class TableTest {
                                                                 .build()
                                                             ));
     }
-    /**
-     * method to test : removeColumn(Column column)
-     *///todo test remove of the subindex & index with this column
+
     @Test
     public void testRemoveColumnHappyPath(){
         Table table = Table

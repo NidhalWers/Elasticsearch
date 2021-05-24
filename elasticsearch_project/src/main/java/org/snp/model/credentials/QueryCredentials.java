@@ -1,8 +1,12 @@
 package org.snp.model.credentials;
 
 
+import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import javax.json.bind.annotation.JsonbProperty;
 import java.util.ArrayList;
+import java.util.List;
 
 public class QueryCredentials {
     @JsonbProperty("table_name")
@@ -11,13 +15,19 @@ public class QueryCredentials {
     //map key = nom de colonne
     //    value = valeur de la colonne
     @JsonbProperty("query_params")
-    public ArrayList<AttributeCredentials> queryParams;
+    public List<AttributeCredentials> queryParams;
 
     @JsonbProperty("columns_selected")
-    public ArrayList<ColumnCredentials> columnsSelected;
+    public List<AggregateCredentials> columnsSelected;
 
     @JsonbProperty("update_params")
-    public  ArrayList<AttributeCredentials> updateParams;
+    public List<AttributeCredentials> updateParams;
+
+    @JsonbProperty("group_by")
+    public List<String> groupBy;
+
+    @JsonbProperty("order_by")
+    public List<OrderCredentials> orderBy;
 
     public QueryCredentials() {
     }
@@ -34,27 +44,54 @@ public class QueryCredentials {
         queryParams.add( new AttributeCredentials(name, value) );
         return this;
     }
+    public QueryCredentials setQueryParams(List<AttributeCredentials> queryParams){
+        this.queryParams=queryParams;
+        return this;
+    }
+
     public QueryCredentials setColumnSelected(){
         columnsSelected = new ArrayList<>();
         return this;
     }
     public QueryCredentials addColumn(String name){
-        columnsSelected.add(new ColumnCredentials(name));
+        columnsSelected.add(new AggregateCredentials(name));
         return this;
     }
 
-    public static class AttributeCredentials {
-
-        @JsonbProperty("name")
+    public static class OrderCredentials{
+        @JsonbProperty("column_name")
         public String columnName;
 
-        public String value;
+        public OrderDirection order = OrderDirection.ASC;
+    }
 
-        public AttributeCredentials(){}
+    public enum OrderDirection{
 
-        public AttributeCredentials(String columnName, String value) {
-            this.columnName = columnName;
+        @JsonEnumDefaultValue
+        ASC("asc"),
+
+        DESC("desc")
+
+        ;
+
+        private String value;
+
+        OrderDirection() {
+        }
+
+        OrderDirection(String value) {
+            this.value = value;
+        }
+
+        @JsonValue
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
             this.value = value;
         }
     }
+
+
 }

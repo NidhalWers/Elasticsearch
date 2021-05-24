@@ -1,21 +1,23 @@
 package org.snp.model.credentials;
 
 
+import javax.json.bind.annotation.JsonbProperty;
 
 public class ColumnCredentials {
-    public String name;
+    @JsonbProperty("name")
+    public String columnName;
     public String type;
 
     public ColumnCredentials(){
 
     }
 
-    public ColumnCredentials(String name, String type) {
-        this.name = name;
+    public ColumnCredentials(String columnName, String type) {
+        this.columnName = columnName;
         this.type = type;
     }
 
-    public ColumnCredentials(String name) {
-        this.name = name;
+    public ColumnCredentials(String columnName) {
+        this.columnName = columnName;
     }
 }

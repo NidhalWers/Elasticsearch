@@ -14,13 +14,13 @@ import org.snp.service.data.FunctionService;
 import org.snp.service.data.DataService;
 import org.snp.model.credentials.DataCredentials;
 import org.snp.service.data.FileService;
+import org.snp.utils.FunctionUtils;
 import org.snp.utils.exception.NotFoundException;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Path("/data")
@@ -77,7 +77,10 @@ public class DataController {
     }
 
 
-
+    //todo
+    // group by
+    // order by
+    // having
     @POST
     @Path("/query")
     public List<String> get(QueryCredentials queryCredentials){
@@ -149,37 +152,22 @@ public class DataController {
         }
     }
 
+    @Inject
+    FunctionUtils functionUtils;
+
     @POST
     @Path("/function")
     public List<String> function(FunctionCredentials functionCredentials){
         if(functionCredentials == null)
             throw new BadRequestException("query should not be null");
-        if(functionCredentials.functionName == null)
+        if(functionCredentials.aggregateCredentials.functionName == null)
             throw new BadRequestException("function_name should not be null");
-
-        Message message;
-        switch (functionCredentials.functionName){
-            case "sum" :
-                message = functionService.sum(functionCredentials.tableName, functionCredentials.columnName);
-                break;
-            case "avg" :
-                message = functionService.avg(functionCredentials.tableName, functionCredentials.columnName);
-                break;
-            case "min" :
-                message = functionService.min(functionCredentials.tableName, functionCredentials.columnName);
-                break;
-            case "max" :
-                message = functionService.max(functionCredentials.tableName, functionCredentials.columnName);
-                break;
-            case "count" :
-                if( functionCredentials.columnName != null)
-                    message = functionService.count(functionCredentials.tableName, functionCredentials.columnName);
-                else
-                    message = functionService.count(functionCredentials.tableName);
-                break;
-            default:
-                throw new BadRequestException("function_name does not correspond");
-        }
+        if(! functionUtils.isValideFunction(functionCredentials.aggregateCredentials.functionName))
+            throw new BadRequestException("function does not exist");
+        Message message = functionUtils.switchFunction(functionCredentials.aggregateCredentials.functionName,
+                                                       functionCredentials.tableName,
+                                                        functionCredentials.aggregateCredentials.columnName,
+                                                        functionCredentials.queryParams);
 
         if(message.getCode() == 200){
             return List.of(String.valueOf( ((MessageAttachment)message).getAttachment()));

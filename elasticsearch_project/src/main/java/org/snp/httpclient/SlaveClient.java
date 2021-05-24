@@ -35,15 +35,7 @@ public class SlaveClient extends HttpClient{
         Jsonb jsonb = JsonbBuilder.create();
         String json = jsonb.toJson(rowCredentials);
         try {
-            Response response = post("/data/insertline",json);
-            /*
-            if(!response.isSuccessful()){
-                throw  new InternalServerErrorException("error during the redirection of insertLine");
-            }
-            RowInsertedModel rowInsertedModel= null;
-            rowInsertedModel = gson.fromJson(response.body().string(), RowInsertedModel.class);
-            return rowInsertedModel;
-            */
+            post("/data/insertline",json);
         } catch (IOException e) {
             e.printStackTrace();
             //return null;
@@ -145,6 +137,24 @@ public class SlaveClient extends HttpClient{
             post("/table/updateRef",json);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public List<String> functions(FunctionCredentials functionCredentials){
+        Jsonb jsonb = JsonbBuilder.create();
+        String json = jsonb.toJson(functionCredentials);
+        try {
+            Response response = post("/data/function",json);
+            String body = response.body().string();
+            if(response.isSuccessful()) {
+                List<String> result = jsonb.fromJson(body, new ArrayList<String>(){}.getClass().getGenericSuperclass());
+
+                return result;
+            }
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
