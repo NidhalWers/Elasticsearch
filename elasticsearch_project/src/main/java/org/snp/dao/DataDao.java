@@ -3,6 +3,7 @@ package org.snp.dao;
 import org.snp.indexage.Index;
 import org.snp.indexage.SubIndex;
 import org.snp.indexage.Table;
+import org.snp.utils.CompareValue;
 import org.snp.utils.ListUtils;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -18,7 +19,7 @@ public class DataDao {
         }
     }
 
-    public List<String> find(Table table, HashMap<String,String> query ){
+    public List<String> find(Table table, HashMap<String, CompareValue> query ){
         ArrayList<String> keys = new ArrayList<>();
         for(String key : query.keySet()){
             keys.add(key);

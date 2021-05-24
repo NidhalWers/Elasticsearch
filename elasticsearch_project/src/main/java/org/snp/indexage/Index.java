@@ -1,6 +1,7 @@
 package org.snp.indexage;
 
 
+import org.snp.utils.CompareValue;
 import org.snp.utils.ListUtils;
 
 import java.util.*;
@@ -23,12 +24,12 @@ public class Index {
         }
     }
 
-    public List<String> find(HashMap<String,String> query){
+    public List<String> find(HashMap<String, CompareValue> query){
         List<List> allResults = new ArrayList<>();
-        for(Map.Entry colum : query.entrySet()){
+        for(Map.Entry<String, CompareValue> colum : query.entrySet()){
             List subIndexMapList = subIndexMap
                     .get(colum.getKey())
-                    .find((String) colum.getValue());
+                    .find(colum.getValue());
             if(subIndexMapList!=null){
                 allResults.add(subIndexMapList);
             }

@@ -2,10 +2,11 @@ package org.snp.unit.dao;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.snp.dao.DataDao;
 import org.snp.indexage.Table;
+import org.snp.model.credentials.AttributeCredentials;
+import org.snp.utils.CompareValue;
 import org.snp.utils.TestFactory;
 import org.snp.utils.TestUtils;
 
@@ -26,7 +27,11 @@ public class DataDaoTest {
         Table  table = TestFactory.createTable();
         table = TestUtils.insertData(table);
 
-        Assertions.assertTrue(table.getSubIndexMap().get("nom").find("teyeb").contains("ligne1"));
+        Assertions.assertTrue(table.getSubIndexMap().get("nom").find(CompareValue.builder()
+                                                                    .value("teyeb")
+                                                                    .comparison(AttributeCredentials.Comparison.EQ)
+                                                                    .build())
+                                                                .contains("ligne1"));
     }
 
     @Test
@@ -34,7 +39,11 @@ public class DataDaoTest {
         Table  table = TestFactory.createTable();
         table = TestUtils.insertData(table);
 
-        Assertions.assertFalse(table.getSubIndexMap().get("nom").find("oruc") != null);
+        Assertions.assertFalse(table.getSubIndexMap().get("nom").find(CompareValue.builder()
+                                                                                .value("oruc")
+                                                                                .comparison(AttributeCredentials.Comparison.EQ)
+                                                                                .build())
+                                                                            != null);
     }
 
     @Test
@@ -42,8 +51,11 @@ public class DataDaoTest {
         Table  table = TestFactory.createTable();
         table = TestUtils.insertData(table);
 
-        HashMap<String,String> query = new HashMap<>();
-        query.put("nom","teyeb");
+        HashMap<String,CompareValue> query = new HashMap<>();
+        query.put("nom",CompareValue.builder()
+                .value("teyeb")
+                .comparison(AttributeCredentials.Comparison.EQ)
+                .build());
         Assertions.assertTrue(table.getIndexes().get("nom").find(query).contains("ligne1"));
 
     }
@@ -53,9 +65,15 @@ public class DataDaoTest {
         Table  table = TestFactory.createTable();
         table = TestUtils.insertData(table);
 
-        HashMap<String,String> query = new HashMap<>();
-        query.put("nom","teyeb");
-        query.put("prenom","nidhal");
+        HashMap<String,CompareValue> query = new HashMap<>();
+        query.put("nom",CompareValue.builder()
+                        .value("teyeb")
+                        .comparison(AttributeCredentials.Comparison.EQ)
+                        .build());
+        query.put("prenom",CompareValue.builder()
+                        .value("nidhal")
+                        .comparison(AttributeCredentials.Comparison.EQ)
+                        .build());
         Assertions.assertTrue(table.getIndexes().get("nom,prenom").find(query).contains("ligne1"));
 
     }
@@ -65,10 +83,19 @@ public class DataDaoTest {
         Table  table = TestFactory.createTable();
         table = TestUtils.insertData(table);
 
-        HashMap<String,String> query = new HashMap<>();
-        query.put("nom","teyeb");
-        query.put("prenom","nidhal");
-        query.put("age", "21");
+        HashMap<String,CompareValue> query = new HashMap<>();
+        query.put("nom",CompareValue.builder()
+                        .value("teyeb")
+                        .comparison(AttributeCredentials.Comparison.EQ)
+                        .build());
+        query.put("prenom",CompareValue.builder()
+                .value("nidhal")
+                .comparison(AttributeCredentials.Comparison.EQ)
+                .build());
+        query.put("age", CompareValue.builder()
+                .value("21")
+                .comparison(AttributeCredentials.Comparison.EQ)
+                .build() );
         Assertions.assertTrue(table.getIndexes().get("age,nom,prenom").find(query).contains("ligne1"));
 
     }
@@ -78,7 +105,11 @@ public class DataDaoTest {
         Table  table = TestFactory.createTable();
         table = TestUtils.insertData(table);
 
-        Assertions.assertFalse(table.getSubIndexMap().get("nom").find("oruc") != null);
+        Assertions.assertFalse(table.getSubIndexMap().get("nom").find(CompareValue.builder()
+                                                                                .value("oruc")
+                                                                                .comparison(AttributeCredentials.Comparison.EQ)
+                                                                                .build())
+                                                                        != null);
     }
 
 
@@ -95,8 +126,26 @@ public class DataDaoTest {
         Table table = TestFactory.createTable();
         table = TestUtils.insertData(table);
 
-        HashMap<String, String> query = new HashMap<>();
-        query.put("nom", "teyeb");
+        HashMap<String, CompareValue> query = new HashMap<>();
+        query.put("nom", CompareValue.builder()
+                .value("teyeb")
+                .comparison(AttributeCredentials.Comparison.EQ)
+                .build());
+
+        List<String> values = dataDao.find(table,query);
+        Assertions.assertTrue(values.contains("ligne1"));
+    }
+
+    @Test
+    public void testExecuteQueryOneColumnSuperiorHappyPath(){
+        Table table = TestFactory.createTable();
+        table = TestUtils.insertData(table);
+
+        HashMap<String, CompareValue> query = new HashMap<>();
+        query.put("age", CompareValue.builder()
+                .value("15")
+                .comparison(AttributeCredentials.Comparison.SUP)
+                .build());
 
         List<String> values = dataDao.find(table,query);
         Assertions.assertTrue(values.contains("ligne1"));
@@ -107,9 +156,15 @@ public class DataDaoTest {
         Table  table = TestFactory.createTable();
         table = TestUtils.insertData(table);
 
-        HashMap<String, String> query = new HashMap<>();
-        query.put("nom", "teyeb");
-        query.put("prenom", "nidhal");
+        HashMap<String, CompareValue> query = new HashMap<>();
+        query.put("nom", CompareValue.builder()
+                .value("teyeb")
+                .comparison(AttributeCredentials.Comparison.EQ)
+                .build());
+        query.put("prenom", CompareValue.builder()
+                .value("nidhal")
+                .comparison(AttributeCredentials.Comparison.EQ)
+                .build());
 
         List<String> values = dataDao.find(table,query);
         Assertions.assertTrue(values.contains("ligne1"));
@@ -120,8 +175,11 @@ public class DataDaoTest {
         Table  table = TestFactory.createTable();
         table = TestUtils.insertData(table);
 
-        HashMap<String, String> query = new HashMap<>();
-        query.put("nom", "teyeb");
+        HashMap<String, CompareValue> query = new HashMap<>();
+        query.put("nom", CompareValue.builder()
+                .value("teyeb")
+                .comparison(AttributeCredentials.Comparison.EQ)
+                .build());
 
         List<String> values = dataDao.find(table,query);
         Assertions.assertFalse(values.contains("ligne2"));

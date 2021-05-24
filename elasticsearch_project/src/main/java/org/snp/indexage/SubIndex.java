@@ -1,11 +1,18 @@
 package org.snp.indexage;
 
+import org.snp.model.credentials.AttributeCredentials;
+import org.snp.utils.CompareValue;
+import org.snp.utils.QueryUtils;
+
+
 import java.util.*;
 
 public class SubIndex {
     private Column column;
 
     private Map<String, List<String>> referenceMap = new LinkedHashMap<>();
+
+    QueryUtils queryUtils = new QueryUtils();
 
     private SubIndex(Column column) {
         this.column = column;
@@ -26,8 +33,19 @@ public class SubIndex {
         return column;
     }
 
-    public List<String> find(String key){
-        return referenceMap.get(key);
+    public List<String> find(CompareValue compareValue){
+        if(compareValue.comparison.equals( AttributeCredentials.Comparison.EQ))
+            return referenceMap.get(compareValue.value);
+        else{
+            List<String> result = new ArrayList<>();
+            for(Map.Entry<String, List<String>> entry : referenceMap.entrySet()){
+                if(queryUtils.compare(entry.getKey(), compareValue.value, compareValue.comparison)){
+                    result.addAll( entry.getValue() );
+                }
+                System.out.println("1");
+            }
+            return result;
+        }
     }
 
     public boolean deleteByReference(String reference){

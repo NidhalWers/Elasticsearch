@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.snp.indexage.Column;
 import org.snp.indexage.SubIndex;
+import org.snp.model.credentials.AttributeCredentials;
+import org.snp.utils.CompareValue;
 
 @QuarkusTest
 public class SubIndexTest {
@@ -62,7 +64,11 @@ public class SubIndexTest {
 
         subIndex.insertLine("oruc", "ligne1");
 
-        Assertions.assertTrue(subIndex.find("oruc").contains("ligne1"));
+        Assertions.assertTrue(subIndex.find(CompareValue.builder()
+                                            .value("oruc")
+                                            .comparison(AttributeCredentials.Comparison.EQ)
+                                            .build())
+                                    .contains("ligne1"));
     }
 
     @Test
@@ -76,7 +82,11 @@ public class SubIndexTest {
 
         subIndex.insertLine("teyeb", "ligne1");
 
-        Assertions.assertFalse(subIndex.find("oruc")!=null);
+        Assertions.assertFalse(subIndex.find(CompareValue.builder()
+                                                        .value("oruc")
+                                                        .comparison(AttributeCredentials.Comparison.EQ)
+                                                        .build())
+                                                !=null);
     }
 
 
@@ -95,7 +105,11 @@ public class SubIndexTest {
 
         subIndex.insertLine("oruc", "ligne1");
 
-        Assertions.assertTrue(subIndex.find("oruc").contains("ligne1"));
+        Assertions.assertTrue(subIndex.find(CompareValue.builder()
+                                            .value("oruc")
+                                            .comparison(AttributeCredentials.Comparison.EQ)
+                                            .build())
+                                    .contains("ligne1"));
     }
 
     @Test
@@ -108,7 +122,11 @@ public class SubIndexTest {
                 .build();
 
 
-        Assertions.assertFalse(subIndex.find("oruc")!=null);
+        Assertions.assertFalse(subIndex.find(CompareValue.builder()
+                                                        .value("oruc")
+                                                        .comparison(AttributeCredentials.Comparison.EQ)
+                                                        .build())
+                                                !=null);
     }
 
 

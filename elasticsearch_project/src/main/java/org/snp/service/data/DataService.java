@@ -12,8 +12,10 @@ import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.AggregateCredentials;
 import org.snp.model.credentials.AttributeCredentials;
 import org.snp.model.credentials.QueryCredentials;
+import org.snp.utils.CompareValue;
 import org.snp.utils.FunctionUtils;
 import org.snp.utils.OrderUtils;
+import org.snp.utils.QueryUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -57,12 +59,15 @@ public class DataService {
          * column query verification
          */
         if(queryCredentials.queryParams!=null) {
-            HashMap<String, String> queryMap = new HashMap<>();
+            HashMap<String, CompareValue> queryMap = new HashMap<>();
             for (AttributeCredentials attributeCredentials : queryCredentials.queryParams) {
                 String columnName = attributeCredentials.columnName;
                 if (!table.containsColumn(columnName))
                     return new MessageAttachment<>(404, MESSAGE_PREFIX+"column " + columnName + " does not exist in " + queryCredentials.tableName);
-                queryMap.put(attributeCredentials.columnName, attributeCredentials.value);
+                queryMap.put(attributeCredentials.columnName, CompareValue.builder()
+                                                                        .value(attributeCredentials.value)
+                                                                        .comparison(attributeCredentials.comparison)
+                                                                        .build() );
             }
 
 
@@ -155,12 +160,15 @@ public class DataService {
          * column query verification
          */
         if(queryCredentials.queryParams!=null) {
-            HashMap<String, String> queryMap = new HashMap<>();
+            HashMap<String, CompareValue> queryMap = new HashMap<>();
             for (AttributeCredentials attributeCredentials : queryCredentials.queryParams) {
                 String columnName = attributeCredentials.columnName;
                 if (!table.containsColumn(columnName))
                     return new MessageAttachment<>(404, MESSAGE_PREFIX+"column " + columnName + " does not exists in " + queryCredentials.tableName);
-                queryMap.put(attributeCredentials.columnName, attributeCredentials.value);
+                queryMap.put(attributeCredentials.columnName, CompareValue.builder()
+                                                                .value(attributeCredentials.value)
+                                                                .comparison(attributeCredentials.comparison)
+                                                                .build());
             }
 
 
@@ -217,12 +225,15 @@ public class DataService {
          * column query verification
          */
 
-        HashMap<String, String> queryMap = new HashMap<>();
+        HashMap<String, CompareValue> queryMap = new HashMap<>();
         for (AttributeCredentials attributeCredentials : queryCredentials.queryParams) {
             String columnName = attributeCredentials.columnName;
             if (!table.containsColumn(columnName))
                 return new MessageAttachment<>(404, MESSAGE_PREFIX+"column " + columnName + " does not exists in " + queryCredentials.tableName);
-            queryMap.put(attributeCredentials.columnName, attributeCredentials.value);
+            queryMap.put(attributeCredentials.columnName, CompareValue.builder()
+                                                            .value(attributeCredentials.value)
+                                                            .comparison(attributeCredentials.comparison)
+                                                            .build());
         }
 
 
