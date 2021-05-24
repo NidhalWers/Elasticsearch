@@ -14,4 +14,9 @@ public class AggregateCredentials {
     public AggregateCredentials(String columnName) {
         this.columnName = columnName;
     }
+
+    public AggregateCredentials(String functionName, String columnName) {
+        this.functionName = functionName;
+        this.columnName = columnName;
+    }
 }

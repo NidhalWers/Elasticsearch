@@ -18,6 +18,11 @@ public class FunctionCredentials {
 
     public FunctionCredentials(){}
 
+    public FunctionCredentials(String tableName, AggregateCredentials aggregateCredentials, List<AttributeCredentials> queryParams) {
+        this.tableName = tableName;
+        this.aggregateCredentials = aggregateCredentials;
+        this.queryParams = queryParams;
+    }
 
     public FunctionCredentials setQueryParams(){
         queryParams = new ArrayList<>();
@@ -27,5 +32,36 @@ public class FunctionCredentials {
         queryParams.add( new AttributeCredentials(name, value) );
         return this;
     }
+
+
+    public static Builder builder(){
+        return new Builder();
+    }
+    public static class Builder{
+        public String tableName;
+        public AggregateCredentials aggregateCredentials;
+        public List<AttributeCredentials> queryParams;
+
+        public Builder tableName(String tableName){
+            this.tableName=tableName;
+            return this;
+        }
+        public Builder aggregate(String function, String column){
+            this.aggregateCredentials=new AggregateCredentials(function,column);
+            return this;
+        }
+        public Builder queryParams(List<AttributeCredentials> queryParams){
+            this.queryParams=queryParams;
+            return this;
+        }
+        public FunctionCredentials build(){
+            return new FunctionCredentials(
+                    this.tableName,
+                    this.aggregateCredentials,
+                    this.queryParams
+                    );
+        }
+    }
+
 
 }

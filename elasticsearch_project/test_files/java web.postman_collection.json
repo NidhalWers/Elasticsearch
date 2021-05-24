@@ -435,13 +435,42 @@
 					"response": []
 				},
 				{
+					"name": "get age,salaire where prenom",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"table_name\": \"person\",\n    \"query_params\": [\n        {\n            \"name\": \"prenom\" , \"value\" : \"nidhal\"\n        }\n    ],\n    \"columns_selected\": [\n        {\n            \"column\":\"age\"\n        },\n        {\n            \"column\":\"salaire\"\n        }\n        \n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/data/query",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"data",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "get * where salaire",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"table_name\": \"person\",\n    \"query_params\": [\n        {\n            \"name\": \"salaire\" , \"value\" : \"12500\"\n        }\n    ]\n}",
+							"raw": "{\n    \"table_name\": \"person\",\n    \"query_params\": [\n        {\n            \"name\": \"salaire\" , \"value\" : \"2500\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -471,6 +500,35 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"table_name\": \"person\",\n    \"query_params\": [\n        {\"name\": \"nom\" , \"value\" : \"oruc\"}\n    ],\n    \"columns_selected\": [\n        {\n            \"column\":\"prenom\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/data/query",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"data",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get prenom,salaire,sum(salaire)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"table_name\": \"person\",\n    \"columns_selected\": [\n        {\n            \"column\":\"prenom\"\n        },\n        {\n            \"column\":\"salaire\"\n        },\n        {\n            \"column\":\"salaire\",\n            \"function\":\"sum\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -673,7 +731,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"table_name\" : \"person\",\n    \"aggregate\":{\n        \"function_name\" : \"sum\",\n        \"column_name\" : \"salaire\"\n    }\n}",
+							"raw": "{\n    \"table_name\" : \"person\",\n    \"aggregate\":{\n        \"function\" : \"sum\",\n        \"column\" : \"salaire\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -702,7 +760,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"table_name\" : \"person\",\n    \"aggregate\":{\n        \"function_name\" : \"avg\",\n        \"column_name\" : \"age\"\n    }\n}",
+							"raw": "{\n    \"table_name\" : \"person\",\n    \"aggregate\":{\n        \"function\" : \"avg\",\n        \"column\" : \"age\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -731,7 +789,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"table_name\" : \"person\",\n    \"aggregate\":{\n        \"function_name\" : \"min\",\n        \"column_name\" : \"salaire\"\n    }\n}",
+							"raw": "{\n    \"table_name\" : \"person\",\n    \"aggregate\":{\n        \"function\" : \"min\",\n        \"column\" : \"salaire\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -760,7 +818,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"table_name\" : \"person\",\n    \"aggregate\":{\n        \"function_name\" : \"max\",\n        \"column_name\" : \"age\"\n    }\n}",
+							"raw": "{\n    \"table_name\" : \"person\",\n    \"aggregate\":{\n        \"function\" : \"max\",\n        \"column\" : \"age\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -789,7 +847,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"table_name\" : \"person\",\n    \"aggregate\":{\n        \"function_name\" : \"count\",\n        \"column_name\" : \"nom\"\n    }\n}",
+							"raw": "{\n    \"table_name\" : \"person\",\n    \"aggregate\":{\n        \"function\" : \"count\",\n        \"column\" : \"nom\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -818,7 +876,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"table_name\" : \"person\",\n    \"aggregate\" : {\n        \"function_name\" : \"count\"\n    }\n}",
+							"raw": "{\n    \"table_name\" : \"person\",\n    \"aggregate\" : {\n        \"function\" : \"count\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1084,6 +1142,35 @@
 					"response": []
 				},
 				{
+					"name": "get nom, sum(prix) where nom client",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"table_name\": \"client\",\n    \"query_params\": [\n        {\n            \"name\": \"nom_client\" , \"value\" : \"oruc\"\n        }\n    ],\n    \"columns_selected\": [\n        {\n            \"column\":\"nom_client\"\n        },\n        {\n            \"column\":\"prix\",\n            \"function\":\"sum\"\n        }\n        \n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/data/query",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"data",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "get *",
 					"request": {
 						"method": "POST",
@@ -1206,7 +1293,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"table_name\" : \"client\",\n    \"aggregate\":{\n        \"function_name\" : \"sum\",\n        \"column_name\" : \"prix\"\n        },\n    \"query_params\": [\n        {\n            \"name\": \"nom_client\" , \"value\" : \"oruc\"\n        }\n    ]\n}",
+							"raw": "{\n    \"table_name\" : \"client\",\n    \"aggregate\":{\n        \"function\" : \"sum\",\n        \"column\" : \"prix\"\n        },\n    \"query_params\": [\n        {\n            \"name\": \"nom_client\" , \"value\" : \"oruc\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"

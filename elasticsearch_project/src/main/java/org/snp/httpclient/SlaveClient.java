@@ -140,5 +140,23 @@ public class SlaveClient extends HttpClient{
         }
     }
 
+    public List<String> functions(FunctionCredentials functionCredentials){
+        Jsonb jsonb = JsonbBuilder.create();
+        String json = jsonb.toJson(functionCredentials);
+        try {
+            Response response = post("/data/function",json);
+            String body = response.body().string();
+            if(response.isSuccessful()) {
+                List<String> result = jsonb.fromJson(body, new ArrayList<String>(){}.getClass().getGenericSuperclass());
+
+                return result;
+            }
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 }
