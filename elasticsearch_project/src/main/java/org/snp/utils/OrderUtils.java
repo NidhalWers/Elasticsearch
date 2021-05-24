@@ -15,7 +15,7 @@ public class OrderUtils {
          * if no other column to order by
          */
         QueryCredentials.OrderCredentials orderCredentials;
-        if( (orderCredentials = orderCredentialsList.get(orderColumnIndice) ) == null )
+        if(orderColumnIndice >= orderCredentialsList.size() || (orderCredentials = orderCredentialsList.get(orderColumnIndice) ) == null )
             return listToSort;
 
         List<String> result = new ArrayList<>();
@@ -47,7 +47,7 @@ public class OrderUtils {
                 /**
                  * sort with the next column
                  */
-                result.addAll( orderForColumn(table, columnsSelected, orderCredentialsList, orderColumnIndice++, lines) );
+                result.addAll( orderForColumn(table, columnsSelected, orderCredentialsList, orderColumnIndice+1, lines) );
             }
         }
 
@@ -66,10 +66,15 @@ public class OrderUtils {
         List<String> linesForKey;
         for(String line : list){
             key = getValueInPosition(indiceColumn, line);
+
             if((linesForKey = result.get(key)) == null){
                 result.put(key, List.of(line));
             }else{
-                linesForKey.add(line);
+                List<String> newLinesForKey = new ArrayList<>();
+                newLinesForKey.addAll(linesForKey);
+                newLinesForKey.add(line);
+                result.remove(key);
+                result.put(key,newLinesForKey);
             }
         }
 

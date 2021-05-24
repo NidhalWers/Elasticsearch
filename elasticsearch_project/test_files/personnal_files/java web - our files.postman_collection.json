@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "9b439bcc-f171-4802-8d42-21231c888c5d",
-		"name": "java web",
+		"name": "java web : our files",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -609,6 +609,151 @@
 					"response": []
 				},
 				{
+					"name": "get * orderBy nom ASC",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"table_name\": \"person\",\n    \"order_by\":[\n        { \"column_name\" : \"nom\" }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/data/query",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"data",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get * orderBy nom DESC",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"table_name\": \"person\",\n    \"order_by\":[\n        { \"column_name\" : \"nom\" , \"order\" : \"DESC\"}\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/data/query",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"data",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get * orderBy nom prenom",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"table_name\": \"person\",\n    \"order_by\":[\n        { \"column_name\" : \"nom\" },\n        { \"column_name\" : \"prenom\" }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/data/query",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"data",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get * orderBy nom prenom age",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"table_name\": \"person\",\n    \"order_by\":[\n        { \"column_name\" : \"nom\" },\n        { \"column_name\" : \"prenom\" },\n        { \"column_name\" : \"age\" }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/data/query",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"data",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get * orderBy nom prenom age salaire",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"table_name\": \"person\",\n    \"order_by\":[\n        { \"column_name\" : \"nom\" },\n        { \"column_name\" : \"prenom\" },\n        { \"column_name\" : \"age\" },\n        { \"column_name\" : \"salaire\", \"order\" : \"DESC\" }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/data/query",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"data",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "delete where salaire",
 					"request": {
 						"method": "POST",
@@ -1149,6 +1294,35 @@
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"table_name\": \"client\",\n    \"query_params\": [\n        {\n            \"name\": \"nom_client\" , \"value\" : \"oruc\"\n        }\n    ],\n    \"columns_selected\": [\n        {\n            \"column\":\"nom_client\"\n        },\n        {\n            \"column\":\"prix\",\n            \"function\":\"sum\"\n        }\n        \n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/data/query",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"data",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get nom, sum(prix) where nom client groupBy nom",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"table_name\": \"client\",\n    \"query_params\": [\n        {\n            \"name\": \"nom_client\" , \"value\" : \"oruc\"\n        }\n    ],\n    \"columns_selected\": [\n        {\n            \"column\":\"nom_client\"\n        },\n        {\n            \"column\":\"prix\",\n            \"function\":\"sum\"\n        }\n        \n    ],\n    \"group_by\":[\"nom\"]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
