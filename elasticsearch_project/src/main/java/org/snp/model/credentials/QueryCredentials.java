@@ -18,7 +18,7 @@ public class QueryCredentials {
     public List<AttributeCredentials> queryParams;
 
     @JsonbProperty("columns_selected")
-    public List<ColumnCredentials> columnsSelected;
+    public List<AggregateCredentials> columnsSelected;
 
     @JsonbProperty("update_params")
     public List<AttributeCredentials> updateParams;
@@ -54,7 +54,7 @@ public class QueryCredentials {
         return this;
     }
     public QueryCredentials addColumn(String name){
-        columnsSelected.add(new ColumnCredentials(name));
+        columnsSelected.add(new AggregateCredentials(name));
         return this;
     }
 

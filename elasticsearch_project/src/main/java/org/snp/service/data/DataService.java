@@ -8,6 +8,7 @@ import org.snp.indexage.SubIndex;
 import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
+import org.snp.model.credentials.AggregateCredentials;
 import org.snp.model.credentials.AttributeCredentials;
 import org.snp.model.credentials.ColumnCredentials;
 import org.snp.model.credentials.QueryCredentials;
@@ -84,8 +85,8 @@ public class DataService {
              */
             if (queryCredentials.columnsSelected != null) {
                 List<String> columnsName = new ArrayList<>();
-                for (ColumnCredentials columnCredentials : queryCredentials.columnsSelected) {
-                    String columnName = columnCredentials.name;
+                for (AggregateCredentials aggregateCredentials : queryCredentials.columnsSelected) {
+                    String columnName = aggregateCredentials.columnName;
                     if (!table.containsColumn(columnName))
                         return new MessageAttachment<>(404, MESSAGE_PREFIX + "can not select : column " + columnName + " does not exist in " + queryCredentials.tableName);
                     columnsName.add(columnName);
