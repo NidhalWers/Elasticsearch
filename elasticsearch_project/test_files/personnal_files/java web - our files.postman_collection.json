@@ -306,7 +306,7 @@
 								{
 									"key": "file\n",
 									"type": "file",
-									"src": "/home/nidhal/Bureau/Dossier_Nidhal/Scolaire/L3/Semestre_2/Java_Web/Projet/Elasticsearch/elasticsearch_project/test_files/person.csv"
+									"src": "/home/nidhal/Bureau/Dossier_Nidhal/Scolaire/L3/Semestre_2/Java_Web/Projet/Elasticsearch/elasticsearch_project/test_files/personnal_files/person.csv"
 								},
 								{
 									"key": "table",
@@ -1204,7 +1204,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/home/nidhal/Bureau/Dossier_Nidhal/Scolaire/L3/Semestre_2/Java_Web/Projet/Elasticsearch/elasticsearch_project/test_files/client.csv"
+									"src": "/home/nidhal/Bureau/Dossier_Nidhal/Scolaire/L3/Semestre_2/Java_Web/Projet/Elasticsearch/elasticsearch_project/test_files/personnal_files/client.csv"
 								},
 								{
 									"key": "table",
@@ -1258,13 +1258,42 @@
 					"response": []
 				},
 				{
-					"name": "get * where prix",
+					"name": "get * where prix =",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"table_name\": \"client\",\n    \"query_params\": [\n        {\n            \"name\": \"prix\" , \"value\" : \"159.99\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/data/query",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"data",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get * where prix > 160",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"table_name\": \"client\",\n    \"query_params\": [\n        {\n            \"name\": \"prix\" , \"value\" : \"160\", \"comparison\":\"SUP\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"

@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.snp.indexage.Column;
 import org.snp.indexage.SubIndex;
 import org.snp.indexage.Index;
+import org.snp.model.credentials.AttributeCredentials;
+import org.snp.utils.CompareValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +58,11 @@ public class IndexTest {
         query.put("nom", "oruc");
 
         //Assertions.assertFalse(index.find(query).contains("ligne2"));
-        Assertions.assertTrue(subIndex.find("oruc").contains("ligne1"));
+        Assertions.assertTrue(subIndex.find(CompareValue.builder()
+                                            .value("oruc")
+                                            .comparison(AttributeCredentials.Comparison.EQ)
+                                            .build())
+                                        .contains("ligne1"));
 
    }
 
@@ -93,7 +99,10 @@ public class IndexTest {
         HashMap<String,String> query = new HashMap<>();
         query.put("nom", "oruc");
 
-        List<String> resultTest = subIndex.find("oruc");
+        List<String> resultTest = subIndex.find(CompareValue.builder()
+                                                .value("oruc")
+                                                .comparison(AttributeCredentials.Comparison.EQ)
+                                                .build());
         Assertions.assertTrue(resultTest.contains("ligne2"));
     }
 }
