@@ -100,7 +100,6 @@ public class DataService {
 
             }
         }
-
         /**
          * redirection to the slaves
          */
@@ -303,8 +302,8 @@ public class DataService {
                     truncatedLine += valueSplitted[columnPosition] + ",";
                 }else{
                     Message message = functionUtils.switchFunction(column.functionName, table.getName(), column.columnName, queryParams);
-                    if(message.getCode()!=200){
-                        truncatedLine += (String) ((MessageAttachment)message).getAttachment();
+                    if(message.getCode()==200){
+                        truncatedLine +=String.valueOf(((MessageAttachment)message).getAttachment()) + ",";
                     }
                 }
             }
