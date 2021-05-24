@@ -83,7 +83,7 @@ public class DataController {
     // having
     @POST
     @Path("/query")
-    public List<String> get(QueryCredentials queryCredentials){ //todo improve queryCredentials to add group by : utilisation de group by + fonction aggrégats
+    public List<String> get(QueryCredentials queryCredentials){
         if(queryCredentials ==null){
             throw new BadRequestException("query should not be null");
         }

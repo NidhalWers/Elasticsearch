@@ -104,6 +104,12 @@ public class Table {
         return null;
     }
 
+    public String getValueForColumn(String columnName, String value){
+        String[] valueSplitted = value.split(",");
+        int columnPosition = positionOfColumn(columnName);
+        return valueSplitted[ columnPosition ];
+    }
+
 
     /**
      * Builder

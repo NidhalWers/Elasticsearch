@@ -62,13 +62,12 @@ public class QueryCredentials {
         @JsonbProperty("column_name")
         public String columnName;
 
-        public OrderDirection order;
+        public OrderDirection order = OrderDirection.ASC;
     }
 
     public enum OrderDirection{
-        @JsonEnumDefaultValue
-        UNKNOWN("unknown"),
 
+        @JsonEnumDefaultValue
         ASC("asc"),
 
         DESC("desc")

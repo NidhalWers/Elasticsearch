@@ -13,6 +13,7 @@ import org.snp.model.credentials.AggregateCredentials;
 import org.snp.model.credentials.AttributeCredentials;
 import org.snp.model.credentials.QueryCredentials;
 import org.snp.utils.FunctionUtils;
+import org.snp.utils.OrderUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -26,6 +27,7 @@ public class DataService {
 
     @Inject FileService fileService;
     @Inject FunctionUtils functionUtils;
+    @Inject OrderUtils orderUtils;
 
     final String NODE_NAME = Main.isMasterTest() ? "Master" : System.getProperty("name");
     final String MESSAGE_PREFIX = NODE_NAME + " : ";
@@ -123,19 +125,17 @@ public class DataService {
                 }
             }
 
-
         }
         /**
          * order by
          */
         if(queryCredentials.orderBy != null ){
             for(QueryCredentials.OrderCredentials orderCredentials : queryCredentials.orderBy) {
-                if(!table.containsColumn(orderCredentials.columnName)){
+                if(!table.containsColumn(orderCredentials.columnName)) {
                     return new MessageAttachment<>(404, MESSAGE_PREFIX + "can not order by : column " + orderCredentials.columnName + " does not exist in " + queryCredentials.tableName);
                 }
             }
-
-
+            linesSelected = orderUtils.orderForColumn(table, queryCredentials.columnsSelected, queryCredentials.orderBy, 0, linesSelected);
         }
         return new MessageAttachment<List>(200, linesSelected);
     }

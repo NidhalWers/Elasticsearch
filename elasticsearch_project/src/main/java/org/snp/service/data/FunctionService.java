@@ -82,9 +82,7 @@ public class FunctionService {
     }
 
     private String getValueForColumn(Table table, String columnName, String value){
-        String[] valueSplitted = value.split(",");
-        int columnPosition = table.positionOfColumn(columnName);
-        return valueSplitted[ columnPosition ];
+        return table.getValueForColumn(columnName,value);
     }
 
     /**
