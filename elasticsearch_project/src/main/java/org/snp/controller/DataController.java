@@ -157,26 +157,26 @@ public class DataController {
     public List<String> function(FunctionCredentials functionCredentials){
         if(functionCredentials == null)
             throw new BadRequestException("query should not be null");
-        if(functionCredentials.functionName == null)
+        if(functionCredentials.aggregateCredentials.functionName == null)
             throw new BadRequestException("function_name should not be null");
 
         Message message;
-        switch (functionCredentials.functionName){
+        switch (functionCredentials.aggregateCredentials.functionName){
             case "sum" :
-                message = functionService.sum(functionCredentials.tableName, functionCredentials.columnName, functionCredentials.queryParams);
+                message = functionService.sum(functionCredentials.tableName, functionCredentials.aggregateCredentials.columnName, functionCredentials.queryParams);
                 break;
             case "avg" :
-                message = functionService.avg(functionCredentials.tableName, functionCredentials.columnName, functionCredentials.queryParams);
+                message = functionService.avg(functionCredentials.tableName, functionCredentials.aggregateCredentials.columnName, functionCredentials.queryParams);
                 break;
             case "min" :
-                message = functionService.min(functionCredentials.tableName, functionCredentials.columnName, functionCredentials.queryParams);
+                message = functionService.min(functionCredentials.tableName, functionCredentials.aggregateCredentials.columnName, functionCredentials.queryParams);
                 break;
             case "max" :
-                message = functionService.max(functionCredentials.tableName, functionCredentials.columnName, functionCredentials.queryParams);
+                message = functionService.max(functionCredentials.tableName, functionCredentials.aggregateCredentials.columnName, functionCredentials.queryParams);
                 break;
             case "count" :
-                if( functionCredentials.columnName != null)
-                    message = functionService.count(functionCredentials.tableName, functionCredentials.columnName, functionCredentials.queryParams);
+                if( functionCredentials.aggregateCredentials.columnName != null)
+                    message = functionService.count(functionCredentials.tableName, functionCredentials.aggregateCredentials.columnName, functionCredentials.queryParams);
                 else
                     message = functionService.count(functionCredentials.tableName, functionCredentials.queryParams);
                 break;

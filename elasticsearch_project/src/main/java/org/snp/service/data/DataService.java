@@ -45,7 +45,7 @@ public class DataService {
     public Message query(QueryCredentials queryCredentials){
         Table table = tableDao.find(queryCredentials.tableName);
         if(table == null)
-            return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+ queryCredentials.tableName+" does not exists");
+            return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+ queryCredentials.tableName+" does not exist");
 
         List<String> references;
         /**
@@ -56,7 +56,7 @@ public class DataService {
             for (AttributeCredentials attributeCredentials : queryCredentials.queryParams) {
                 String columnName = attributeCredentials.columnName;
                 if (!table.containsColumn(columnName))
-                    return new MessageAttachment<>(404, MESSAGE_PREFIX+"column " + columnName + " does not exists in " + queryCredentials.tableName);
+                    return new MessageAttachment<>(404, MESSAGE_PREFIX+"column " + columnName + " does not exist in " + queryCredentials.tableName);
                 queryMap.put(attributeCredentials.columnName, attributeCredentials.value);
             }
 
@@ -87,7 +87,7 @@ public class DataService {
                 for (ColumnCredentials columnCredentials : queryCredentials.columnsSelected) {
                     String columnName = columnCredentials.name;
                     if (!table.containsColumn(columnName))
-                        return new MessageAttachment<>(404, MESSAGE_PREFIX + "column " + columnName + " does not exists in " + queryCredentials.tableName);
+                        return new MessageAttachment<>(404, MESSAGE_PREFIX + "can not select : column " + columnName + " does not exist in " + queryCredentials.tableName);
                     columnsName.add(columnName);
                 }
 
@@ -109,7 +109,31 @@ public class DataService {
             if(values.isEmpty())
                 return new MessageAttachment<>(404, MESSAGE_PREFIX+"data not found");
         }
-         return new MessageAttachment<List>(200, values);
+        /**
+         * group by
+         */
+        if(queryCredentials.groupBy != null && ! queryCredentials.groupBy.isEmpty()){
+            for(String columnName : queryCredentials.groupBy){
+                if(! table.containsColumn(columnName)){
+                    return new MessageAttachment<>(404, MESSAGE_PREFIX + "can not group by : column " + columnName + " does not exist in " + queryCredentials.tableName);
+                }
+            }
+
+
+        }
+        /**
+         * order by
+         */
+        if(queryCredentials.orderBy != null ){
+            for(QueryCredentials.OrderCredentials orderCredentials : queryCredentials.orderBy) {
+                if(!table.containsColumn(orderCredentials.columnName)){
+                    return new MessageAttachment<>(404, MESSAGE_PREFIX + "can not order by : column " + orderCredentials.columnName + " does not exist in " + queryCredentials.tableName);
+                }
+            }
+
+
+        }
+        return new MessageAttachment<List>(200, values);
     }
 
     /**

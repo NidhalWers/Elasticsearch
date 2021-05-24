@@ -63,34 +63,34 @@ public class QueryCredentials {
         public String columnName;
 
         public OrderDirection order;
+    }
 
-        public static enum OrderDirection{
-            @JsonEnumDefaultValue
-            UNKNOWN("unknown"),
+    public enum OrderDirection{
+        @JsonEnumDefaultValue
+        UNKNOWN("unknown"),
 
-            ASC("asc"),
+        ASC("asc"),
 
-            DESC("desc")
+        DESC("desc")
 
-            ;
+        ;
 
-            private String value;
+        private String value;
 
-            OrderDirection() {
-            }
+        OrderDirection() {
+        }
 
-            OrderDirection(String value) {
-                this.value = value;
-            }
+        OrderDirection(String value) {
+            this.value = value;
+        }
 
-            @JsonValue
-            public String getValue() {
-                return value;
-            }
+        @JsonValue
+        public String getValue() {
+            return value;
+        }
 
-            public void setValue(String value) {
-                this.value = value;
-            }
+        public void setValue(String value) {
+            this.value = value;
         }
     }
 

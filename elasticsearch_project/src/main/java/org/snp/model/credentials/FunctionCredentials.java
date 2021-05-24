@@ -6,12 +6,10 @@ import java.util.List;
 
 public class FunctionCredentials {
 
-    @JsonbProperty("function_name")
-    public String functionName;
     @JsonbProperty("table_name")
     public String tableName;
-    @JsonbProperty("column_name")
-    public String columnName;
+    @JsonbProperty("aggregate")
+    public AggregateCredentials aggregateCredentials;
     //map key = nom de colonne
     //    value = valeur de la colonne
     @JsonbProperty("query_params")

@@ -215,7 +215,7 @@ public class FunctionService {
                 }
             }
 
-            return new MessageAttachment<>(200, lineResult+" || "+value);
+            return new MessageAttachment<>(200, value);
         }else{
             return message;
         }
@@ -268,7 +268,7 @@ public class FunctionService {
                 }
             }
 
-            return new MessageAttachment<>(200, lineResult+" || "+value );
+            return new MessageAttachment<>(200, value );
         }else{
             return message;
         }

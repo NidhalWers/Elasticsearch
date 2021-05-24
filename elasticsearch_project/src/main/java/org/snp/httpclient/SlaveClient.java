@@ -35,15 +35,7 @@ public class SlaveClient extends HttpClient{
         Jsonb jsonb = JsonbBuilder.create();
         String json = jsonb.toJson(rowCredentials);
         try {
-            Response response = post("/data/insertline",json);
-            /*
-            if(!response.isSuccessful()){
-                throw  new InternalServerErrorException("error during the redirection of insertLine");
-            }
-            RowInsertedModel rowInsertedModel= null;
-            rowInsertedModel = gson.fromJson(response.body().string(), RowInsertedModel.class);
-            return rowInsertedModel;
-            */
+            post("/data/insertline",json);
         } catch (IOException e) {
             e.printStackTrace();
             //return null;
