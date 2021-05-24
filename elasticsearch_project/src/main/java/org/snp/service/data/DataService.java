@@ -69,7 +69,7 @@ public class DataService {
             references = dataDAO.findAll(table);
         }
 
-        List<String> values = new ArrayList<>();
+        List<String> linesSelected = new ArrayList<>();
 
         boolean doNotContinueTest = references == null || references.isEmpty();
         if(! doNotContinueTest) {
@@ -78,21 +78,23 @@ public class DataService {
              */
             for (String ref : references) {
                 String[] refSplited = ref.split(",");
-                values.add(fileService.getAllDataAtPos(refSplited[0], Integer.valueOf(refSplited[1])));
+                linesSelected.add(fileService.getAllDataAtPos(refSplited[0], Integer.valueOf(refSplited[1])));
             }
             /**
              * column selected verification
              */
             if (queryCredentials.columnsSelected != null) {
-                List<String> columnsName = new ArrayList<>();
+                List<String> columnsName = new ArrayList<>(); //todo aggregate : faire une liste de AggregateCredentials
                 for (AggregateCredentials aggregateCredentials : queryCredentials.columnsSelected) {
                     String columnName = aggregateCredentials.columnName;
-                    if (!table.containsColumn(columnName))
+                    if (!table.containsColumn(columnName)) //todo aggregate : tester aussi si la fonction est valide avec une méthode utile : function!=null && function.notValide()
                         return new MessageAttachment<>(404, MESSAGE_PREFIX + "can not select : column " + columnName + " does not exist in " + queryCredentials.tableName);
-                    columnsName.add(columnName);
+                    System.out.println(aggregateCredentials.functionName);
+                    columnsName.add(columnName); //todo aggregate : ajouter le aggregateCredentials complet
+
                 }
 
-                values = getValuesForColumn(table, columnsName, values);
+                linesSelected = getValuesForColumn(table, columnsName, linesSelected); //todo aggregate : modifier méthode
 
             }
         }
@@ -105,9 +107,9 @@ public class DataService {
             for(SlaveClient slaveClient : slaveClients){
                 slaveResult = slaveClient.dataGet(queryCredentials);
                 if(slaveResult!=null)
-                    values.addAll(slaveResult);
+                    linesSelected.addAll(slaveResult);
             }
-            if(values.isEmpty())
+            if(linesSelected.isEmpty())
                 return new MessageAttachment<>(404, MESSAGE_PREFIX+"data not found");
         }
         /**
@@ -134,7 +136,7 @@ public class DataService {
 
 
         }
-        return new MessageAttachment<List>(200, values);
+        return new MessageAttachment<List>(200, linesSelected);
     }
 
     /**
@@ -286,11 +288,11 @@ public class DataService {
 
 
 
-
-    private List<String> getValuesForColumn(Table table, List<String> columnsName, List<String> allValues){
+    //todo aggregate : si function pas nul :
+    private List<String> getValuesForColumn(Table table, List<String> columnsName, List<String> completeLines){ //todo aggregate modifier parameters
         List<String> result = new ArrayList<>();
 
-        for(String value : allValues){
+        for(String value : completeLines){
             String[] valueSplitted = value.split(",");
             for(String column : columnsName ){
                 int columnPosition = table.positionOfColumn(column);

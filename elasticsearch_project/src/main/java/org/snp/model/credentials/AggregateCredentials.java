@@ -4,7 +4,7 @@ import javax.json.bind.annotation.JsonbProperty;
 
 public class AggregateCredentials {
     @JsonbProperty("function")
-    public String functionName;
+    public String functionName = "None";
     @JsonbProperty("column")
     public String columnName;
 

@@ -412,7 +412,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"table_name\": \"person\",\n    \"query_params\": [\n        {\n            \"name\": \"prenom\" , \"value\" : \"nidhal\"\n        }\n    ],\n    \"columns_selected\": [\n        {\n            \"name\":\"salaire\"\n        }\n    ]\n}",
+							"raw": "{\n    \"table_name\": \"person\",\n    \"query_params\": [\n        {\n            \"name\": \"prenom\" , \"value\" : \"nidhal\"\n        }\n    ],\n    \"columns_selected\": [\n        {\n            \"column\":\"salaire\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -470,7 +470,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"table_name\": \"person\",\n    \"query_params\": [\n        {\"name\": \"nom\" , \"value\" : \"oruc\"}\n    ],\n    \"columns_selected\": [\n        {\n            \"name\":\"prenom\"\n        }\n    ]\n}",
+							"raw": "{\n    \"table_name\": \"person\",\n    \"query_params\": [\n        {\"name\": \"nom\" , \"value\" : \"oruc\"}\n    ],\n    \"columns_selected\": [\n        {\n            \"column\":\"prenom\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -499,7 +499,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"table_name\": \"person\",\n    \"columns_selected\": [\n        {\n            \"name\":\"salaire\"\n        }\n    ]\n    \n}",
+							"raw": "{\n    \"table_name\": \"person\",\n    \"columns_selected\": [\n        {\n            \"column\":\"salaire\"\n        }\n    ]\n    \n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -586,7 +586,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"table_name\": \"person\",\n    \"query_params\": [\n        {\n            \"name\": \"prenom\" , \"value\" : \"nidhal\"\n        }\n    ],\n    \"update_params\":[\n        {\n            \"name\": \"salaire\", \"value\" : \"1200\"\n        }\n    ]\n}",
+							"raw": "{\n    \"table_name\": \"person\",\n    \"query_params\": [\n        {\n            \"name\": \"prenom\" , \"value\" : \"nidhal\"\n        }\n    ],\n    \"update_params\":[\n        {\n            \"name\": \"salaire\", \"value\" : \"12\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -673,7 +673,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"function_name\" : \"sum\",\n    \"table_name\" : \"person\",\n    \"column_name\" : \"salaire\"\n}",
+							"raw": "{\n    \"table_name\" : \"person\",\n    \"aggregate\":{\n        \"function_name\" : \"sum\",\n        \"column_name\" : \"salaire\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -702,7 +702,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"function_name\" : \"avg\",\n    \"table_name\" : \"person\",\n    \"column_name\" : \"age\"\n}",
+							"raw": "{\n    \"table_name\" : \"person\",\n    \"aggregate\":{\n        \"function_name\" : \"avg\",\n        \"column_name\" : \"age\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -731,7 +731,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"function_name\" : \"min\",\n    \"table_name\" : \"person\",\n    \"column_name\" : \"salaire\"\n}",
+							"raw": "{\n    \"table_name\" : \"person\",\n    \"aggregate\":{\n        \"function_name\" : \"min\",\n        \"column_name\" : \"salaire\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -760,7 +760,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"function_name\" : \"max\",\n    \"table_name\" : \"person\",\n    \"column_name\" : \"age\"\n}",
+							"raw": "{\n    \"table_name\" : \"person\",\n    \"aggregate\":{\n        \"function_name\" : \"max\",\n        \"column_name\" : \"age\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -789,7 +789,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"function_name\" : \"count\",\n    \"table_name\" : \"person\",\n    \"column_name\" : \"nom\"\n}",
+							"raw": "{\n    \"table_name\" : \"person\",\n    \"aggregate\":{\n        \"function_name\" : \"count\",\n        \"column_name\" : \"nom\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -818,7 +818,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"function_name\" : \"count\",\n    \"table_name\" : \"person\"\n}",
+							"raw": "{\n    \"table_name\" : \"person\",\n    \"aggregate\" : {\n        \"function_name\" : \"count\"\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1194,6 +1194,35 @@
 							"path": [
 								"data",
 								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sum prix where nom_client",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"table_name\" : \"client\",\n    \"aggregate\":{\n        \"function_name\" : \"sum\",\n        \"column_name\" : \"prix\"\n        },\n    \"query_params\": [\n        {\n            \"name\": \"nom_client\" , \"value\" : \"oruc\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/data/function",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"data",
+								"function"
 							]
 						}
 					},

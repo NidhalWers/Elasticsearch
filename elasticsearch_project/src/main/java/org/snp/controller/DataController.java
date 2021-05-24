@@ -159,8 +159,8 @@ public class DataController {
             throw new BadRequestException("query should not be null");
         if(functionCredentials.aggregateCredentials.functionName == null)
             throw new BadRequestException("function_name should not be null");
-
-        Message message;
+        //todo aggreagate : tester si function valide avec méthode utile et throw bad request
+        Message message; //todo aggregate :  mettre tout le switch dans une méthode
         switch (functionCredentials.aggregateCredentials.functionName){
             case "sum" :
                 message = functionService.sum(functionCredentials.tableName, functionCredentials.aggregateCredentials.columnName, functionCredentials.queryParams);
