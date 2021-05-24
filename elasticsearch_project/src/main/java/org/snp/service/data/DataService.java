@@ -1,5 +1,6 @@
 package org.snp.service.data;
 
+import org.apache.commons.lang3.StringUtils;
 import org.snp.Main;
 import org.snp.dao.DataDao;
 import org.snp.dao.TableDao;
@@ -295,16 +296,21 @@ public class DataService {
 
         for(String value : completeLines){
             String[] valueSplitted = value.split(",");
+            String truncatedLine="";
             for(AggregateCredentials column : columnsSelected ){
                 int columnPosition = table.positionOfColumn(column.columnName);
                 if(column.functionName.equals("None")) {
-                    result.add(valueSplitted[columnPosition]);
+                    truncatedLine += valueSplitted[columnPosition] + ",";
                 }else{
                     Message message = FunctionUtils.switchFunction(column.functionName, table.getName(), column.columnName, queryParams);
                     if(message.getCode()!=200){
-                        result.add((String) ((MessageAttachment)message).getAttachment());
+                        truncatedLine += (String) ((MessageAttachment)message).getAttachment();
                     }
                 }
+            }
+            if(truncatedLine!=null && ! truncatedLine.isBlank()) {
+                truncatedLine = StringUtils.chop(truncatedLine);
+                result.add(truncatedLine);
             }
         }
 
