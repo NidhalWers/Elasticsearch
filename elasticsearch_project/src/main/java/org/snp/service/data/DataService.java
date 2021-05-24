@@ -12,6 +12,7 @@ import org.snp.model.credentials.AggregateCredentials;
 import org.snp.model.credentials.AttributeCredentials;
 import org.snp.model.credentials.ColumnCredentials;
 import org.snp.model.credentials.QueryCredentials;
+import org.snp.utils.FunctionUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -84,17 +85,17 @@ public class DataService {
              * column selected verification
              */
             if (queryCredentials.columnsSelected != null) {
-                List<String> columnsName = new ArrayList<>(); //todo aggregate : faire une liste de AggregateCredentials
+                List<AggregateCredentials> valideColumnSelected = new ArrayList<>();
                 for (AggregateCredentials aggregateCredentials : queryCredentials.columnsSelected) {
-                    String columnName = aggregateCredentials.columnName;
-                    if (!table.containsColumn(columnName)) //todo aggregate : tester aussi si la fonction est valide avec une méthode utile : function!=null && function.notValide()
-                        return new MessageAttachment<>(404, MESSAGE_PREFIX + "can not select : column " + columnName + " does not exist in " + queryCredentials.tableName);
-                    System.out.println(aggregateCredentials.functionName);
-                    columnsName.add(columnName); //todo aggregate : ajouter le aggregateCredentials complet
+                    if (!table.containsColumn(aggregateCredentials.columnName))
+                        return new MessageAttachment<>(404, MESSAGE_PREFIX + "can not select : column " + aggregateCredentials.columnName + " does not exist in " + queryCredentials.tableName);
+                    if(! FunctionUtils.isValideFunction(aggregateCredentials.functionName))
+                        return new MessageAttachment<>(404, MESSAGE_PREFIX + "can not select : aggregate function named "+ aggregateCredentials.functionName +" does not exist");
+                    valideColumnSelected.add(aggregateCredentials);
 
                 }
 
-                linesSelected = getValuesForColumn(table, columnsName, linesSelected); //todo aggregate : modifier méthode
+                linesSelected = getValuesForColumn(table, valideColumnSelected, linesSelected, queryCredentials.queryParams);
 
             }
         }
@@ -288,15 +289,22 @@ public class DataService {
 
 
 
-    //todo aggregate : si function pas nul :
-    private List<String> getValuesForColumn(Table table, List<String> columnsName, List<String> completeLines){ //todo aggregate modifier parameters
+
+    private List<String> getValuesForColumn(Table table, List<AggregateCredentials> columnsSelected, List<String> completeLines, List<AttributeCredentials> queryParams){
         List<String> result = new ArrayList<>();
 
         for(String value : completeLines){
             String[] valueSplitted = value.split(",");
-            for(String column : columnsName ){
-                int columnPosition = table.positionOfColumn(column);
-                result.add(valueSplitted[ columnPosition ]);
+            for(AggregateCredentials column : columnsSelected ){
+                int columnPosition = table.positionOfColumn(column.columnName);
+                if(column.functionName.equals("None")) {
+                    result.add(valueSplitted[columnPosition]);
+                }else{
+                    Message message = FunctionUtils.switchFunction(column.functionName, table.getName(), column.columnName, queryParams);
+                    if(message.getCode()!=200){
+                        result.add((String) ((MessageAttachment)message).getAttachment());
+                    }
+                }
             }
         }
 

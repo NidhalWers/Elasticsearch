@@ -14,13 +14,13 @@ import org.snp.service.data.FunctionService;
 import org.snp.service.data.DataService;
 import org.snp.model.credentials.DataCredentials;
 import org.snp.service.data.FileService;
+import org.snp.utils.FunctionUtils;
 import org.snp.utils.exception.NotFoundException;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Path("/data")
@@ -159,30 +159,12 @@ public class DataController {
             throw new BadRequestException("query should not be null");
         if(functionCredentials.aggregateCredentials.functionName == null)
             throw new BadRequestException("function_name should not be null");
-        //todo aggreagate : tester si function valide avec méthode utile et throw bad request
-        Message message; //todo aggregate :  mettre tout le switch dans une méthode
-        switch (functionCredentials.aggregateCredentials.functionName){
-            case "sum" :
-                message = functionService.sum(functionCredentials.tableName, functionCredentials.aggregateCredentials.columnName, functionCredentials.queryParams);
-                break;
-            case "avg" :
-                message = functionService.avg(functionCredentials.tableName, functionCredentials.aggregateCredentials.columnName, functionCredentials.queryParams);
-                break;
-            case "min" :
-                message = functionService.min(functionCredentials.tableName, functionCredentials.aggregateCredentials.columnName, functionCredentials.queryParams);
-                break;
-            case "max" :
-                message = functionService.max(functionCredentials.tableName, functionCredentials.aggregateCredentials.columnName, functionCredentials.queryParams);
-                break;
-            case "count" :
-                if( functionCredentials.aggregateCredentials.columnName != null)
-                    message = functionService.count(functionCredentials.tableName, functionCredentials.aggregateCredentials.columnName, functionCredentials.queryParams);
-                else
-                    message = functionService.count(functionCredentials.tableName, functionCredentials.queryParams);
-                break;
-            default:
-                throw new BadRequestException("function_name does not correspond");
-        }
+        if(! FunctionUtils.isValideFunction(functionCredentials.aggregateCredentials.functionName))
+            throw new BadRequestException("function does not exist");
+        Message message = FunctionUtils.switchFunction(functionCredentials.aggregateCredentials.functionName,
+                                                       functionCredentials.tableName,
+                                                        functionCredentials.aggregateCredentials.columnName,
+                                                        functionCredentials.queryParams);
 
         if(message.getCode() == 200){
             return List.of(String.valueOf( ((MessageAttachment)message).getAttachment()));
