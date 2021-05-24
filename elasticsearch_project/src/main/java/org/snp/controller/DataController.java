@@ -152,6 +152,9 @@ public class DataController {
         }
     }
 
+    @Inject
+    FunctionUtils functionUtils;
+
     @POST
     @Path("/function")
     public List<String> function(FunctionCredentials functionCredentials){
@@ -159,9 +162,9 @@ public class DataController {
             throw new BadRequestException("query should not be null");
         if(functionCredentials.aggregateCredentials.functionName == null)
             throw new BadRequestException("function_name should not be null");
-        if(! FunctionUtils.isValideFunction(functionCredentials.aggregateCredentials.functionName))
+        if(! functionUtils.isValideFunction(functionCredentials.aggregateCredentials.functionName))
             throw new BadRequestException("function does not exist");
-        Message message = FunctionUtils.switchFunction(functionCredentials.aggregateCredentials.functionName,
+        Message message = functionUtils.switchFunction(functionCredentials.aggregateCredentials.functionName,
                                                        functionCredentials.tableName,
                                                         functionCredentials.aggregateCredentials.columnName,
                                                         functionCredentials.queryParams);

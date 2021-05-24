@@ -5,12 +5,14 @@ import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.AttributeCredentials;
 import org.snp.service.data.FunctionService;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.List;
 
+@ApplicationScoped
 public class FunctionUtils {
 
-    public static boolean isValideFunction(String functionName){
+    public boolean isValideFunction(String functionName){
         return "None".equals(functionName) ||
                 "sum".equals(functionName) ||
                 "avg".equals(functionName) ||
@@ -21,9 +23,9 @@ public class FunctionUtils {
     }
 
     @Inject
-    static FunctionService functionService;
+    FunctionService functionService;
 
-    public static Message switchFunction(String functionName, String tableName, String columnName, List<AttributeCredentials> queryParams){
+    public Message switchFunction(String functionName, String tableName, String columnName, List<AttributeCredentials> queryParams){
         switch (functionName){
             case "sum" :
                 return functionService.sum(tableName, columnName, queryParams);

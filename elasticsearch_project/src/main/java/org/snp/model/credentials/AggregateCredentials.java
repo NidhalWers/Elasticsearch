@@ -11,7 +11,7 @@ public class AggregateCredentials {
     public AggregateCredentials() {
     }
 
-    public AggregateCredentials(String functionName) {
-        this.functionName = functionName;
+    public AggregateCredentials(String columnName) {
+        this.columnName = columnName;
     }
 }

@@ -11,7 +11,6 @@ import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.AggregateCredentials;
 import org.snp.model.credentials.AttributeCredentials;
-import org.snp.model.credentials.ColumnCredentials;
 import org.snp.model.credentials.QueryCredentials;
 import org.snp.utils.FunctionUtils;
 
@@ -26,6 +25,7 @@ import java.util.Map;
 public class DataService {
 
     @Inject FileService fileService;
+    @Inject FunctionUtils functionUtils;
 
     final String NODE_NAME = Main.isMasterTest() ? "Master" : System.getProperty("name");
     final String MESSAGE_PREFIX = NODE_NAME + " : ";
@@ -90,7 +90,7 @@ public class DataService {
                 for (AggregateCredentials aggregateCredentials : queryCredentials.columnsSelected) {
                     if (!table.containsColumn(aggregateCredentials.columnName))
                         return new MessageAttachment<>(404, MESSAGE_PREFIX + "can not select : column " + aggregateCredentials.columnName + " does not exist in " + queryCredentials.tableName);
-                    if(! FunctionUtils.isValideFunction(aggregateCredentials.functionName))
+                    if(! functionUtils.isValideFunction(aggregateCredentials.functionName))
                         return new MessageAttachment<>(404, MESSAGE_PREFIX + "can not select : aggregate function named "+ aggregateCredentials.functionName +" does not exist");
                     valideColumnSelected.add(aggregateCredentials);
 
@@ -302,7 +302,7 @@ public class DataService {
                 if(column.functionName.equals("None")) {
                     truncatedLine += valueSplitted[columnPosition] + ",";
                 }else{
-                    Message message = FunctionUtils.switchFunction(column.functionName, table.getName(), column.columnName, queryParams);
+                    Message message = functionUtils.switchFunction(column.functionName, table.getName(), column.columnName, queryParams);
                     if(message.getCode()!=200){
                         truncatedLine += (String) ((MessageAttachment)message).getAttachment();
                     }
