@@ -142,7 +142,7 @@ public class DataDaoTest {
         table = TestUtils.insertData(table);
 
         HashMap<String, CompareValue> query = new HashMap<>();
-        query.put("nom", CompareValue.builder()
+        query.put("age", CompareValue.builder()
                 .value("15")
                 .comparison(AttributeCredentials.Comparison.SUP)
                 .build());
