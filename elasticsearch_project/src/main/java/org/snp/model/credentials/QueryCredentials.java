@@ -24,7 +24,7 @@ public class QueryCredentials {
     public List<AttributeCredentials> updateParams;
 
     @JsonbProperty("group_by")
-    public List<String> groupBy;
+    public String groupBy;
 
     @JsonbProperty("order_by")
     public List<OrderCredentials> orderBy;
@@ -36,6 +36,9 @@ public class QueryCredentials {
         this.tableName = tableName;
     }
 
+    /**
+     *set query params
+     */
     public QueryCredentials setQueryParams(){
         queryParams = new ArrayList<>();
         return this;
@@ -45,12 +48,24 @@ public class QueryCredentials {
         return this;
     }
     public QueryCredentials setQueryParams(List<AttributeCredentials> queryParams){
-        this.queryParams=queryParams;
+        this.queryParams = new ArrayList<>();
+        if(queryParams!=null)
+            this.queryParams.addAll(queryParams);
         return this;
     }
 
+    /**
+     *set column selected
+     */
+
     public QueryCredentials setColumnSelected(){
         columnsSelected = new ArrayList<>();
+        return this;
+    }
+    public QueryCredentials setColumnSelected(List<AggregateCredentials> columnsSelected){
+        this.columnsSelected = new ArrayList<>();
+        if(columnsSelected!=null)
+            this.columnsSelected.addAll(columnsSelected);
         return this;
     }
     public QueryCredentials addColumn(String name){
