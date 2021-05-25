@@ -15,14 +15,10 @@ import org.snp.model.credentials.QueryCredentials;
 import org.snp.utils.CompareValue;
 import org.snp.utils.FunctionUtils;
 import org.snp.utils.OrderUtils;
-import org.snp.utils.QueryUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @ApplicationScoped
 public class DataService {
@@ -119,17 +115,6 @@ public class DataService {
             }
             if(linesSelected.isEmpty())
                 return new MessageAttachment<>(404, MESSAGE_PREFIX+"data not found");
-        }
-        /**
-         * group by
-         */
-        if(queryCredentials.groupBy != null && ! queryCredentials.groupBy.isEmpty()){
-            for(String columnName : queryCredentials.groupBy){
-                if(! table.containsColumn(columnName)){
-                    return new MessageAttachment<>(404, MESSAGE_PREFIX + "can not group by : column " + columnName + " does not exist in " + queryCredentials.tableName);
-                }
-            }
-
         }
         /**
          * order by
@@ -298,6 +283,83 @@ public class DataService {
     }
 
 
+    /**
+     * group By method
+     * @param queryCredentials
+     * @return
+     */
+
+    public Message groupBy(QueryCredentials queryCredentials){
+        Table table = tableDao.find(queryCredentials.tableName);
+        if(table == null)
+            return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+ queryCredentials.tableName+" does not exist");
+        /**
+         * group by
+         */
+        String columnGroupedBy=queryCredentials.groupBy;
+        if(! table.containsColumn(columnGroupedBy)){
+            return new MessageAttachment<>(404, MESSAGE_PREFIX + "can not group by : column " + columnGroupedBy + " does not exist in " + queryCredentials.tableName);
+        }
+
+        QueryCredentials queryForGroupBy = new QueryCredentials(queryCredentials.tableName)
+                                            .setColumnSelected()
+                                            .addColumn(columnGroupedBy);
+
+        Message messageColumnGroupedByAllValues = query(queryForGroupBy);
+        if(messageColumnGroupedByAllValues.getCode() == 200){
+            List<String> columnGroupedByALlValues = (List<String>) ((MessageAttachment)messageColumnGroupedByAllValues).getAttachment();
+
+            QueryCredentials queryEachValue;
+            List<List<String>> linesSelectedForAllValues = new ArrayList<>();
+            Message messageLineForEachValue;
+
+            for(String value : columnGroupedByALlValues){
+                /**
+                 * query with the original query params & columns selected from
+                 * the client request
+                 * & adding a query Params on the column we use to group by,
+                 * with the value
+                 */
+                queryEachValue = new QueryCredentials(queryCredentials.tableName)
+                                    .setColumnSelected(queryCredentials.columnsSelected)
+                                    .setQueryParams(queryCredentials.queryParams)
+                                    .addAttribute(columnGroupedBy, value)
+                                    ;
+
+
+                messageLineForEachValue = query(queryEachValue);
+                if(messageLineForEachValue.getCode() == 200){
+                    linesSelectedForAllValues.add( (List<String>) ((MessageAttachment)messageLineForEachValue).getAttachment()  );
+                }
+            }
+            //todo test vide
+            /**
+             * remove duplicates
+             */
+            Set<String> setOfLinesSelected = new HashSet<>();
+            for(List list : linesSelectedForAllValues){
+                setOfLinesSelected.addAll(list);
+            }
+
+            List<String> result = new ArrayList<>(setOfLinesSelected);
+            /**
+             * order by
+             */
+            if(queryCredentials.orderBy != null ){
+                for(QueryCredentials.OrderCredentials orderCredentials : queryCredentials.orderBy) {
+                    if(!table.containsColumn(orderCredentials.columnName)) {
+                        return new MessageAttachment<>(404, MESSAGE_PREFIX + "can not order by : column " + orderCredentials.columnName + " does not exist in " + queryCredentials.tableName);
+                    }
+                }
+                result = orderUtils.orderForColumn(table, queryCredentials.columnsSelected, queryCredentials.orderBy, 0, result);
+            }
+            return new MessageAttachment<List>(200, result);
+
+
+        }else{
+            return messageColumnGroupedByAllValues;
+        }
+    }
 
 
 
@@ -313,7 +375,7 @@ public class DataService {
                     truncatedLine += valueSplitted[columnPosition] + ",";
                 }else{
                     Message message = functionUtils.switchFunction(column.functionName, table.getName(), column.columnName, queryParams);
-                    if(message.getCode()==200){
+                    if(message.getCode()==200){//todo having : si il y a un having, on effectue le test, un boolean having au début du for, si boolean true, on ajoute à la ligne 329, sinon nan
                         truncatedLine +=String.valueOf(((MessageAttachment)message).getAttachment()) + ",";
                     }
                 }

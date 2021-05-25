@@ -696,6 +696,35 @@
 					"response": []
 				},
 				{
+					"name": "get nom,sum(salaire) OrderBy nom salaire GroupBy nom",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"table_name\": \"person\",\n    \"columns_selected\": [\n        {\n            \"column\":\"nom\"\n        },\n        {\n            \"column\":\"salaire\",\n            \"function\":\"sum\"\n        }\n        \n    ],\n    \"order_by\":[\n        { \"column_name\" : \"nom\" }\n    ],\n    \"group_by\" : \"nom\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/data/query",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"data",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "get * orderBy nom prenom age",
 					"request": {
 						"method": "POST",
@@ -1345,13 +1374,13 @@
 					"response": []
 				},
 				{
-					"name": "get nom, sum(prix) where nom client groupBy nom",
+					"name": "get nom, sum(prix) group by nom client",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"table_name\": \"client\",\n    \"query_params\": [\n        {\n            \"name\": \"nom_client\" , \"value\" : \"oruc\"\n        }\n    ],\n    \"columns_selected\": [\n        {\n            \"column\":\"nom_client\"\n        },\n        {\n            \"column\":\"prix\",\n            \"function\":\"sum\"\n        }\n        \n    ],\n    \"group_by\":[\"nom\"]\n}",
+							"raw": "{\n    \"table_name\": \"client\",\n    \"columns_selected\": [\n        {\n            \"column\":\"nom_client\"\n        },\n        {\n            \"column\":\"prix\",\n            \"function\":\"sum\"\n        }\n        \n    ],\n    \"group_by\" : \"nom_client\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

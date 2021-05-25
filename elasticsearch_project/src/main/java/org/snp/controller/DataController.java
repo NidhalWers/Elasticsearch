@@ -79,7 +79,6 @@ public class DataController {
 
     //todo
     // group by
-    // order by
     // having
     @POST
     @Path("/query")
@@ -87,7 +86,11 @@ public class DataController {
         if(queryCredentials ==null){
             throw new BadRequestException("query should not be null");
         }
-        Message message = dataService.query(queryCredentials);
+        Message message;
+        if(queryCredentials.groupBy!= null && ! queryCredentials.groupBy.isBlank())
+            message = dataService.groupBy(queryCredentials);
+        else
+            message = dataService.query(queryCredentials);
         if(message.getCode() == 200)
             return (List<String>) ((MessageAttachment)message).getAttachment();
         else {
