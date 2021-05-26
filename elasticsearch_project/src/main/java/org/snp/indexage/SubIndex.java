@@ -2,7 +2,7 @@ package org.snp.indexage;
 
 import org.snp.model.credentials.AttributeCredentials;
 import org.snp.utils.CompareValue;
-import org.snp.utils.QueryUtils;
+import org.snp.utils.ComparisonUtils;
 
 
 import java.util.*;
@@ -12,7 +12,7 @@ public class SubIndex {
 
     private Map<String, List<String>> referenceMap = new LinkedHashMap<>();
 
-    QueryUtils queryUtils = new QueryUtils();
+    ComparisonUtils comparisonUtils = new ComparisonUtils();
 
     private SubIndex(Column column) {
         this.column = column;
@@ -34,12 +34,12 @@ public class SubIndex {
     }
 
     public List<String> find(CompareValue compareValue){
-        if(compareValue.comparison.equals( AttributeCredentials.Comparison.EQ))
+        if(compareValue.operator.equals( AttributeCredentials.Operator.EQ))
             return referenceMap.get(compareValue.value);
         else{
             List<String> result = new ArrayList<>();
             for(Map.Entry<String, List<String>> entry : referenceMap.entrySet()){
-                if(queryUtils.compare(entry.getKey(), compareValue.value, compareValue.comparison)){
+                if(comparisonUtils.compare(entry.getKey(), compareValue.value, compareValue.operator)){
                     result.addAll( entry.getValue() );
                 }
                 System.out.println("1");

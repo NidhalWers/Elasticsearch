@@ -77,9 +77,7 @@ public class DataController {
     }
 
 
-    //todo
-    // group by
-    // having
+    //todo tester having avec plusieurs colonnes
     @POST
     @Path("/query")
     public List<String> get(QueryCredentials queryCredentials){

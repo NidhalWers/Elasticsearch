@@ -12,7 +12,7 @@ public class AttributeCredentials {
 
     public String value;
 
-    public Comparison comparison = Comparison.EQ;
+    public Operator operator = Operator.EQ;
 
     public AttributeCredentials(){}
 
@@ -21,7 +21,7 @@ public class AttributeCredentials {
         this.value = value;;
     }
 
-    public enum Comparison {
+    public enum Operator {
 
         EQ("="),
 
@@ -40,7 +40,7 @@ public class AttributeCredentials {
 
         private final String value;
 
-        Comparison(String value) {
+        Operator(String value) {
             this.value = value;
         }
 

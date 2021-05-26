@@ -66,7 +66,7 @@ public class SubIndexTest {
 
         Assertions.assertTrue(subIndex.find(CompareValue.builder()
                                             .value("oruc")
-                                            .comparison(AttributeCredentials.Comparison.EQ)
+                                            .comparison(AttributeCredentials.Operator.EQ)
                                             .build())
                                     .contains("ligne1"));
     }
@@ -84,7 +84,7 @@ public class SubIndexTest {
 
         Assertions.assertFalse(subIndex.find(CompareValue.builder()
                                                         .value("oruc")
-                                                        .comparison(AttributeCredentials.Comparison.EQ)
+                                                        .comparison(AttributeCredentials.Operator.EQ)
                                                         .build())
                                                 !=null);
     }
@@ -107,7 +107,7 @@ public class SubIndexTest {
 
         Assertions.assertTrue(subIndex.find(CompareValue.builder()
                                             .value("oruc")
-                                            .comparison(AttributeCredentials.Comparison.EQ)
+                                            .comparison(AttributeCredentials.Operator.EQ)
                                             .build())
                                     .contains("ligne1"));
     }
@@ -124,7 +124,7 @@ public class SubIndexTest {
 
         Assertions.assertFalse(subIndex.find(CompareValue.builder()
                                                         .value("oruc")
-                                                        .comparison(AttributeCredentials.Comparison.EQ)
+                                                        .comparison(AttributeCredentials.Operator.EQ)
                                                         .build())
                                                 !=null);
     }

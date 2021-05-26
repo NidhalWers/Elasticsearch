@@ -4,10 +4,10 @@ import org.snp.model.credentials.AttributeCredentials;
 import org.snp.utils.exception.InternalServerErrorException;
 
 
-public class QueryUtils {
+public class ComparisonUtils {
 
-    public boolean compare(String wordX, String wordY, AttributeCredentials.Comparison comparison){
-        switch (comparison){
+    public static boolean compare(String wordX, String wordY, AttributeCredentials.Operator operator){
+        switch (operator){
             case EQ:
                 return wordX.equals(wordY);
             case SUP_OR_EQ:
