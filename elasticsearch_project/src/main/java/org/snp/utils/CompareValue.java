@@ -6,11 +6,11 @@ public class CompareValue {
 
     public String value;
 
-    public AttributeCredentials.Comparison comparison;
+    public AttributeCredentials.Operator operator;
 
-    public CompareValue(String value, AttributeCredentials.Comparison comparison) {
+    public CompareValue(String value, AttributeCredentials.Operator operator) {
         this.value = value;
-        this.comparison = comparison;
+        this.operator = operator;
     }
 
 
@@ -22,22 +22,22 @@ public class CompareValue {
 
         public String value;
 
-        public AttributeCredentials.Comparison comparison;
+        public AttributeCredentials.Operator operator;
 
         public Builder value(String value){
             this.value=value;
             return this;
         }
 
-        public Builder comparison(AttributeCredentials.Comparison comparison){
-            this.comparison=comparison;
+        public Builder comparison(AttributeCredentials.Operator operator){
+            this.operator = operator;
             return this;
         }
 
         public CompareValue build(){
             return new CompareValue(
                     this.value,
-                    this.comparison
+                    this.operator
             );
         }
 

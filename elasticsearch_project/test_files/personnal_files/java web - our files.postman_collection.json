@@ -702,7 +702,36 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"table_name\": \"person\",\n    \"columns_selected\": [\n        {\n            \"column\":\"nom\"\n        },\n        {\n            \"column\":\"salaire\",\n            \"function\":\"sum\"\n        }\n        \n    ],\n    \"order_by\":[\n        { \"column_name\" : \"nom\" }\n    ],\n    \"group_by\" : \"nom\"\n}",
+							"raw": "{\n    \"table_name\": \"person\",\n    \"columns_selected\": [\n        {\n            \"column\":\"nom\"\n        },\n        {\n            \"column\":\"salaire\",\n            \"function\":\"sum\"\n        }\n        \n    ],\n    \"order_by\":[\n        { \"column_name\" : \"salaire\" , \"order\" : \"DESC\" }\n    ],\n    \"group_by\" : \"nom\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/data/query",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"data",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get nom,sum(salaire) OrderBy nom salaire GroupBy nom having sum(salaire) > 1500",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"table_name\": \"person\",\n    \"columns_selected\": [\n        {\n            \"column\":\"nom\"\n        },\n        {\n            \"column\":\"salaire\",\n            \"function\":\"sum\"\n        }\n        \n    ],\n    \"order_by\":[\n        { \"column_name\" : \"salaire\" , \"order\" : \"DESC\" }\n    ],\n    \"group_by\" : \"nom\",\n    \"having\" : [\n        {\n            \"function\" : \"sum\", \"column\" : \"salaire\", \"operator\" : \"SUP\", \"value\" : \"1500\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1322,7 +1351,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"table_name\": \"client\",\n    \"query_params\": [\n        {\n            \"name\": \"prix\" , \"value\" : \"160\", \"comparison\":\"SUP\"\n        }\n    ]\n}",
+							"raw": "{\n    \"table_name\": \"client\",\n    \"query_params\": [\n        {\n            \"name\": \"prix\" , \"value\" : \"160\", \"operator\":\"SUP\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"

@@ -11,10 +11,9 @@ import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.AggregateCredentials;
 import org.snp.model.credentials.AttributeCredentials;
+import org.snp.model.credentials.HavingCredentials;
 import org.snp.model.credentials.QueryCredentials;
-import org.snp.utils.CompareValue;
-import org.snp.utils.FunctionUtils;
-import org.snp.utils.OrderUtils;
+import org.snp.utils.*;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -62,7 +61,7 @@ public class DataService {
                     return new MessageAttachment<>(404, MESSAGE_PREFIX+"column " + columnName + " does not exist in " + queryCredentials.tableName);
                 queryMap.put(attributeCredentials.columnName, CompareValue.builder()
                                                                         .value(attributeCredentials.value)
-                                                                        .comparison(attributeCredentials.comparison)
+                                                                        .comparison(attributeCredentials.operator)
                                                                         .build() );
             }
 
@@ -99,7 +98,7 @@ public class DataService {
 
                 }
 
-                linesSelected = getValuesForColumn(table, valideColumnSelected, linesSelected, queryCredentials.queryParams);
+                linesSelected = getValuesForColumn(table, valideColumnSelected, linesSelected, queryCredentials.queryParams, queryCredentials.having);
 
             }
         }
@@ -152,7 +151,7 @@ public class DataService {
                     return new MessageAttachment<>(404, MESSAGE_PREFIX+"column " + columnName + " does not exists in " + queryCredentials.tableName);
                 queryMap.put(attributeCredentials.columnName, CompareValue.builder()
                                                                 .value(attributeCredentials.value)
-                                                                .comparison(attributeCredentials.comparison)
+                                                                .comparison(attributeCredentials.operator)
                                                                 .build());
             }
 
@@ -217,7 +216,7 @@ public class DataService {
                 return new MessageAttachment<>(404, MESSAGE_PREFIX+"column " + columnName + " does not exists in " + queryCredentials.tableName);
             queryMap.put(attributeCredentials.columnName, CompareValue.builder()
                                                             .value(attributeCredentials.value)
-                                                            .comparison(attributeCredentials.comparison)
+                                                            .comparison(attributeCredentials.operator)
                                                             .build());
         }
 
@@ -324,6 +323,7 @@ public class DataService {
                                     .setColumnSelected(queryCredentials.columnsSelected)
                                     .setQueryParams(queryCredentials.queryParams)
                                     .addAttribute(columnGroupedBy, value)
+                                    .setHaving(queryCredentials.having)
                                     ;
 
 
@@ -332,7 +332,9 @@ public class DataService {
                     linesSelectedForAllValues.add( (List<String>) ((MessageAttachment)messageLineForEachValue).getAttachment()  );
                 }
             }
-            //todo test vide
+            if(linesSelectedForAllValues.isEmpty()){
+                return new MessageAttachment<>(404, MESSAGE_PREFIX+"data not found during groupBy request");
+            }
             /**
              * remove duplicates
              */
@@ -363,26 +365,40 @@ public class DataService {
 
 
 
-    private List<String> getValuesForColumn(Table table, List<AggregateCredentials> columnsSelected, List<String> completeLines, List<AttributeCredentials> queryParams){
+    private List<String> getValuesForColumn(Table table, List<AggregateCredentials> columnsSelected, List<String> completeLines, List<AttributeCredentials> queryParams, List<HavingCredentials> having){
         List<String> result = new ArrayList<>();
 
         for(String value : completeLines){
             String[] valueSplitted = value.split(",");
             String truncatedLine="";
+            boolean havingPassTest = true;
             for(AggregateCredentials column : columnsSelected ){
                 int columnPosition = table.positionOfColumn(column.columnName);
                 if(column.functionName.equals("None")) {
                     truncatedLine += valueSplitted[columnPosition] + ",";
                 }else{
                     Message message = functionUtils.switchFunction(column.functionName, table.getName(), column.columnName, queryParams);
-                    if(message.getCode()==200){//todo having : si il y a un having, on effectue le test, un boolean having au début du for, si boolean true, on ajoute à la ligne 329, sinon nan
-                        truncatedLine +=String.valueOf(((MessageAttachment)message).getAttachment()) + ",";
+                    if(message.getCode()==200){
+                        String attachment = String.valueOf(((MessageAttachment)message).getAttachment());
+                        /**
+                         * having
+                         */
+                        if(having!=null && ! having.isEmpty()) {
+                            HavingCredentials havingCredentials;
+                            if((havingCredentials = HavingUtils.getHavingForFunctionAndColumn(having, column.functionName, column.columnName) ) != null)
+                                havingPassTest = ComparisonUtils.compare(attachment, havingCredentials.value, havingCredentials.operator);
+                        }
+                        /**
+                         * ajoute le résultat à la ligne
+                         */
+                        truncatedLine += attachment + ",";
                     }
                 }
             }
             if(truncatedLine!=null && ! truncatedLine.isBlank()) {
                 truncatedLine = StringUtils.chop(truncatedLine);
-                result.add(truncatedLine);
+                if(havingPassTest)
+                    result.add(truncatedLine);
             }
         }
 

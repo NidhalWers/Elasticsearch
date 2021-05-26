@@ -60,7 +60,7 @@ public class IndexTest {
         //Assertions.assertFalse(index.find(query).contains("ligne2"));
         Assertions.assertTrue(subIndex.find(CompareValue.builder()
                                             .value("oruc")
-                                            .comparison(AttributeCredentials.Comparison.EQ)
+                                            .comparison(AttributeCredentials.Operator.EQ)
                                             .build())
                                         .contains("ligne1"));
 
@@ -101,7 +101,7 @@ public class IndexTest {
 
         List<String> resultTest = subIndex.find(CompareValue.builder()
                                                 .value("oruc")
-                                                .comparison(AttributeCredentials.Comparison.EQ)
+                                                .comparison(AttributeCredentials.Operator.EQ)
                                                 .build());
         Assertions.assertTrue(resultTest.contains("ligne2"));
     }

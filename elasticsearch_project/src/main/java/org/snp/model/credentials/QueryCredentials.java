@@ -29,6 +29,9 @@ public class QueryCredentials {
     @JsonbProperty("order_by")
     public List<OrderCredentials> orderBy;
 
+    @JsonbProperty("having")
+    public List<HavingCredentials> having;
+
     public QueryCredentials() {
     }
 
@@ -68,8 +71,18 @@ public class QueryCredentials {
             this.columnsSelected.addAll(columnsSelected);
         return this;
     }
-    public QueryCredentials addColumn(String name){
+    public QueryCredentials addColumn(String name) {
         columnsSelected.add(new AggregateCredentials(name));
+        return this;
+    }
+
+    /**
+     * having
+     */
+    public QueryCredentials setHaving(List<HavingCredentials> having){
+        this.having = new ArrayList<>();
+        if(having != null)
+            this.having.addAll(having);
         return this;
     }
 
