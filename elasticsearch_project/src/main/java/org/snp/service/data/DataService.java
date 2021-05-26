@@ -407,7 +407,7 @@ public class DataService {
                         if(having!=null && ! having.isEmpty()) {
                             HavingCredentials havingCredentials;
                             if((havingCredentials = HavingUtils.getHavingForFunctionAndColumn(having, column.functionName, column.columnName) ) != null)
-                                havingPassTest = ComparisonUtils.compare(attachment, havingCredentials.value, havingCredentials.operator);
+                                havingPassTest = havingPassTest && ComparisonUtils.compare(attachment, havingCredentials.value, havingCredentials.operator);
                         }
                         /**
                          * ajoute le résultat à la ligne
