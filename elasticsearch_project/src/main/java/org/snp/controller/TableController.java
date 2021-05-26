@@ -28,9 +28,6 @@ public class TableController {
 
     @POST
     public Table createTable(TableCredentials tableCredentials) {
-        if(!Main.isMasterTest()){
-            throw new NotAuthorizedException("not authorized to load data in a slave node");
-        }
         if(tableCredentials==null)
             throw new BadRequestException("body can not be empty");
         if(tableCredentials.name==null ||tableCredentials.columns==null){

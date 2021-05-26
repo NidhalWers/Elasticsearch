@@ -25,9 +25,6 @@ public class IndexController {
     @POST
     @Path("/add")
     public Table addIndex(IndexCredentials indexCredentials) throws AccessDeniedException {
-        if(!Main.isMasterTest()){
-            throw new NotAuthorizedException("not authorized to load data in a slave node");
-        }
         if(indexCredentials==null)
             throw new BadRequestException("body should not be null");
         if(indexCredentials.tableName==null || indexCredentials.tableName.isBlank())
