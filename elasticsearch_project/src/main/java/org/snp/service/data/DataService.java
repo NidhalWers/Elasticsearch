@@ -128,8 +128,9 @@ public class DataService {
         }
         /**
          * limit
+         * only for the master node
          */
-        if(queryCredentials.limit != null){
+        if(Main.isMasterTest() && queryCredentials.limit != null){
             if(queryCredentials.limit.limit==null || queryCredentials.limit.limit.isBlank())
                 return new MessageAttachment<>(401, MESSAGE_PREFIX+" limit value can not be blank");
             int from = Integer.valueOf(queryCredentials.limit.offset);
@@ -366,9 +367,9 @@ public class DataService {
                 result = orderUtils.orderForColumn(table, queryCredentials.columnsSelected, queryCredentials.orderBy, 0, result);
             }
             /**
-             * limit
+             * only for the master node limit
              */
-            if(queryCredentials.limit != null){
+            if(Main.isMasterTest() && queryCredentials.limit != null){
                 if(queryCredentials.limit.limit==null || queryCredentials.limit.limit.isBlank())
                     return new MessageAttachment<>(401, MESSAGE_PREFIX+" limit value can not be blank");
                 int from = Integer.valueOf(queryCredentials.limit.offset);
