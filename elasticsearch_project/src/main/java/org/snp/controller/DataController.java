@@ -77,7 +77,6 @@ public class DataController {
     }
 
 
-    //todo tester having avec plusieurs colonnes
     @POST
     @Path("/query")
     public List<String> get(QueryCredentials queryCredentials){

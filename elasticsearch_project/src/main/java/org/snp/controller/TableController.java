@@ -1,5 +1,6 @@
 package org.snp.controller;
 
+import org.snp.Main;
 import org.snp.dao.TableDao;
 import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
@@ -13,7 +14,6 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
 import java.util.List;
 
 @Path("/table")
@@ -28,6 +28,9 @@ public class TableController {
 
     @POST
     public Table createTable(TableCredentials tableCredentials) {
+        if(!Main.isMasterTest()){
+            throw new NotAuthorizedException("not authorized to load data in a slave node");
+        }
         if(tableCredentials==null)
             throw new BadRequestException("body can not be empty");
         if(tableCredentials.name==null ||tableCredentials.columns==null){
