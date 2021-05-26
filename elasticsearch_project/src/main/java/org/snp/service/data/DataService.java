@@ -126,6 +126,16 @@ public class DataService {
             }
             linesSelected = orderUtils.orderForColumn(table, queryCredentials.columnsSelected, queryCredentials.orderBy, 0, linesSelected);
         }
+        /**
+         * limit
+         */
+        if(queryCredentials.limit != null){
+            if(queryCredentials.limit.limit==null || queryCredentials.limit.limit.isBlank())
+                return new MessageAttachment<>(401, MESSAGE_PREFIX+" limit value can not be blank");
+            int from = Integer.valueOf(queryCredentials.limit.offset);
+            int to = from + Integer.valueOf(queryCredentials.limit.limit);
+            linesSelected = linesSelected.subList(from,to);
+        }
         return new MessageAttachment<List>(200, linesSelected);
     }
 

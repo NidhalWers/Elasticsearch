@@ -32,6 +32,8 @@ public class QueryCredentials {
     @JsonbProperty("having")
     public List<HavingCredentials> having;
 
+    public LimitCredentials limit;
+
     public QueryCredentials() {
     }
 
