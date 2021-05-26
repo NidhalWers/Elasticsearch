@@ -133,8 +133,9 @@ public class DataService {
         if(Main.isMasterTest() && queryCredentials.limit != null){
             if(queryCredentials.limit.limit==null || queryCredentials.limit.limit.isBlank())
                 return new MessageAttachment<>(401, MESSAGE_PREFIX+" limit value can not be blank");
-            int from = Integer.valueOf(queryCredentials.limit.offset);
-            int to = from + Integer.valueOf(queryCredentials.limit.limit);
+            int max = linesSelected.size()-1;
+            int from = Integer.valueOf(queryCredentials.limit.offset) <= max ? Integer.valueOf(queryCredentials.limit.offset) : max;
+            int to = from + Integer.valueOf(queryCredentials.limit.limit) <= max + 1 ? from + Integer.valueOf(queryCredentials.limit.limit) : max +1;
             linesSelected = linesSelected.subList(from,to);
         }
         return new MessageAttachment<List>(200, linesSelected);

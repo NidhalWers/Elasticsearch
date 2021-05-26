@@ -609,6 +609,35 @@
 					"response": []
 				},
 				{
+					"name": "get * limit",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"table_name\": \"person\",\n    \"limit\" : {\n        \"limit\" : \"1\", \"offset\" : \"6\"\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/data/query",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"data",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "get * orderBy nom ASC",
 					"request": {
 						"method": "POST",
@@ -725,13 +754,42 @@
 					"response": []
 				},
 				{
-					"name": "get nom,sum(salaire) OrderBy nom salaire GroupBy nom having sum(salaire) > 1500",
+					"name": "get nom,sum(salaire) OrderBy salaire GroupBy nom having sum(salaire) > 1500",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
 							"raw": "{\n    \"table_name\": \"person\",\n    \"columns_selected\": [\n        {\n            \"column\":\"nom\"\n        },\n        {\n            \"column\":\"salaire\",\n            \"function\":\"sum\"\n        }\n        \n    ],\n    \"order_by\":[\n        { \"column_name\" : \"salaire\" , \"order\" : \"DESC\" }\n    ],\n    \"group_by\" : \"nom\",\n    \"having\" : [\n        {\n            \"function\" : \"sum\", \"column\" : \"salaire\", \"operator\" : \"SUP\", \"value\" : \"1500\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/data/query",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"data",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get nom,sum(salaire),max(age) OrderBy salaire GroupBy nom having sum(salaire) > 1500 Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"table_name\": \"person\",\n    \"columns_selected\": [\n        {\n            \"column\":\"nom\"\n        },\n        {\n            \"column\":\"salaire\",\n            \"function\":\"sum\"\n        },\n        {\n            \"column\":\"age\",\n            \"function\":\"max\"\n        }\n        \n    ],\n    \"order_by\":[\n        { \"column_name\" : \"salaire\" , \"order\" : \"DESC\" }\n    ],\n    \"group_by\" : \"nom\",\n    \"having\" : [\n        {\n            \"function\" : \"sum\", \"column\" : \"salaire\", \"operator\" : \"SUP\", \"value\" : \"1500\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
