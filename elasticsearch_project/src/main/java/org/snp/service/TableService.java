@@ -48,6 +48,20 @@ public class TableService {
         return new MessageAttachment<Table>(200, table);
     }
 
+    public Message delete(String tableName){
+        Table table = dao.find(tableName);
+        if(table == null)
+            return new Message(404);
+
+        dao.delete(tableName);
+        if(Main.isMasterTest()){
+            for(SlaveClient slaveClient :slaveClients){
+                slaveClient.deleteTable(tableName);
+            }
+        }
+        return new MessageAttachment<>(200, "Deleting successfully");
+    }
+
     public boolean addIndex(Table table, List<Column> cols){
         Map<String, SubIndex> map = new HashMap<>();
         List<String> keys = new ArrayList<>();
@@ -75,11 +89,6 @@ public class TableService {
         }
         return true;
     }
-
-    public void removeIndex(Table table, Index index){
-        table.getIndexes().remove(index);
-    }
-    //todo remove index with a list of column's name and test
 
 
     public void updateAllReference(Table table, int difference, int from){

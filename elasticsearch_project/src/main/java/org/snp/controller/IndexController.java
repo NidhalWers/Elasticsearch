@@ -5,6 +5,7 @@ import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.IndexCredentials;
+import org.snp.model.credentials.RemoveIndexCredentials;
 import org.snp.service.IndexService;
 import org.snp.utils.exception.NotFoundException;
 
@@ -40,6 +41,25 @@ public class IndexController {
                 throw new NotFoundException("table " + indexCredentials.tableName + " does not exist");
             else
                 throw new AccessDeniedException("this index already exist in " + indexCredentials.tableName + " table");
+        }
+    }
+
+    @DELETE
+    @Path("/remove")
+    public String removeIndex(RemoveIndexCredentials indexCredentials){
+        if(indexCredentials == null)
+            throw new BadRequestException("body should not be null");
+        if(indexCredentials.tableName==null || indexCredentials.tableName.isBlank())
+            throw new BadRequestException("table name can not be blank or empty");
+        if(indexCredentials.columns==null || indexCredentials.columns.isEmpty())
+            throw new BadRequestException("impossible to create an index without column");
+
+        Message message = indexService.delete(indexCredentials.tableName, indexCredentials.columns);
+
+        if(message.getCode() == 200){
+            return (String) ((MessageAttachment)message).getAttachment();
+        }else{
+            throw new NotFoundException( (String) ((MessageAttachment)message).getAttachment() );
         }
     }
 }

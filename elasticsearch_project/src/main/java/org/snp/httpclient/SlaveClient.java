@@ -57,6 +57,14 @@ public class SlaveClient extends HttpClient{
         }
     }
 
+    public void deleteTable(String tableName){
+        try {
+            delete("/table",tableName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * redirection to add index
      * @param indexCredentials
@@ -71,6 +79,15 @@ public class SlaveClient extends HttpClient{
         }
     }
 
+    public void deleteIndex(RemoveIndexCredentials indexCredentials){
+        Jsonb jsonb = JsonbBuilder.create();
+        String json = jsonb.toJson(indexCredentials);
+        try {
+            delete("/index/remove", json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * redirection to query data

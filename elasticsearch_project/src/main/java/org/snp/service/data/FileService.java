@@ -4,6 +4,7 @@ import org.snp.Main;
 import org.snp.dao.DataDao;
 import org.snp.dao.TableDao;
 import org.snp.httpclient.SlaveClient;
+import org.snp.indexage.Column;
 import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
@@ -15,6 +16,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.io.*;
 import java.util.HashMap;
+import java.util.List;
 
 @ApplicationScoped
 public class FileService {
@@ -199,8 +201,10 @@ public class FileService {
     private void insertCsvLineIntoTable(String line, Table table, int position, String fileName ){
         String []values = line.split(",");
         HashMap<String, String> lineToInsert = new HashMap<>();
+        List<Column> columns = table.getColumns();
         for (int i = 0; i < values.length; i++) {
-            lineToInsert.put(table.getColumns().get(i).getName(), values[i]);
+            if( i < columns.size())
+                lineToInsert.put(columns.get(i).getName(), values[i]);
         }
         int lineLength = line.getBytes().length;
         dataDAO.insert(table, lineToInsert,fileName+","+position+","+lineLength);
@@ -214,8 +218,10 @@ public class FileService {
         }
         String []values = rowCredentials.line.split(",");
         HashMap<String, String> lineToInsert = new HashMap<>();
+        List<Column> columns = table.getColumns();
         for (int i = 0; i < values.length; i++) {
-            lineToInsert.put(table.getColumns().get(i).getName(), values[i]);
+            if( i < columns.size())
+                lineToInsert.put(columns.get(i).getName(), values[i]);
         }
         int  lineLength = rowCredentials.line.getBytes().length;
         dataDAO.insert(table, lineToInsert,rowCredentials.fileName+","+rowCredentials.position+","+lineLength);

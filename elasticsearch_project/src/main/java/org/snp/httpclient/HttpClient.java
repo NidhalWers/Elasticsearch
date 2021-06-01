@@ -33,6 +33,16 @@ public class HttpClient {
         return client.newCall(request).execute();
     }
 
+    public Response delete(String uri, String json) throws IOException {
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = RequestBody.create(JSON, json);
+        Request request = new Request.Builder()
+                .url(BASE_URI + port + uri)
+                .delete(requestBody)
+                .build();
+        return client.newCall(request).execute();
+    }
+
 
 
 }

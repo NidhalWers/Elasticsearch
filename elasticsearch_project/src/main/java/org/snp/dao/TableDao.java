@@ -24,4 +24,14 @@ public class TableDao {
     public List<Table> findAll(){
         return tables;
     }
+
+    public void delete(String key){
+        Table tableToDelete = null;
+        for(Table table : tables){
+            if(table.getName().equals(key))
+                tableToDelete = table;
+        }
+        if(tableToDelete != null)
+            tables.remove(tableToDelete);
+    }
 }
