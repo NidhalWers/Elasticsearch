@@ -57,6 +57,14 @@ public class SlaveClient extends HttpClient{
         }
     }
 
+    public void deleteTable(String tableName){
+        try {
+            delete("/table",tableName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * redirection to add index
      * @param indexCredentials
