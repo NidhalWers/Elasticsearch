@@ -1,6 +1,5 @@
 package org.snp.controller;
 
-import org.snp.Main;
 import org.snp.dao.TableDao;
 import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
@@ -9,6 +8,7 @@ import org.snp.model.credentials.TableCredentials;
 import org.snp.model.credentials.redirection.UpdateAllRefCredentials;
 import org.snp.service.TableService;
 import org.snp.utils.exception.AlreadyExistException;
+import org.snp.utils.exception.NotFoundException;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -41,15 +41,15 @@ public class TableController {
     }
 
     @DELETE
-    public String deleteTable(String tableName){
-        if(tableName == null || tableName.isBlank())
+    public String deleteTable(String table){
+        if(table == null || table.isBlank())
             throw new BadRequestException("body can not be empty");
-        Message message = null;
+        Message message = tableService.delete(table);
 
         if(message.getCode() == 200)
             return (String) ((MessageAttachment)message).getAttachment();
         else
-            throw new NotFoundException("table" + tableName + " does not exist");
+            throw new NotFoundException("table" + table + " does not exist");
     }
 
     @GET

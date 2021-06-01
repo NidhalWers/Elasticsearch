@@ -54,6 +54,11 @@ public class TableService {
             return new Message(404);
 
         dao.delete(tableName);
+        if(Main.isMasterTest()){
+            for(SlaveClient slaveClient :slaveClients){
+                slaveClient.deleteTable(tableName);
+            }
+        }
         return new MessageAttachment<>(200, "Deleting successfully");
     }
 
