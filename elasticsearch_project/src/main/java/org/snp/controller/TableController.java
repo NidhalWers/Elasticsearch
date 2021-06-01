@@ -39,6 +39,19 @@ public class TableController {
         else
             throw new AlreadyExistException("table "+tableCredentials.name+" already exists");
     }
+
+    @DELETE
+    public String deleteTable(String tableName){
+        if(tableName == null || tableName.isBlank())
+            throw new BadRequestException("body can not be empty");
+        Message message = null;
+
+        if(message.getCode() == 200)
+            return (String) ((MessageAttachment)message).getAttachment();
+        else
+            throw new NotFoundException("table" + tableName + " does not exist");
+    }
+
     @GET
     @Path("/all")
     public List<Table> getAllTable(){
