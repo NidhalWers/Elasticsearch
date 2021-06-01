@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f2e453ba-1946-42f5-9fa3-b5f92369d1cf",
+		"_postman_id": "5af08576-80b4-45be-a172-fd71c598efbd",
 		"name": "java web : our files",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -50,6 +50,35 @@
 					"response": []
 				},
 				{
+					"name": "delete table",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "person",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/table/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"table",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "addIndex nom",
 					"request": {
 						"method": "POST",
@@ -83,6 +112,47 @@
 								{
 									"key": "",
 									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete Index nom",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"table_name\" : \"person\",\n    \"columns\" : [\"nom\"] \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/index/remove",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"index",
+								"remove"
+							],
+							"query": [
+								{
+									"key": "ligne",
+									"value": "4",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": null,
 									"disabled": true
 								}
 							]
@@ -165,6 +235,47 @@
 								{
 									"key": "",
 									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete Index nom,prenom",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"table_name\" : \"person\",\n    \"columns\" : [\"prenom\",\"nom\"] \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/index/remove",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"index",
+								"remove"
+							],
+							"query": [
+								{
+									"key": "ligne",
+									"value": "4",
+									"disabled": true
+								},
+								{
+									"key": "",
+									"value": null,
 									"disabled": true
 								}
 							]
@@ -725,7 +836,7 @@
 					"response": []
 				},
 				{
-					"name": "get nom,sum(salaire) OrderBy nom salaire GroupBy nom",
+					"name": "get nom,sum(salaire) OrderBy salaire GroupBy nom",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -783,7 +894,7 @@
 					"response": []
 				},
 				{
-					"name": "get nom,sum(salaire),max(age) OrderBy salaire GroupBy nom having sum(salaire) > 1500 Copy",
+					"name": "get nom,sum(salaire),max(age) OrderBy salaire GroupBy nom having sum(salaire) > 1500",
 					"request": {
 						"method": "POST",
 						"header": [],
