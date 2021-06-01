@@ -48,3 +48,64 @@ If you want to learn more about building native executables, please consult http
 <p>A Hello World RESTEasy resource</p>
 
 Guide: https://quarkus.io/guides/rest-json
+
+# Call an endpoint 
+## How to create a table
+Query : POST http://localhost:8080/table/
+
+Body :
+``
+{
+"columns": 
+[
+{ "name": "nom", "type": "string" },
+{ "name": "prenom", "type": "string" },
+{ "name": "age", "type": "int"},
+{ "name": "salaire", "type": "double"}
+],
+"name": "person"
+}
+``
+
+## How to add a simple index
+Index with one field in this example
+
+Query : POST http://localhost:8080/index/add
+
+Body : 
+``
+{
+"table_name" : "person",
+"columns" : [
+{"name" : "nom"}
+]
+}
+``
+
+## How to add a multiple index
+Index with two fields in this example
+
+Query : POST http://localhost:8080/index/add
+
+Body : 
+``
+{
+"table_name" : "person",
+"columns" : [
+{"name" : "prenom"},
+{"name" : "nom"}
+]
+}
+``
+
+## How to load data
+Query : POST http://localhost:8080/data/load
+
+Body : Select form-data tab
+    Add file and table keys
+    Select the CSV file with the data for the file key
+    For table set the table's name
+
+
+
+

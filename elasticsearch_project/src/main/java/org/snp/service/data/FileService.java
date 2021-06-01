@@ -132,6 +132,9 @@ public class FileService {
         InputStreamReader inputStreamReader = new InputStreamReader(csvFile);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
         Table table = tableDao.find(tableName);
+        if(table==null){
+            return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+tableName+" does not exists");
+        }
         int position;
         if(OSValidator.isWindows()) {
             position = 1;
@@ -140,9 +143,6 @@ public class FileService {
                 position=0;
             }else
                 position=1;
-        }
-        if(table==null){
-            return new MessageAttachment<>(404, MESSAGE_PREFIX+"table "+tableName+" does not exists");
         }
         //create file
         File tempFile = File.createTempFile(fileName,".csv");

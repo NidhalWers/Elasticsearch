@@ -1,8 +1,9 @@
 nom,prenom,age,salaire
-oruc,sinem,27,500
-pitton,java,32,5000
-teyeb,nidhal,21,2500
-pitton,java,34,1300
-pitton,java,34,2300
-mickunas,paulius,21,500
-pitton,olivier,32,10000
+dupont,michel,27,500
+bernier,martin,32,5000
+kors,michael,21,2500
+gautier,jean-paul,34,1300
+thomas,jean,34,2300
+richard,paul,21,500
+dupont,olivier,32,10000
+dupont,jean, 30, 1200
