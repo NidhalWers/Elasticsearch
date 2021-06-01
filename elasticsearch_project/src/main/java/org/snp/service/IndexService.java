@@ -58,8 +58,7 @@ public class IndexService {
         if(index == null){
             return new MessageAttachment<>(404, "index "+indexKey+ " does not exist in table "+tableName);
         }
-        System.out.println("deleting index "+ indexKey +" in "+ System.getProperty( "quarkus.http.port" ));
-        table.getIndexes().remove(index);
+        table.getIndexes().remove(indexKey);
 
         if(Main.isMasterTest()){
             for(SlaveClient slaveClient :slaveClients){
