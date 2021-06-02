@@ -178,7 +178,7 @@ public class FileService {
             fos.close();
         }
 
-        return new MessageAttachment<Integer>(200, nbLigne);
+        return new MessageAttachment<String>(200, "nombre de ligne insérées : " + nbLigne);
     }
 
 
