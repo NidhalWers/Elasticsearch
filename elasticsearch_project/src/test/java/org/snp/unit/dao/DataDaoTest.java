@@ -27,7 +27,7 @@ public class DataDaoTest {
         Table  table = TestFactory.createTable();
         table = TestUtils.insertData(table);
 
-        Assertions.assertTrue(table.getSubIndexMap().get("nom").find(CompareValue.builder()
+        Assertions.assertTrue(table.getDictionnaireMap().get("nom").find(CompareValue.builder()
                                                                     .value("teyeb")
                                                                     .comparison(AttributeCredentials.Operator.EQ)
                                                                     .build())
@@ -39,7 +39,7 @@ public class DataDaoTest {
         Table  table = TestFactory.createTable();
         table = TestUtils.insertData(table);
 
-        Assertions.assertFalse(table.getSubIndexMap().get("nom").find(CompareValue.builder()
+        Assertions.assertFalse(table.getDictionnaireMap().get("nom").find(CompareValue.builder()
                                                                                 .value("oruc")
                                                                                 .comparison(AttributeCredentials.Operator.EQ)
                                                                                 .build())
@@ -105,7 +105,7 @@ public class DataDaoTest {
         Table  table = TestFactory.createTable();
         table = TestUtils.insertData(table);
 
-        Assertions.assertFalse(table.getSubIndexMap().get("nom").find(CompareValue.builder()
+        Assertions.assertFalse(table.getDictionnaireMap().get("nom").find(CompareValue.builder()
                                                                                 .value("oruc")
                                                                                 .comparison(AttributeCredentials.Operator.EQ)
                                                                                 .build())
