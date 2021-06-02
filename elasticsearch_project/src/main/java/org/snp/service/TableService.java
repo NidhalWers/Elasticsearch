@@ -7,7 +7,7 @@ import org.snp.httpclient.SlaveClient;
 import org.snp.indexage.Column;
 import org.snp.indexage.Index;
 import org.snp.indexage.Table;
-import org.snp.indexage.SubIndex;
+import org.snp.indexage.Dictionnaire;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
 import org.snp.model.credentials.TableCredentials;
@@ -63,18 +63,18 @@ public class TableService {
     }
 
     public boolean addIndex(Table table, List<Column> cols){
-        Map<String, SubIndex> map = new HashMap<>();
+        Map<String, Dictionnaire> map = new HashMap<>();
         List<String> keys = new ArrayList<>();
         for(Column col : cols){
             keys.add(col.getName());
-            SubIndex subIndex = table.getSubIndexMap().get(col.getName());
-            if(subIndex == null) {
-                subIndex = SubIndex.builder()
+            Dictionnaire dictionnaire = table.getDictionnaireMap().get(col.getName());
+            if(dictionnaire == null) {
+                dictionnaire = Dictionnaire.builder()
                         .column(col)
                         .build();
-                table.getSubIndexMap().put(col.getName(), subIndex);
+                table.getDictionnaireMap().put(col.getName(), dictionnaire);
             }
-            map.put(col.getName(), subIndex);
+            map.put(col.getName(), dictionnaire);
         }
         Index newIndex = Index.builder()
                 .columns(cols)
@@ -92,8 +92,8 @@ public class TableService {
 
 
     public void updateAllReference(Table table, int difference, int from){
-        for(SubIndex subIndex : table.getSubIndexMap().values()){
-            subIndex.updateTheReference(difference, from);
+        for(Dictionnaire dictionnaire : table.getDictionnaireMap().values()){
+            dictionnaire.updateTheReference(difference, from);
         }
         /**
          * redirections
@@ -122,8 +122,8 @@ public class TableService {
     public void updateAllReference(UpdateAllRefCredentials updateAllRefCredentials) {
         Table table = tableDao.find(updateAllRefCredentials.tableName);
         if(table!=null) {
-            for (SubIndex subIndex : table.getSubIndexMap().values()) {
-                subIndex.updateTheReference(updateAllRefCredentials.difference, updateAllRefCredentials.from);
+            for (Dictionnaire dictionnaire : table.getDictionnaireMap().values()) {
+                dictionnaire.updateTheReference(updateAllRefCredentials.difference, updateAllRefCredentials.from);
             }
         }
     }

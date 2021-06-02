@@ -1,7 +1,7 @@
 package org.snp.dao;
 
 import org.snp.indexage.Index;
-import org.snp.indexage.SubIndex;
+import org.snp.indexage.Dictionnaire;
 import org.snp.indexage.Table;
 import org.snp.utils.CompareValue;
 import org.snp.utils.ListUtils;
@@ -31,11 +31,11 @@ public class DataDao {
             return index.find(query);
         else {
             List<List> allResults = new ArrayList<>();
-            SubIndex subIndex;
+            Dictionnaire dictionnaire;
             for(String k : keys) {
-                subIndex=table.getSubIndexMap().get(k);
-                if (subIndex!=null) {
-                    allResults.add( subIndex.find(query.get((k))) );
+                dictionnaire =table.getDictionnaireMap().get(k);
+                if (dictionnaire !=null) {
+                    allResults.add( dictionnaire.find(query.get((k))) );
                 }
             }
             List<String> finalResult = ListUtils.intersection(allResults);
@@ -46,8 +46,8 @@ public class DataDao {
 
     public List<String> findAll(Table table){
         ArrayList<String> allResults = new ArrayList<>();
-        for(SubIndex subIndex : table.getSubIndexMap().values()){
-            for(List<String> references : subIndex.getReferenceMap().values()){
+        for(Dictionnaire dictionnaire : table.getDictionnaireMap().values()){
+            for(List<String> references : dictionnaire.getReferenceMap().values()){
                 for(String ref : references){
                     if(! allResults.contains(ref))
                         allResults.add(ref);

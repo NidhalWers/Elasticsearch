@@ -8,17 +8,17 @@ import java.util.*;
 
 public class Index {
     private List<Column> columns;
-    private Map<String, SubIndex> subIndexMap;
+    private Map<String, Dictionnaire> dictionnaireMap;
 
-    private Index(List<Column> columns, Map<String, SubIndex> subIndexMap) {
+    private Index(List<Column> columns, Map<String, Dictionnaire> dictionnaireMap) {
         this.columns = columns;
-        this.subIndexMap=subIndexMap;
+        this.dictionnaireMap = dictionnaireMap;
     }
 
     public void insertLine(HashMap<String,String> data, String reference ){
         for(Column column : columns){
             String value = data.getOrDefault(column.getName(),"NULL")  ;
-            subIndexMap
+            dictionnaireMap
                     .get(column.getName())
                         .insertLine(value, reference);
         }
@@ -27,7 +27,7 @@ public class Index {
     public List<String> find(HashMap<String, CompareValue> query){
         List<List> allResults = new ArrayList<>();
         for(Map.Entry<String, CompareValue> colum : query.entrySet()){
-            List subIndexMapList = subIndexMap
+            List subIndexMapList = dictionnaireMap
                     .get(colum.getKey())
                     .find(colum.getValue());
             if(subIndexMapList!=null){
@@ -50,7 +50,7 @@ public class Index {
     public String toString() {
         return "Index{" +
                 "columns=" + columns +
-                ", subIndexMap=" + subIndexMap +
+                ", subIndexMap=" + dictionnaireMap +
                 '}';
     }
 
@@ -63,7 +63,7 @@ public class Index {
 
     public static class Builder{
         private List<Column> columns;
-        private Map<String, SubIndex> subIndexMap;
+        private Map<String, Dictionnaire> subIndexMap;
 
         public Builder() {
         }
@@ -74,7 +74,7 @@ public class Index {
         }
 
 
-        public Builder subIndexes(Map<String, SubIndex> subIndexMap){
+        public Builder subIndexes(Map<String, Dictionnaire> subIndexMap){
             this.subIndexMap = subIndexMap;
             return this;
         }

@@ -9,7 +9,7 @@ public class Table {
     private String name;
     private List<Column> columns;
     private Map<String, Index> indexes = new TreeMap<>();
-    private Map<String, SubIndex> subIndexMap = new HashMap<>();
+    private Map<String, Dictionnaire> dictionnaireMap = new HashMap<>();
 
     private Table(String name, List<Column> columns) {
         this.name = name;
@@ -43,8 +43,8 @@ public class Table {
         return indexes;
     }
 
-    public Map<String, SubIndex> getSubIndexMap() {
-        return subIndexMap;
+    public Map<String, Dictionnaire> getDictionnaireMap() {
+        return dictionnaireMap;
     }
 
 
@@ -54,7 +54,7 @@ public class Table {
                 "name='" + name + "\n" +
                 stringOfColumns() + "\n" +
                 (indexes.keySet().size() > 0 ? "\tindexes :\n"+indexes.keySet() : "" ) +
-                (subIndexMap.keySet().size() > 0 ? "\tsub indexes : \n"+subIndexMap.keySet(): "")+
+                (dictionnaireMap.keySet().size() > 0 ? "\tsub indexes : \n"+ dictionnaireMap.keySet(): "")+
                 '}';
     }
 

@@ -5,7 +5,7 @@ import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.snp.indexage.Column;
-import org.snp.indexage.SubIndex;
+import org.snp.indexage.Dictionnaire;
 import org.snp.indexage.Index;
 import org.snp.model.credentials.AttributeCredentials;
 import org.snp.utils.CompareValue;
@@ -28,14 +28,14 @@ public class IndexTest {
     @Test
     public void testInsertLineHappyPath(){
 
-        Map<String, SubIndex> subIndexMap = new HashMap<>();
-        SubIndex subIndex = SubIndex.builder()
+        Map<String, Dictionnaire> subIndexMap = new HashMap<>();
+        Dictionnaire dictionnaire = Dictionnaire.builder()
                 .column(Column.builder()
                         .name("nom")
                         .type("String")
                         .build())
                 .build();
-        subIndexMap.put("nom",subIndex );
+        subIndexMap.put("nom", dictionnaire);
 
         ArrayList<Column> column = new ArrayList<>();
         column.add(Column.builder()
@@ -58,7 +58,7 @@ public class IndexTest {
         query.put("nom", "oruc");
 
         //Assertions.assertFalse(index.find(query).contains("ligne2"));
-        Assertions.assertTrue(subIndex.find(CompareValue.builder()
+        Assertions.assertTrue(dictionnaire.find(CompareValue.builder()
                                             .value("oruc")
                                             .comparison(AttributeCredentials.Operator.EQ)
                                             .build())
@@ -73,14 +73,14 @@ public class IndexTest {
 
     @Test
     public void testFindHappyPath(){
-        Map<String, SubIndex> subIndexMap = new HashMap<>();
-        SubIndex subIndex = SubIndex.builder()
+        Map<String, Dictionnaire> subIndexMap = new HashMap<>();
+        Dictionnaire dictionnaire = Dictionnaire.builder()
                 .column(Column.builder()
                         .name("nom")
                         .type("String")
                         .build())
                 .build();
-        subIndexMap.put("nom",subIndex );
+        subIndexMap.put("nom", dictionnaire);
 
         ArrayList<Column> column = new ArrayList<>();
         column.add(Column.builder()
@@ -93,13 +93,13 @@ public class IndexTest {
                 .subIndexes(subIndexMap)
                 .build();
 
-        subIndex.insertLine("oruc", "ligne2");
+        dictionnaire.insertLine("oruc", "ligne2");
 
 
         HashMap<String,String> query = new HashMap<>();
         query.put("nom", "oruc");
 
-        List<String> resultTest = subIndex.find(CompareValue.builder()
+        List<String> resultTest = dictionnaire.find(CompareValue.builder()
                                                 .value("oruc")
                                                 .comparison(AttributeCredentials.Operator.EQ)
                                                 .build());

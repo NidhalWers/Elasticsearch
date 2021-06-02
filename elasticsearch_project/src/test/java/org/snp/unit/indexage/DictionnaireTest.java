@@ -4,12 +4,12 @@ import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.snp.indexage.Column;
-import org.snp.indexage.SubIndex;
+import org.snp.indexage.Dictionnaire;
 import org.snp.model.credentials.AttributeCredentials;
 import org.snp.utils.CompareValue;
 
 @QuarkusTest
-public class SubIndexTest {
+public class DictionnaireTest {
 
     /**
      * method to test : getColumn()
@@ -21,11 +21,11 @@ public class SubIndexTest {
                             .type("String")
                             .build();
 
-        SubIndex subIndex = SubIndex.builder()
+        Dictionnaire dictionnaire = Dictionnaire.builder()
                                     .column(column)
                                     .build();
 
-        Assertions.assertEquals(subIndex.getColumn(), column );
+        Assertions.assertEquals(dictionnaire.getColumn(), column );
 
     }
 
@@ -36,11 +36,11 @@ public class SubIndexTest {
                                 .type("String")
                                 .build();
 
-        SubIndex subIndex = SubIndex.builder()
+        Dictionnaire dictionnaire = Dictionnaire.builder()
                                     .column(column)
                                     .build();
 
-        Assertions.assertNotEquals(subIndex.getColumn(), Column.builder()
+        Assertions.assertNotEquals(dictionnaire.getColumn(), Column.builder()
                                                                 .name("prenom")
                                                                 .type("String")
                                                                 .build()
@@ -55,16 +55,16 @@ public class SubIndexTest {
     @Test
     public void testInsertLineHappyPath(){
 
-        SubIndex subIndex = SubIndex.builder()
+        Dictionnaire dictionnaire = Dictionnaire.builder()
                                     .column(Column.builder()
                                                 .name("nom")
                                                 .type("String")
                                                 .build())
                                     .build();
 
-        subIndex.insertLine("oruc", "ligne1");
+        dictionnaire.insertLine("oruc", "ligne1");
 
-        Assertions.assertTrue(subIndex.find(CompareValue.builder()
+        Assertions.assertTrue(dictionnaire.find(CompareValue.builder()
                                             .value("oruc")
                                             .comparison(AttributeCredentials.Operator.EQ)
                                             .build())
@@ -73,16 +73,16 @@ public class SubIndexTest {
 
     @Test
     public void testInsertLineSadPath() {
-        SubIndex subIndex = SubIndex.builder()
+        Dictionnaire dictionnaire = Dictionnaire.builder()
                 .column(Column.builder()
                         .name("nom")
                         .type("String")
                         .build())
                 .build();
 
-        subIndex.insertLine("teyeb", "ligne1");
+        dictionnaire.insertLine("teyeb", "ligne1");
 
-        Assertions.assertFalse(subIndex.find(CompareValue.builder()
+        Assertions.assertFalse(dictionnaire.find(CompareValue.builder()
                                                         .value("oruc")
                                                         .comparison(AttributeCredentials.Operator.EQ)
                                                         .build())
@@ -96,16 +96,16 @@ public class SubIndexTest {
 
     @Test
     public void testFindHappyPath(){
-        SubIndex subIndex = SubIndex.builder()
+        Dictionnaire dictionnaire = Dictionnaire.builder()
                 .column(Column.builder()
                         .name("nom")
                         .type("String")
                         .build())
                 .build();
 
-        subIndex.insertLine("oruc", "ligne1");
+        dictionnaire.insertLine("oruc", "ligne1");
 
-        Assertions.assertTrue(subIndex.find(CompareValue.builder()
+        Assertions.assertTrue(dictionnaire.find(CompareValue.builder()
                                             .value("oruc")
                                             .comparison(AttributeCredentials.Operator.EQ)
                                             .build())
@@ -114,7 +114,7 @@ public class SubIndexTest {
 
     @Test
     public void testFindSaddPath(){
-        SubIndex subIndex = SubIndex.builder()
+        Dictionnaire dictionnaire = Dictionnaire.builder()
                 .column(Column.builder()
                         .name("nom")
                         .type("String")
@@ -122,7 +122,7 @@ public class SubIndexTest {
                 .build();
 
 
-        Assertions.assertFalse(subIndex.find(CompareValue.builder()
+        Assertions.assertFalse(dictionnaire.find(CompareValue.builder()
                                                         .value("oruc")
                                                         .comparison(AttributeCredentials.Operator.EQ)
                                                         .build())

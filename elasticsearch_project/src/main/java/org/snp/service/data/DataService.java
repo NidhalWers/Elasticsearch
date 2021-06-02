@@ -5,7 +5,7 @@ import org.snp.Main;
 import org.snp.dao.DataDao;
 import org.snp.dao.TableDao;
 import org.snp.httpclient.SlaveClient;
-import org.snp.indexage.SubIndex;
+import org.snp.indexage.Dictionnaire;
 import org.snp.indexage.Table;
 import org.snp.model.communication.Message;
 import org.snp.model.communication.MessageAttachment;
@@ -180,9 +180,9 @@ public class DataService {
             /**
              * suppression in subindex
              */
-            for (SubIndex subIndex : table.getSubIndexMap().values()) {
+            for (Dictionnaire dictionnaire : table.getDictionnaireMap().values()) {
                 for (String ref : references) {
-                    subIndex.deleteByReference(ref);
+                    dictionnaire.deleteByReference(ref);
                 }
             }
         }
@@ -244,14 +244,14 @@ public class DataService {
              * update
              */
             List<String> values = new ArrayList<>();
-            for (Map.Entry entry : table.getSubIndexMap().entrySet()) {
+            for (Map.Entry entry : table.getDictionnaireMap().entrySet()) {
                 for (AttributeCredentials attributeCredentials : queryCredentials.updateParams) {
                     String columnName = attributeCredentials.columnName;
                     int columnNumber = table.positionOfColumn(columnName);
                     String newValue = attributeCredentials.value;
 
                     if (columnName.equals(entry.getKey())) {
-                        SubIndex subIndex = (SubIndex) entry.getValue();
+                        Dictionnaire dictionnaire = (Dictionnaire) entry.getValue();
                         int size = references.size();
                         finalResult = size;
                         for (int i = 0; i < references.size(); ) {
@@ -259,7 +259,7 @@ public class DataService {
                             /**
                              * update in subindex
                              */
-                            subIndex.updateByReference(newValue, ref);
+                            dictionnaire.updateByReference(newValue, ref);
                             /**
                              * update in file
                              */

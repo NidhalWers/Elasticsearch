@@ -192,7 +192,7 @@ public class TableTest {
     @Test
     public void testGetSubIndexMap(){
         Table table = TestFactory.createTable();
-        Assertions.assertTrue(table.getSubIndexMap()!=null);
+        Assertions.assertTrue(table.getDictionnaireMap()!=null);
     }
 
 

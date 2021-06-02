@@ -7,14 +7,14 @@ import org.snp.utils.ComparisonUtils;
 
 import java.util.*;
 
-public class SubIndex {
+public class Dictionnaire {
     private Column column;
 
     private Map<String, List<String>> referenceMap = new LinkedHashMap<>();
 
     ComparisonUtils comparisonUtils = new ComparisonUtils();
 
-    private SubIndex(Column column) {
+    private Dictionnaire(Column column) {
         this.column = column;
     }
 
@@ -119,8 +119,8 @@ public class SubIndex {
             return this;
         }
 
-        public SubIndex build(){
-            return new SubIndex(this.column);
+        public Dictionnaire build(){
+            return new Dictionnaire(this.column);
         }
     }
 }
