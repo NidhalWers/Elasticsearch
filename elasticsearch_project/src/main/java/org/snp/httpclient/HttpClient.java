@@ -3,6 +3,7 @@ package org.snp.httpclient;
 import com.squareup.okhttp.*;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class HttpClient {
 
@@ -17,6 +18,9 @@ public class HttpClient {
 
     public Response get(String uri) throws IOException {
         OkHttpClient client = new OkHttpClient();
+        client.setConnectTimeout(15, TimeUnit.MINUTES);
+        client.setReadTimeout(15, TimeUnit.MINUTES);
+        client.setWriteTimeout(15, TimeUnit.MINUTES);
         Request request = new Request.Builder()
                 .url(BASE_URI + port + uri)
                 .build();
@@ -25,6 +29,9 @@ public class HttpClient {
 
     public Response post(String uri, String json) throws IOException {
         OkHttpClient client = new OkHttpClient();
+        client.setConnectTimeout(15, TimeUnit.MINUTES);
+        client.setReadTimeout(15, TimeUnit.MINUTES);
+        client.setWriteTimeout(15, TimeUnit.MINUTES);
         RequestBody requestBody = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
                 .url(BASE_URI + port + uri)
@@ -35,6 +42,9 @@ public class HttpClient {
 
     public Response delete(String uri, String json) throws IOException {
         OkHttpClient client = new OkHttpClient();
+        client.setConnectTimeout(15, TimeUnit.MINUTES);
+        client.setReadTimeout(15, TimeUnit.MINUTES);
+        client.setWriteTimeout(15, TimeUnit.MINUTES);
         RequestBody requestBody = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
                 .url(BASE_URI + port + uri)

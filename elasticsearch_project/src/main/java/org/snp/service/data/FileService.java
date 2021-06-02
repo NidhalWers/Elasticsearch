@@ -160,6 +160,7 @@ public class FileService {
             String line;
             int  lineLength;
             while ((line = bufferedReader.readLine())!= null) {
+                System.out.println("ligne n°"+nbLigne);
                 insertLineIntoNode(line,table,position,tempFileName);
                 lineLength = line.getBytes().length;
                 position+=lineLength+1;
