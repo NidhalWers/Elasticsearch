@@ -2,6 +2,7 @@ package org.snp.httpclient;
 
 import com.squareup.okhttp.Response;
 
+import com.squareup.okhttp.ResponseBody;
 import org.snp.Main;
 import org.snp.model.credentials.*;
 import org.snp.model.credentials.redirection.RowCredentials;
@@ -98,13 +99,16 @@ public class SlaveClient extends HttpClient{
         String json = jsonb.toJson(queryCredentials);
         try {
             Response response = post("/data/query",json);
-            String body = response.body().string();
-            if(response.isSuccessful()) {
-                List<String> result = jsonb.fromJson(body, new ArrayList<String>(){}.getClass().getGenericSuperclass());
+            try(ResponseBody responseBody = response.body()) {
+                String body = responseBody.string();
+                if (response.isSuccessful()) {
+                    List<String> result = jsonb.fromJson(body, new ArrayList<String>() {
+                    }.getClass().getGenericSuperclass());
 
-                return result;
+                    return result;
+                }
+                return null;
             }
-            return null;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -116,13 +120,15 @@ public class SlaveClient extends HttpClient{
         String json = jsonb.toJson(queryCredentials);
         try {
             Response response = post("/data/update",json);
-            String body = response.body().string();
-            if(response.isSuccessful()) {
-                int result = jsonb.fromJson(body, Integer.class);
-                return result;
+            try(ResponseBody responseBody = response.body()) {
+                String body = responseBody.string();
+                if (response.isSuccessful()) {
+                    int result = jsonb.fromJson(body, Integer.class);
+                    return result;
+                }
+                System.out.println(body);
+                return 0;
             }
-            System.out.println(body);
-            return 0;
         } catch (IOException e) {
             e.printStackTrace();
             return 0;
@@ -134,13 +140,15 @@ public class SlaveClient extends HttpClient{
         String json = jsonb.toJson(queryCredentials);
         try {
             Response response = post("/data/delete",json);
-            String body = response.body().string();
-            if(response.isSuccessful()) {
-                int result = jsonb.fromJson(body, Integer.class);
-                return result;
+            try(ResponseBody responseBody = response.body()) {
+                String body = responseBody.string();
+                if (response.isSuccessful()) {
+                    int result = jsonb.fromJson(body, Integer.class);
+                    return result;
+                }
+                System.out.println(body);
+                return 0;
             }
-            System.out.println(body);
-            return 0;
         } catch (IOException e) {
             e.printStackTrace();
             return 0;
@@ -162,13 +170,16 @@ public class SlaveClient extends HttpClient{
         String json = jsonb.toJson(functionCredentials);
         try {
             Response response = post("/data/function",json);
-            String body = response.body().string();
-            if(response.isSuccessful()) {
-                List<String> result = jsonb.fromJson(body, new ArrayList<String>(){}.getClass().getGenericSuperclass());
+            try(ResponseBody responseBody = response.body()) {
+                String body = responseBody.string();
+                if (response.isSuccessful()) {
+                    List<String> result = jsonb.fromJson(body, new ArrayList<String>() {
+                    }.getClass().getGenericSuperclass());
 
-                return result;
+                    return result;
+                }
+                return null;
             }
-            return null;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
