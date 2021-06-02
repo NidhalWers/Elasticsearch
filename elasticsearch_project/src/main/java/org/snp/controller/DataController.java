@@ -38,14 +38,14 @@ public class DataController {
     @POST
     @Path("/load")
     //link to csv : https://dzone.com/articles/how-to-read-a-big-csv-file-with-java-8-and-stream
-    public Table loadData(@MultipartForm DataCredentials data){
+    public int loadData(@MultipartForm DataCredentials data){
         try{
             if(!Main.isMasterTest()){
                 throw new NotAuthorizedException("not authorized to load data in a slave node");
             }
             Message message = fileService.parseCSVAndInsert(data.tableName,data.file,(FILE_PREFIX+data.tableName));
             if(message.getCode()==200)
-                return (Table) ((MessageAttachment)message).getAttachment();
+                return (int) ((MessageAttachment)message).getAttachment();
             else{
                 if(message.getCode() == 404)
                     throw new NotFoundException((String) ((MessageAttachment)message).getAttachment());

@@ -67,7 +67,7 @@ public class TableAndIndexTest {
                         "columns", iterableWithSize(3),
                         "indexes", is(new TreeMap<>()),
                         "name", is("test"),
-                        "subIndexMap", is(new HashMap<>())
+                        "dictionnaireMap", is(new HashMap<>())
                 );
     }
 

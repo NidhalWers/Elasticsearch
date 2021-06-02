@@ -153,6 +153,7 @@ public class FileService {
         String tempFileName = tempFile.getAbsolutePath();
         FileOutputStream fos = new FileOutputStream(tempFile);
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+        int nbLigne = 0;
         try {
             //skip header
             bufferedReader.readLine();
@@ -162,6 +163,7 @@ public class FileService {
                 insertLineIntoNode(line,table,position,tempFileName);
                 lineLength = line.getBytes().length;
                 position+=lineLength+1;
+                nbLigne++;
                 //write into data file
                 bw.write(line);
                 bw.newLine();
@@ -176,7 +178,7 @@ public class FileService {
             fos.close();
         }
 
-        return new MessageAttachment<Table>(200, table);
+        return new MessageAttachment<Integer>(200, nbLigne);
     }
 
 
